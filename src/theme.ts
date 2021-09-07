@@ -1,4 +1,49 @@
 import { createTheme } from '@material-ui/core/styles';
+import { Text } from './types';
+
+export const text: Text = {
+  Head_20_Bold: {
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 20,
+    lineHeight: 1.35,
+  },
+  Head_20_Medium: {
+    fontWeight: 500,
+    fontSize: 20,
+    lineHeight: 1.35,
+  },
+  Head_Sub_18_Bold: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    lineHeight: 1.33,
+  },
+  Subtitle_16_Med: {
+    fontWeight: 500,
+    fontSize: 16,
+    lineHeight: 1.35,
+  },
+  Subtitle_14_Reg: {
+    fontWeight: 'normal',
+    fontSize: 14,
+    lineHeight: 1.35,
+  },
+  Body_16_Reg: {
+    fontWeight: 'normal',
+    fontSize: 16,
+    lineHeight: 1.5,
+  },
+  Body_14_Reg: {
+    fontWeight: 'normal',
+    fontSize: 14,
+    lineHeight: 1.57,
+  },
+  Caption_12_Reg: {
+    fontWeight: 'normal',
+    fontSize: 12,
+    lineHeight: 2,
+  },
+};
 
 export const Color = {
   primary: {
@@ -22,6 +67,8 @@ const theme = createTheme({
       main: Color.secondary.$100,
     },
   },
+  color: Color,
+  text,
 });
 
 export default theme;
