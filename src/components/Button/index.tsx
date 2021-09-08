@@ -1,7 +1,7 @@
 import React from 'react';
 import MaterialUIButton from '@material-ui/core/Button';
 import { ButtonProps } from '../../types/Button';
-import { makeStyles } from '@material-ui/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles(
@@ -54,7 +54,12 @@ const useStyles = makeStyles(
   { name: 'Button' },
 );
 
-const Button = ({ classes, variant, height, ...otherProps }: ButtonProps) => {
+const Button = ({
+  classes,
+  variant,
+  height,
+  ...otherProps
+}: ButtonProps): JSX.Element => {
   const localClasses = useStyles({ height });
   const {
     root,

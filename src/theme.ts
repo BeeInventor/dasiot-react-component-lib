@@ -1,5 +1,5 @@
-import { createTheme } from '@material-ui/core/styles';
-import { Text } from './types';
+import createTheme from '@material-ui/core/styles/createTheme';
+import { Color, Text } from './types';
 
 export const text: Text = {
   Head_20_Bold: {
@@ -45,7 +45,7 @@ export const text: Text = {
   },
 };
 
-export const Color = {
+export const color: Color = {
   primary: {
     $80: '#FFB905',
     $100: '#E6A600',
@@ -61,13 +61,13 @@ export const Color = {
 const theme = createTheme({
   palette: {
     primary: {
-      main: Color.primary.$100,
+      main: color.primary.$100,
     },
     secondary: {
-      main: Color.secondary.$100,
+      main: color.secondary.$100,
     },
   },
-  color: Color,
+  color,
   text,
 });
 
