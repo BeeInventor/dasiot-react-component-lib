@@ -1,6 +1,7 @@
 /.github
 /.storybook
 /.vscode
+/.husky
 /doc
 
 .eslintrc.js
