@@ -104,5 +104,8 @@
   },
   "publishConfig": {
     "@beeinventor:registry": "https://npm.pkg.github.com"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
