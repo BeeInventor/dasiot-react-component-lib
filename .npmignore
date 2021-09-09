@@ -1,0 +1,10 @@
+/.github
+/.storybook
+/.vscode
+/doc
+
+.eslintrc.js
+.gitignore
+.prettierrc
+.rollup.config.js
+.tsconfig.json

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../src/theme';
 
 export const decorators = [

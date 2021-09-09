@@ -19,6 +19,7 @@ module.exports = {
     'lib/**/*.js',
     'lib/**/*.ts',
     'rollup.config.js',
+    '**/*.stories.tsx',
   ],
   rules: {},
 };
