@@ -1,8 +1,8 @@
 {
   "name": "@beeinventor/dasiot-react-component-lib",
   "version": "0.1.2",
-  "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib",
@@ -18,7 +18,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "clean": "rimraf lib",
-    "build": "yarn clean && rollup -c"
+    "build": "npm run clean && rollup -c"
   },
   "eslintConfig": {
     "extends": [
@@ -55,7 +55,8 @@
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0"
+    "@types/react-dom": "^17.0.0",
+    "classnames": "^2.3.1"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.3",

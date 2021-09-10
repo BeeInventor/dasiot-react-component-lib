@@ -1,4 +1,3 @@
-import Button from './components/Button';
-import theme from './theme';
-
-export { Button, theme };
+export * from './components/Button';
+export * from './components/TextField/PhoneTextField';
+export * from './theme';
