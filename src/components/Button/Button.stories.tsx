@@ -8,14 +8,13 @@ export default {
   argTypes: {
     height: {
       description: 'Button height',
-      defaultValue: 32,
     },
   },
 } as Meta;
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
-const Default = Template.bind({});
+const Default: Story<ButtonProps> = Template.bind({});
 
 Default.args = {
   height: 32,
@@ -25,7 +24,7 @@ Default.args = {
   disabled: false,
 };
 
-export const Primary = Template.bind({});
+export const Primary: Story<ButtonProps> = Template.bind({});
 
 Primary.args = {
   ...Default.args,

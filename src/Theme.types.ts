@@ -1,5 +1,11 @@
 import React from 'react';
 
+export interface CountryCodeData {
+  src: string;
+  name: string;
+  code: string;
+}
+
 export interface Text {
   Head_20_Bold: React.CSSProperties;
   Head_20_Medium: React.CSSProperties;
@@ -22,6 +28,7 @@ export interface Color {
     $80: string;
     $100: string;
   };
+  highlight: string;
 }
 
 declare module '@material-ui/core/styles/createTheme' {

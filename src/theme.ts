@@ -1,5 +1,5 @@
 import createTheme from '@material-ui/core/styles/createTheme';
-import { Color, Text } from './types';
+import { Color, Text } from './Theme.types';
 
 export const text: Text = {
   Head_20_Bold: {
@@ -56,6 +56,7 @@ export const color: Color = {
     $80: '#656565',
     $100: '#3E3E3E',
   },
+  highlight: '#FF6B00',
 };
 
 const theme = createTheme({

@@ -1,8 +1,8 @@
 {
   "name": "@beeinventor/dasiot-react-component-lib",
   "version": "0.1.2",
-  "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib",
@@ -18,7 +18,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "clean": "rimraf lib",
-    "build": "yarn clean && rollup -c"
+    "build": "npm run clean && rollup -c"
   },
   "eslintConfig": {
     "extends": [
@@ -49,13 +49,8 @@
     ]
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0"
+    "classnames": "^2.3.1",
+    "upgrade": "^1.1.0"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.3",
@@ -71,34 +66,40 @@
     "@material-ui/types": "^5.1.0",
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-typescript": "^8.2.5",
     "@storybook/addon-actions": "^6.3.8",
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/react": "^6.3.8",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "babel-loader": "^8.2.2",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "rollup": "^2.56.3",
+    "rollup-plugin-dts": "^4.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
-    "typescript": "^4.1.2"
+    "typescript": "^4.4.3"
   },
   "lint-staged": {
-    "src/**/*.ts": [
-      "npm run lint",
-      "npm run format"
-    ],
-    "src/**/*.tsx": [
-      "npm run lint",
-      "npm run format"
+    "src/**/*.(ts|tsx)": [
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "publishConfig": {
