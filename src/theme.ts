@@ -1,5 +1,5 @@
 import createTheme from '@material-ui/core/styles/createTheme';
-import { Color, Text } from './types';
+import { Color, Text } from './Theme.types';
 
 export const text: Text = {
   Head_20_Bold: {

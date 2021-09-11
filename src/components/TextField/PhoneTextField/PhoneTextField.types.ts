@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import { CountryCodeData } from '../../../types';
+import { CountryCodeData } from '../../../Theme.types';
 
 export interface phoneData {
   code: string;

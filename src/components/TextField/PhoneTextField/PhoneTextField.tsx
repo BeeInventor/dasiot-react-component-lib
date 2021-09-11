@@ -2,13 +2,13 @@ import React, { VFC, useState, useEffect, ChangeEvent, useRef } from 'react';
 import Popper from '@material-ui/core/Popper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import classnames from 'classnames';
-import { PhoneTextFieldProps } from './PhoneTextField';
+import { PhoneTextFieldProps } from './PhoneTextField.types';
 import { Theme } from '@material-ui/core';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ComponentIcPhoneDbg from '../../../svg/ComponentIcPhoneDbg';
 import IcErrorIfo from '../../../svg/IcErrorIfo';
-import { CountryCodeData } from '../../../types';
+import { CountryCodeData } from '../../../Theme.types';
 
 const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 50;

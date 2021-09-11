@@ -1,3 +1,2 @@
-export * from './components/Button';
-export * from './components/TextField/PhoneTextField';
-export * from './theme';
+export * from './components';
+export { default as theme } from './theme';
