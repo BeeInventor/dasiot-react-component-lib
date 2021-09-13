@@ -60,6 +60,30 @@ export const color: Color = {
 };
 
 const theme = createTheme({
+  typography: {
+    fontFamily: [
+      '"Noto Sans TC"',
+      'Roboto',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          fontFamily: [
+            '"Noto Sans TC"',
+            'Roboto',
+            'Helvetica',
+            'Arial',
+            'sans-serif',
+          ].join(','),
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       main: color.primary.$100,
