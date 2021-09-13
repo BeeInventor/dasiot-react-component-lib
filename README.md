@@ -36,7 +36,15 @@ yarn add @beeinventor/dasiot-react-component-lib
 
 ### Import Component
 
-1. Setting Theme
+1. Add font into **index.html \<head\>** as below
+```html
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+/>
+```
+
+2. Setting Theme
 
 ```tsx
 // index.tsx
@@ -49,8 +57,8 @@ import { theme } from '@beeinventor/dasiot-react-component-lib';
 
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline />
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </React.StrictMode>,
@@ -58,7 +66,7 @@ ReactDOM.render(
 );
 ```
 
-2. Import Compoment
+1. Import Compoment
 
 ```tsx
 // App.tsx

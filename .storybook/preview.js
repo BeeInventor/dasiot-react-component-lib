@@ -6,8 +6,8 @@ import theme from '../src/theme';
 export const decorators = [
   (Story) => (
     <>
-      <CssBaseline />
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Story />
       </ThemeProvider>
     </>
