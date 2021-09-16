@@ -1,3 +1,4 @@
+import fs from 'fs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -5,23 +6,49 @@ import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
 
-const packageJson = require('./package.json');
+const getFiles = (entry, extensions = [], excludeExtensions = []) => {
+  let fileNames = [];
+  const dirs = fs.readdirSync(entry);
+
+  dirs.forEach((dir) => {
+    const path = `${entry}/${dir}`;
+
+    if (fs.lstatSync(path).isDirectory()) {
+      fileNames = [
+        ...fileNames,
+        ...getFiles(path, extensions, excludeExtensions),
+      ];
+
+      return;
+    }
+
+    if (
+      !excludeExtensions.some((exclude) => dir.endsWith(exclude)) &&
+      extensions.some((ext) => dir.endsWith(ext))
+    ) {
+      fileNames.push(path);
+    }
+  });
+
+  return fileNames;
+};
+
+const extensions = ['.js', '.ts', '.jsx', '.tsx'];
+const excludeExtensions = ['.stories.tsx', '.types.ts'];
 
 export default [
   {
-    input: 'src/index.ts',
-    output: [
-      {
-        file: packageJson.main,
-        format: 'cjs',
-        sourcemap: true,
-      },
-      {
-        file: packageJson.module,
-        format: 'esm',
-        sourcemap: true,
-      },
+    input: [
+      './src/index.ts',
+      ...getFiles('./src/components', extensions, excludeExtensions),
     ],
+    output: {
+      dir: 'lib',
+      format: 'esm',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      sourcemap: true,
+    },
     plugins: [
       peerDepsExternal(),
       resolve(),
@@ -29,9 +56,10 @@ export default [
       typescript({ tsconfig: './tsconfig.json' }),
       terser(),
     ],
+    external: ['react', 'react-dom'],
   },
   {
-    input: 'lib/esm/types/index.d.ts',
+    input: 'lib/index.d.ts',
     output: [{ file: 'lib/index.d.ts', format: 'esm' }],
     external: [],
     plugins: [dts()],
