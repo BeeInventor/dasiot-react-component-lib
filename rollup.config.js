@@ -56,7 +56,7 @@ export default [
       typescript({ tsconfig: './tsconfig.json' }),
       terser(),
     ],
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'classnames'],
   },
   {
     input: 'lib/index.d.ts',
