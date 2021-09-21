@@ -6,6 +6,7 @@ import { PhoneTextFieldProps } from './PhoneTextField.types';
 import { Theme } from '@material-ui/core';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ComponentIcPhoneDbg from '../../../svg/ComponentIcPhoneDbg';
 import IcErrorIfo from '../../../svg/IcErrorIfo';
 import { CountryCodeData } from '../../../Theme.types';
@@ -37,6 +38,13 @@ const useStyles = makeStyles(
     code: {
       display: 'flex',
       cursor: 'pointer',
+      width: 75,
+      height: '100%',
+      margin: '0 16px 0 0',
+      userSelect: 'none',
+    },
+    'code-text': {
+      flex: 1,
     },
     input: {
       ...theme.text.Body_16_Reg,
@@ -54,7 +62,6 @@ const useStyles = makeStyles(
       height: '100%',
       border: '1px solid #FFFFFF',
       borderRadius: 1,
-      margin: '0 16px 0 12px',
     },
     'dropdown-menu': {
       minWidth: DEFAULT_WIDTH,
@@ -183,15 +190,20 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
         })}
       >
         <ComponentIcPhoneDbg style={{ marginRight: 6 }} />
-        <div className={localClasses.code}>
-          <span onClick={() => setShowMenu(!showMenu)}>+{selectedCode}</span>
+        <div
+          className={localClasses.code}
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          <span className={localClasses['code-text']}>
+            {`+${selectedCode}`}
+          </span>
           {showMenu ? (
-            <KeyboardArrowUp style={{ marginLeft: 8 }} />
+            <KeyboardArrowUp style={{ margin: '0 6px' }} />
           ) : (
-            <KeyboardArrowDownIcon style={{ marginLeft: 8 }} />
+            <KeyboardArrowDownIcon style={{ margin: '0 6px' }} />
           )}
+          <div className={localClasses.separator} />
         </div>
-        <div className={localClasses.separator} />
         <input
           className={localClasses.input}
           type="tel"
@@ -207,9 +219,15 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
           anchorEl={containerDOM.current}
           placement="bottom-start"
         >
-          <div className={localClasses['dropdown-menu']}>
-            {countryCodeItems}
-          </div>
+          <ClickAwayListener
+            onClickAway={() => {
+              setShowMenu(false);
+            }}
+          >
+            <div className={localClasses['dropdown-menu']}>
+              {countryCodeItems}
+            </div>
+          </ClickAwayListener>
         </Popper>
       )}
       {error && (
