@@ -1,7 +1,8 @@
+import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import PhoneTextField from '.';
 import { PhoneTextFieldProps } from './PhoneTextField.types';
-const TaiwanSvg = require('../../../assets/image/svg/flag_Taiwan.svg');
+import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
 
 const countryCodeList = [
   {

@@ -1,3 +1,8 @@
 {
-  "svg.preview.background": "black"
+  "svg.preview.background": "black",
+  "eslint.options": {
+    "parserOptions": {
+      "project": ["${workspaceFolder}/tsconfig.json"]
+    }
+  }
 }
