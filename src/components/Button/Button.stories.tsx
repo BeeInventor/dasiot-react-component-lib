@@ -1,9 +1,10 @@
+import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import Button from '.';
-import { ButtonProps } from '../../types/Button';
+import { ButtonProps } from './Button.types';
 
 export default {
-  title: 'Components/Button',
+  title: 'Components/Button/Button',
   component: Button,
   argTypes: {
     height: {

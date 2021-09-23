@@ -20,6 +20,7 @@
       "components": ["src/components/*"]
     }
   },
-  "exclude": ["node_modules", "lib", "**/*.stories.tsx"],
+  "include": ["src/**/*.tsx", "src/**/*.ts"],
+  "exclude": ["lib", "node_modules"],
   "types": ["typePatches"]
 }
