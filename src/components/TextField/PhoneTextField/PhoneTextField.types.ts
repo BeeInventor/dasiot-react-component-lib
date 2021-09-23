@@ -9,6 +9,7 @@ export interface phoneData {
 export interface PhoneTextFieldProps {
   externalContainerClassName?: string;
   className?: string;
+  menuClassName?: string;
   placeholder?: string;
   countryCode?: string;
   value?: string;

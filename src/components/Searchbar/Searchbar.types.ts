@@ -1,7 +1,7 @@
 import {
   LanguageButtonProps,
   LanguageData,
-} from 'components/Button/LanguageButton/LanguageButton.types';
+} from '../Button/LanguageButton/LanguageButton.types';
 import { InputHTMLAttributes, ReactNode } from 'react';
 
 export interface SearchbarProps {

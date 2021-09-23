@@ -23,7 +23,26 @@ export default {
   title: 'Components/Button/LanguageButton',
   component: LanguageButton,
   argTypes: {
-    onSelect: { action: 'onSelect' },
+    list: {
+      description: 'Language list',
+      type: {
+        require: true,
+      },
+      table: {
+        defaultValue: {
+          summary: '[]',
+        },
+      },
+    },
+    onSelect: {
+      action: 'onSelect',
+      description: 'Trigger when select a language',
+      table: {
+        defaultValue: {
+          summary: '(lang: LanguageData) => void',
+        },
+      },
+    },
   },
 } as Meta;
 

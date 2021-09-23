@@ -21,5 +21,6 @@
     }
   },
   "include": ["src/**/*.tsx", "src/**/*.ts"],
+  "exclude": ["lib", "node_modules"],
   "types": ["typePatches"]
 }

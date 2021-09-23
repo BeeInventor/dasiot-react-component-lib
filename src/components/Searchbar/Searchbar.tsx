@@ -4,7 +4,7 @@ import { SearchbarProps } from './Searchbar.types';
 import classnames from 'classnames';
 import BtnIcSearch from '../../svg/BtnIcSearch';
 import LanguageButton from '../Button/LanguageButton';
-import { LanguageData } from 'components/Button/LanguageButton/LanguageButton.types';
+import { LanguageData } from '../Button/LanguageButton/LanguageButton.types';
 
 const useStyles = makeStyles(
   (theme) => ({

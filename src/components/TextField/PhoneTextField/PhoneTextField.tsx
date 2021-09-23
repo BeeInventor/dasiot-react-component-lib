@@ -109,6 +109,7 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
   const {
     externalContainerClassName,
     className,
+    menuClassName,
     inputProps = {},
     placeholder,
     value,
@@ -218,6 +219,11 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
           open={showMenu}
           anchorEl={containerDOM.current}
           placement="bottom-start"
+          popperRef={(ref) => {
+            if (menuClassName) {
+              ref?.popper.classList.add(menuClassName);
+            }
+          }}
         >
           <ClickAwayListener
             onClickAway={() => {
