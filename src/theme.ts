@@ -63,17 +63,9 @@ const theme = createTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        body: {
+        '*': {
           fontFamily: [
-            '"Noto Sans TC"',
-            'Roboto',
-            'Helvetica',
-            'Arial',
-            'sans-serif',
-          ].join(','),
-        },
-        input: {
-          fontFamily: [
+            'Noto Sans',
             '"Noto Sans TC"',
             'Roboto',
             'Helvetica',
