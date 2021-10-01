@@ -15,6 +15,7 @@ const useStyles = makeStyles(
       paddingTop: 4,
       paddingBottom: 4,
       textTransform: 'none',
+      boxShadow: 'none',
       '&:active, &:hover': {
         backgroundColor: theme.color.primary.$80,
       },

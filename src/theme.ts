@@ -57,6 +57,7 @@ export const color: Color = {
     $100: '#3E3E3E',
   },
   highlight: '#FF6B00',
+  box_bbg: '#F3F3F3',
 };
 
 const theme = createTheme({
