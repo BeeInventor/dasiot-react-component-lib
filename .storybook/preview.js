@@ -22,4 +22,13 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  backgrounds: {
+    default: 'figma',
+    values: [
+      {
+        name: 'figma',
+        value: '#E5E5E5',
+      },
+    ],
+  },
 };
