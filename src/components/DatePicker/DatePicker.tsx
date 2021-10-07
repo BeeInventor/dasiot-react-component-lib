@@ -1,22 +1,26 @@
-import React, { useState, VFC, useMemo } from 'react';
+import React, { useState, VFC, useMemo, useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import { Theme } from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {
   format,
   startOfWeek,
   addDays,
   startOfMonth,
-  endOfMonth,
   addMonths,
   isAfter,
   isBefore,
+  isEqual,
+  endOfDay,
 } from 'date-fns';
 import { DatePickerProps } from './DatePicker.types';
 import calendarSVG from '../../assets/image/svg/btn_ic_calendar.svg';
 import arrowLeftSVG from '../../assets/image/svg/arrow-left.svg';
 import arrowRightSVG from '../../assets/image/svg/arrow-right.svg';
-import { Theme } from '@material-ui/core';
-import classNames from 'classnames';
+import endOfMonth from 'date-fns/endOfMonth';
+import { addSeconds } from 'date-fns/esm';
 
 const useStyles = makeStyles(
   (theme: Theme) => ({
@@ -24,12 +28,15 @@ const useStyles = makeStyles(
       ...theme.text.Subtitle_16_Med,
       cursor: 'pointer',
       display: 'inline-flex',
-      minWidth: 200,
+      minWidth: 156,
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: '#FFF',
       paddingLeft: 16,
       borderRadius: 4,
+    },
+    placeholder: {
+      color: theme.color.secondary.$60,
     },
     icon: {
       display: 'flex',
@@ -44,7 +51,7 @@ const useStyles = makeStyles(
       backgroundColor: '#FFF',
       padding: 32,
       borderRadius: 8,
-      margin: 8,
+      margin: '8px auto',
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
     },
     operation: {
@@ -52,9 +59,6 @@ const useStyles = makeStyles(
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: 10,
-      '& > img': {
-        cursor: 'pointer',
-      },
     },
     gridContainer: {
       display: 'grid',
@@ -109,8 +113,18 @@ const useStyles = makeStyles(
         backgroundColor: 'rgba(255, 193, 31)',
       },
     },
-    thisMounth: {
+    currentMonth: {
       color: '#808080',
+    },
+    cursorPointer: {
+      cursor: 'pointer',
+    },
+    notAllowed: {
+      cursor: 'not-allowed',
+    },
+    outOfRange: {
+      cursor: 'not-allowed',
+      color: 'rgba(128, 128, 128, 0.3)',
     },
   }),
   {
@@ -119,16 +133,61 @@ const useStyles = makeStyles(
 );
 
 const DatePicker: VFC<DatePickerProps> = (props) => {
-  const { locale, startDate, endDate } = props;
+  const {
+    type,
+    locale,
+    startDate,
+    endDate,
+    placeholder,
+    onSelect,
+    limitFrom,
+    limitTo,
+    calendarClassName,
+  } = props;
   const classes = useStyles();
-  const [tempDate, setTempDate] = useState(startDate);
+  const containerRef = useRef(null);
+  const [localStartDate, setLocalStartDate] = useState(startDate || new Date());
+  const [localEndDate, setLocalEndDate] = useState(endDate || new Date());
+  const [referenceDate, setReferenceDate] = useState(startDate || new Date());
+  const [clickCount, setClickCount] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    if (startDate && !isEqual(startDate, localStartDate)) {
+      setLocalStartDate(startDate);
+      setReferenceDate(startDate);
+    }
+    if (endDate && !isEqual(endDate, localEndDate)) {
+      setLocalEndDate(endDate);
+    }
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    if (startDate || endDate) setIsDirty(true);
+  }, [startDate, endDate]);
 
   const handlePrevious = () => {
-    setTempDate(startOfMonth(addMonths(tempDate, -1)));
+    const date = startOfMonth(addMonths(referenceDate, -1));
+    if (limitFrom && isAfter(date, limitFrom)) {
+      setReferenceDate(date);
+    } else if (!limitFrom) {
+      setReferenceDate(date);
+    }
   };
 
   const handleNextMonth = () => {
-    setTempDate(startOfMonth(addMonths(tempDate, 1)));
+    const date = startOfMonth(addMonths(referenceDate, 1));
+    if (limitTo && isBefore(date, limitTo)) {
+      setReferenceDate(date);
+    } else if (!limitTo) {
+      setReferenceDate(date);
+    }
+  };
+
+  const handleClosePopper = () => {
+    setIsOpen(false);
+    setClickCount(0);
   };
 
   const weekStrings = useMemo(() => {
@@ -149,145 +208,181 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
   }, []);
 
   const days = useMemo(() => {
-    const localStartDate = startOfWeek(startOfMonth(tempDate));
-    const monthEndDate = endOfMonth(tempDate);
     const days = [];
-    const startDateRegex = new RegExp(format(startDate, 'yyyy-MM-d'));
-    const endDateRegex = new RegExp(format(endDate, 'yyyy-MM-d'));
-    const nextDateOfendDateRegex = new RegExp(
-      format(addDays(endDate, 1), 'yyyy-MM-d'),
-    );
+    const beginDate = startOfWeek(startOfMonth(referenceDate));
+    const localStartDateString = format(localStartDate, 'yyyy-MM-dd');
+    const localEndDateString = format(localEndDate, 'yyyy-MM-dd');
 
-    let isSelected = false;
-    let prefix = format(localStartDate, 'yyyy-MM');
+    const handleOnSelectDate = (date: Date) => {
+      if (limitFrom && (isBefore(date, limitFrom) || isEqual(date, limitFrom)))
+        return;
+      if (limitTo && (isAfter(date, limitTo) || isEqual(date, limitTo))) return;
 
-    if (localStartDate.getMonth() !== tempDate.getMonth()) {
-      if (
-        isAfter(localStartDate, startDate) &&
-        isBefore(localStartDate, endDate)
-      )
-        isSelected = true;
-      for (
-        let i = localStartDate.getDate();
-        i <= endOfMonth(localStartDate).getDate();
-        i += 1
-      ) {
-        if (startDateRegex.test(`${prefix}-${i}`)) isSelected = true;
-        if (nextDateOfendDateRegex.test(`${prefix}-${i}`)) isSelected = false;
-        days.push(
-          <div
-            key={`day-${localStartDate.getMonth()}-${i}-${Math.random().toString(
-              16,
-            )}`}
-            className={classNames(classes.extenalItem, {
-              start: startDateRegex.test(`${prefix}-${i}`),
-              end: endDateRegex.test(`${prefix}-${i}`),
-              selected: isSelected,
-            })}
-          >
-            <div
-              className={classNames(classes.item, classes.day, {
-                start: startDateRegex.test(`${prefix}-${i}`),
-                end: endDateRegex.test(`${prefix}-${i}`),
-              })}
-            >
-              {i}
-            </div>
-          </div>,
-        );
+      setIsDirty(true);
+      if (type === 'date') {
+        setLocalStartDate(date);
+        setLocalEndDate(date);
+        onSelect(date);
+      } else {
+        if (clickCount === 0) {
+          setLocalStartDate(date);
+          onSelect([date, localEndDate]);
+        } else {
+          const end = endOfDay(date);
+          setLocalEndDate(end);
+          onSelect([localStartDate, end]);
+        }
+        setClickCount((clickCount + 1) % 2);
       }
-    }
+    };
 
-    prefix = format(tempDate, 'yyyy-MM');
-    for (let i = 1; i <= monthEndDate.getDate(); i += 1) {
-      if (startDateRegex.test(`${prefix}-${i}`)) isSelected = true;
-      if (nextDateOfendDateRegex.test(`${prefix}-${i}`)) isSelected = false;
+    const endOfPreviousMonth = addSeconds(startOfMonth(referenceDate), -1);
+    const endOfCurrentMonth = endOfMonth(referenceDate);
+
+    for (let i = 0; i < 42; i += 1) {
+      const day = addDays(beginDate, i);
+      const equalLocalStartDate =
+        format(day, 'yyyy-MM-dd') === localStartDateString;
+      const equalLocalEndDate =
+        format(day, 'yyyy-MM-dd') === localEndDateString;
+
       days.push(
         <div
-          key={`day-${tempDate.getMonth()}-${i}-${Math.random().toString(16)}`}
+          key={`day-${day.getMonth()}-${day.getDate()}`}
           className={classNames(classes.extenalItem, {
-            start: startDateRegex.test(`${prefix}-${i}`),
-            end: endDateRegex.test(`${prefix}-${i}`),
-            selected: isSelected,
-          })}
-        >
-          <div
-            className={classNames(
-              classes.item,
-              classes.day,
-              classes.thisMounth,
-              {
-                start: startDateRegex.test(`${prefix}-${i}`),
-                end: endDateRegex.test(`${prefix}-${i}`),
-              },
-            )}
-          >
-            {i}
-          </div>
-        </div>,
-      );
-    }
-
-    const len = days.length;
-    const nextMonth = addMonths(tempDate, 1);
-    prefix = format(nextMonth, 'yyyy-MM');
-
-    for (let i = 1; i <= 42 - len; i += 1) {
-      if (startDateRegex.test(`${prefix}-${i}`)) isSelected = true;
-      if (nextDateOfendDateRegex.test(`${prefix}-${i}`)) isSelected = false;
-      days.push(
-        <div
-          key={`day-${nextMonth.getMonth()}-${i}-${Math.random().toString(16)}`}
-          className={classNames(classes.extenalItem, {
-            start: startDateRegex.test(`${prefix}-${i}`),
-            end: endDateRegex.test(`${prefix}-${i}`),
-            selected: isSelected,
+            start: equalLocalStartDate,
+            end: equalLocalEndDate,
+            selected:
+              equalLocalStartDate ||
+              (isAfter(day, localStartDate) && isBefore(day, localEndDate)) ||
+              equalLocalEndDate,
           })}
         >
           <div
             className={classNames(classes.item, classes.day, {
-              start: startDateRegex.test(`${prefix}-${i}`),
-              end: endDateRegex.test(`${prefix}-${i}`),
+              start: equalLocalStartDate,
+              end: equalLocalEndDate,
+              [classes.outOfRange]:
+                (limitFrom
+                  ? isBefore(day, limitFrom) || isEqual(day, limitFrom)
+                  : false) ||
+                (limitTo
+                  ? isAfter(day, limitTo) || isEqual(day, limitTo)
+                  : false),
+              [classes.currentMonth]:
+                isAfter(day, endOfPreviousMonth) &&
+                isBefore(day, endOfCurrentMonth),
             })}
+            onClick={() => handleOnSelectDate(day)}
           >
-            {i}
+            {day.getDate()}
           </div>
         </div>,
       );
     }
 
     return days;
-  }, [tempDate]);
+  }, [
+    referenceDate,
+    localStartDate,
+    localEndDate,
+    clickCount,
+    limitFrom,
+    limitTo,
+  ]);
 
   return (
     <>
-      <div className={classes.container}>
-        {format(startDate, 'MM/dd', {
-          locale,
-        })}
-        {' - '}
-        {format(endDate, 'MM/dd', {
-          locale,
-        })}
+      <div
+        ref={containerRef}
+        className={classes.container}
+        onClick={() => setIsOpen(true)}
+      >
+        {!isDirty ? (
+          <span className={classes.placeholder}>
+            {type === 'date' ? placeholder : `${placeholder} - ${placeholder}`}
+          </span>
+        ) : (
+          <>
+            {format(localStartDate, 'MM/dd', {
+              locale,
+            })}
+            {type === 'range' && (
+              <>
+                {' - '}
+                {format(localEndDate, 'MM/dd', {
+                  locale,
+                })}
+              </>
+            )}
+          </>
+        )}
         <div className={classes.icon}>
           <img src={calendarSVG} />
         </div>
       </div>
-      <div className={classes.calendar}>
-        <div className={classes.operation}>
-          <img src={arrowLeftSVG} onClick={handlePrevious} />
-          {format(tempDate, 'MMMM yyyy', {
-            locale,
-          })}
-          <img src={arrowRightSVG} onClick={handleNextMonth} />
-        </div>
-        <div className={classes.gridContainer}>
-          {weekStrings}
-          {days}
-        </div>
-      </div>
+      <Popper
+        open={isOpen}
+        anchorEl={containerRef.current}
+        placement="bottom-start"
+        popperRef={(ref) => {
+          if (calendarClassName) {
+            ref?.popper.classList.add(classNames(calendarClassName));
+          }
+        }}
+      >
+        <ClickAwayListener onClickAway={handleClosePopper}>
+          <div className={classes.calendar}>
+            <div className={classes.operation}>
+              <img
+                className={classNames(classes.cursorPointer, {
+                  [classes.notAllowed]: limitFrom
+                    ? isBefore(
+                        addMonths(startOfMonth(referenceDate), -1),
+                        limitFrom,
+                      ) ||
+                      isEqual(
+                        addMonths(startOfMonth(referenceDate), -1),
+                        limitFrom,
+                      )
+                    : false,
+                })}
+                src={arrowLeftSVG}
+                onClick={handlePrevious}
+              />
+              {format(referenceDate, 'MMMM yyyy', {
+                locale,
+              })}
+              <img
+                className={classNames(classes.cursorPointer, {
+                  [classes.notAllowed]: limitTo
+                    ? isAfter(
+                        addMonths(startOfMonth(referenceDate), 1),
+                        limitTo,
+                      ) ||
+                      isEqual(
+                        addMonths(startOfMonth(referenceDate), 1),
+                        limitTo,
+                      )
+                    : false,
+                })}
+                src={arrowRightSVG}
+                onClick={handleNextMonth}
+              />
+            </div>
+            <div className={classes.gridContainer}>
+              {weekStrings}
+              {days}
+            </div>
+          </div>
+        </ClickAwayListener>
+      </Popper>
     </>
   );
+};
+
+DatePicker.defaultProps = {
+  type: 'date',
 };
 
 export default DatePicker;
