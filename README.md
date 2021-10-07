@@ -46,6 +46,10 @@ yarn add @beeinventor/dasiot-react-component-lib
   rel="stylesheet"
 />
 <link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
+<link
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
 />

@@ -5,7 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
-import url from 'rollup-plugin-url';
+import url from '@rollup/plugin-url';
 
 const getFiles = (entry, extensions = [], excludeExtensions = []) => {
   let fileNames = [];
@@ -61,7 +61,15 @@ export default [
       typescript({ tsconfig: './tsconfig.json' }),
       terser(),
     ],
-    external: ['react', 'react-dom', 'classnames'],
+    external: [
+      'react',
+      'react-dom',
+      'classnames',
+      'date-fns',
+      '@material-ui/core',
+      '@material-ui/icons',
+      '@material-ui/types',
+    ],
   },
   {
     input: 'lib/index.d.ts',
