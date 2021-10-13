@@ -3,7 +3,6 @@ import MUIButton from '@mui/material/Button';
 import { DialogButtonProps } from './DialogButton.types';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
-
 import { styled } from '@mui/material/styles';
 
 const Styled = styled(MUIButton)(({ theme }) => ({

@@ -1,9 +1,8 @@
-// import React from 'react';
-// import { Meta, Story } from '@storybook/react';
-// import makeStyles from '@material-ui/core/styles/makeStyles';
-// import Dropdown from './Dropdown';
-// import { DropDownItem, DropDownProps } from './Dropdown.type';
-// import { Theme } from '@material-ui/core';
+import React from 'react';
+import { Meta, Story } from '@storybook/react';
+import Dropdown from './Dropdown';
+import { DropDownItem, DropDownProps } from './Dropdown.type';
+// import { Theme } from '@mui/material/styles';
 
 // const useStyles = makeStyles(
 //   (theme: Theme) => {
@@ -19,61 +18,74 @@
 //   },
 // );
 
-// const list: DropDownItem[] = [
-//   {
-//     id: 'A001',
-//     name: 'Distributor',
-//     value: 'Distributor',
-//   },
-//   {
-//     id: 'A002',
-//     name: 'Distributor A',
-//     value: 'Distributor-A',
-//   },
-//   {
-//     id: 'A003',
-//     name: 'Distributor B',
-//     value: 'Distributor-B',
-//   },
-//   {
-//     id: 'A004',
-//     name: 'Distributor C',
-//     value: 'Distributor-C',
-//   },
-// ];
+const list: DropDownItem[] = [
+  {
+    id: 'A001',
+    name: 'Distributor',
+    value: 'Distributor',
+  },
+  {
+    id: 'A002',
+    name: 'Distributor A',
+    value: 'Distributor-A',
+  },
+  {
+    id: 'A003',
+    name: 'Distributor B',
+    value: 'Distributor-B',
+  },
+  {
+    id: 'A004',
+    name: 'Distributor C',
+    value: 'Distributor-C',
+  },
+];
 
-// export default {
-//   title: 'Components/Dropdown',
-//   component: Dropdown,
-//   argTypes: {
-//     onSelect: { action: 'onSelected' },
-//     disabled: {
-//       control: 'boolean',
-//     },
-//   },
-// } as Meta;
+export default {
+  title: 'Components/Dropdown',
+  component: Dropdown,
+  argTypes: {
+    onSelect: { action: 'onSelected' },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    className: {
+      control: 'string',
+    },
+    listClassName: {
+      control: 'string',
+    },
+    itemClassName: {
+      control: 'string',
+    },
+    selectedId: {
+      control: 'string',
+    },
+  },
+} as Meta;
 
-// const Template: Story<DropDownProps> = (args) => <Dropdown {...args} />;
+const Template: Story<DropDownProps> = (args) => <Dropdown {...args} />;
 
-// export const Default: Story<DropDownProps> = Template.bind({});
+export const Default: Story<DropDownProps> = Template.bind({});
 
-// Default.args = {
-//   placeholder: 'Select',
-//   list,
-// };
+Default.args = {
+  placeholder: 'Select',
+  list,
+};
 
-// export const Selected: Story<DropDownProps> = Template.bind({});
+export const Selected: Story<DropDownProps> = Template.bind({});
 
-// Selected.args = {
-//   ...Default.args,
-//   selectedId: 'A004',
-// };
+Selected.args = {
+  ...Default.args,
+  selectedId: 'A004',
+};
 
-// export const DialogStyle: Story<DropDownProps> = (args) => {
-//   const classes = useStyles();
-//   return <Dropdown className={classes.dialogDropdownExample} {...args} />;
-// };
+export const DialogStyle: Story<DropDownProps> = (args) => {
+  return <Dropdown {...args} />;
+};
 
-// DialogStyle.args = {
-//   ...Default.args,
-// };
+DialogStyle.args = {
+  ...Default.args,
+};
