@@ -1,4 +1,4 @@
-import createTheme from '@material-ui/core/styles/createTheme';
+import createTheme from '@mui/material/styles/createTheme';
 import { Color, Text } from './Theme.types';
 
 export const text: Text = {
@@ -61,34 +61,43 @@ export const color: Color = {
 };
 
 const theme = createTheme({
-  overrides: {
+  // overrides: {
+  //   MuiCssBaseline: {
+  //     '@global': {
+  // '*': {
+  //   fontFamily: [
+  //     'Noto Sans',
+  //     '"Noto Sans TC"',
+  //     'Roboto',
+  //     'Helvetica',
+  //     'Arial',
+  //     'sans-serif',
+  //   ].join(','),
+  // },
+  //       '@media screen and (-webkit-min-device-pixel-ratio:0)': {
+  //         'input[type="password"]:not(:placeholder-shown)': {
+  //           '-webkit-text-stroke-width': '0.4em',
+  //           letterSpacing: '-0.2em',
+  //           fontSize: '1.25rem',
+  //         },
+  //       },
+  //       '@media screen and (min--moz-device-pixel-ratio:0)': {
+  //         'input[type="password"]:not(:placeholder-shown)': {
+  //           '-webkit-text-stroke-width': '0.1em',
+  //           letterSpacing: '0.2em',
+  //           fontSize: '1rem',
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '*': {
-          fontFamily: [
-            'Noto Sans',
-            '"Noto Sans TC"',
-            'Roboto',
-            'Helvetica',
-            'Arial',
-            'sans-serif',
-          ].join(','),
-        },
-        '@media screen and (-webkit-min-device-pixel-ratio:0)': {
-          'input[type="password"]:not(:placeholder-shown)': {
-            '-webkit-text-stroke-width': '0.4em',
-            letterSpacing: '-0.2em',
-            fontSize: '1.25rem',
-          },
-        },
-        '@media screen and (min--moz-device-pixel-ratio:0)': {
-          'input[type="password"]:not(:placeholder-shown)': {
-            '-webkit-text-stroke-width': '0.1em',
-            letterSpacing: '0.2em',
-            fontSize: '1rem',
-          },
-        },
-      },
+      styleOverrides: `
+        body {
+          fontFamily: '"Noto Sans", "Noto Sans TC", "Roboto", "Helvetica", "Arial", "sans-serif"'
+        }
+      `,
     },
   },
   palette: {
