@@ -1,79 +1,50 @@
 import React from 'react';
-import classnames from 'classnames';
-import MUIButton from '@material-ui/core/Button';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import MUIButton from '@mui/material/Button';
 import { DialogButtonProps } from './DialogButton.types';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 
-const useStyles = makeStyles(
-  (theme) => ({
-    button: {
-      ...theme.text.Subtitle_16_Med,
-      minWidth: 120,
+import { styled } from '@mui/material/styles';
+
+const Styled = styled(MUIButton)(({ theme }) => ({
+  ...theme.text.Subtitle_16_Med,
+  minWidth: 120,
+  color: '#FFF',
+  paddingTop: 4,
+  paddingBottom: 4,
+  textTransform: 'none',
+  boxShadow: 'none',
+  '&:active, &:hover': {
+    backgroundColor: theme.color.primary.$80,
+  },
+  '&.MuiButton-containedSecondary': {
+    color: theme.color.primary.$100,
+    backgroundColor: '#FFF',
+    '&:active, &:hover': {
+      backgroundColor: 'rgba(0, 0, 0, .05)',
+    },
+  },
+  '&.Mui-disabled': {
+    opacity: '.3',
+    '&.MuiButton-containedPrimary': {
       color: '#FFF',
-      paddingTop: 4,
-      paddingBottom: 4,
-      textTransform: 'none',
-      boxShadow: 'none',
-      '&:active, &:hover': {
-        backgroundColor: theme.color.primary.$80,
-      },
+      backgroundColor: theme.color.primary.$80,
     },
-    containedSecondary: {
-      color: theme.color.primary.$100,
-      backgroundColor: '#FFF',
-      '&:active, &:hover': {
-        backgroundColor: 'rgba(0, 0, 0, .05)',
-      },
-    },
-    disabled: {
-      opacity: '.3',
-    },
-    'disabled--primary': {
-      '&$disabled': {
-        color: '#FFF',
-        backgroundColor: theme.color.primary.$80,
-      },
-    },
-    'disabled--secondary': {
-      '&$disabled': {
-        color: theme.color.primary.$100,
-        backgroundColor: '#FFF',
-      },
-    },
-    'icon--previousIcon': {
-      marginRight: 10,
-    },
-    'icon--nextIcon': {
-      marginLeft: 10,
-    },
-  }),
-  { name: 'DialogButton' },
-);
+  },
+  '& .MuiButton-startIcon': { marginRight: '10px' },
+  '& .MuiButton-endIcon': { marginLeft: '10px' },
+}));
 
 function DialogButton(props: DialogButtonProps): JSX.Element {
   const { className, previousIcon, nextIcon, color, ...otherProps } =
     props ?? {};
-  const classes = useStyles({ color });
   return (
-    <MUIButton
-      {...otherProps}
-      className={classnames(classes.button, className)}
-      classes={{
-        containedSecondary: classes.containedSecondary,
-        iconSizeMedium: classnames({
-          [classes['icon--previousIcon']]: previousIcon,
-          [classes['icon--nextIcon']]: nextIcon,
-        }),
-        disabled: classnames(classes.disabled, {
-          [classes['disabled--primary']]: color === 'primary',
-          [classes['disabled--secondary']]: color === 'secondary',
-        }),
-      }}
+    <Styled
+      className={className}
       color={color}
       startIcon={previousIcon && <ChevronLeft />}
       endIcon={nextIcon && <ChevronRight />}
+      {...otherProps}
     />
   );
 }
