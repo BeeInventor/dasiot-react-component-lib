@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { BoxProps, InputBaseProps, PopperProps } from '@mui/material';
 import { CountryCodeData } from '../../../Theme.types';
 
 export interface phoneData {
@@ -6,20 +6,17 @@ export interface phoneData {
   phone: string;
 }
 
-export interface PhoneTextFieldProps {
-  externalContainerClassName?: string;
-  className?: string;
-  menuClassName?: string;
+export interface PhoneTextFieldProps extends Omit<BoxProps, 'onChange'> {
+  rootProps: BoxProps;
+  menuProps?: BoxProps;
+  errorProps?: BoxProps;
   placeholder?: string;
   countryCode?: string;
   value?: string;
   onChange: (data: phoneData) => void;
   countryCodeList: CountryCodeData[];
-  errorContainerClassName?: string;
   error?: boolean;
   errorMessage?: string;
-  inputProps?: Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'placeholder' | 'value' | 'onChange'
-  >;
+  inputProps?: InputBaseProps;
+  popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
 }

@@ -1,166 +1,176 @@
-// import React, { useState } from 'react';
-// import { Meta, Story } from '@storybook/react';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import makeStyles from '@material-ui/core/styles/makeStyles';
-// import PhoneTextField from '.';
-// import { PhoneTextFieldProps } from './PhoneTextField.types';
-// import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
-// import Button from '../../Button';
+import React from 'react';
+import { Meta, Story } from '@storybook/react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import PhoneTextField from '.';
+import { PhoneTextFieldProps } from './PhoneTextField.types';
+import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
+import { colors } from '@mui/material';
+const countryCodeList = [
+  {
+    src: TaiwanSvg,
+    code: '886',
+    name: 'Taiwan',
+  },
+  {
+    src: TaiwanSvg,
+    code: '852',
+    name: 'Hong Kong',
+  },
+  {
+    src: TaiwanSvg,
+    code: '44',
+    name: 'United kingdom',
+  },
+  {
+    src: TaiwanSvg,
+    code: '1',
+    name: 'United States of America',
+  },
+  {
+    src: TaiwanSvg,
+    code: '1',
+    name: 'Canada',
+  },
+  {
+    src: TaiwanSvg,
+    code: '61',
+    name: 'Australia',
+  },
+  {
+    src: TaiwanSvg,
+    code: '81',
+    name: 'Japan',
+  },
+  {
+    src: TaiwanSvg,
+    code: '65',
+    name: 'Sigapore',
+  },
+  {
+    src: TaiwanSvg,
+    code: '60',
+    name: 'Malaysia',
+  },
+  {
+    src: TaiwanSvg,
+    code: '66',
+    name: 'Thailand',
+  },
+];
 
-// const useStyles = makeStyles(() => ({
-//   dialogContent: {
-//     height: 600,
-//   },
-//   popper: {
-//     zIndex: 1400,
-//   },
-// }));
+export default {
+  title: 'Components/TextField/PhoneTextField',
+  component: PhoneTextField,
+  argTypes: {
+    value: {
+      description: 'PhoneTextField value',
+      table: {
+        defaultValue: {
+          summary: '',
+        },
+      },
+    },
+    placeholder: {
+      description: 'Placeholder',
+      table: {
+        defaultValue: {
+          summary: 'undefined',
+        },
+      },
+    },
+    onChange: {
+      action: 'onChange',
+      description: 'Trigger when select a country code',
+      type: {
+        require: true,
+      },
+      table: {
+        defaultValue: {
+          summary: 'undefined',
+        },
+      },
+    },
+    countryCodeList: {
+      description: 'Country Code List (required)',
+      type: {
+        require: true,
+      },
+      table: {
+        defaultValue: {
+          summary: '[]',
+        },
+      },
+    },
+  },
+} as Meta;
 
-// const countryCodeList = [
-//   {
-//     src: TaiwanSvg,
-//     code: '886',
-//     name: 'Taiwan',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '852',
-//     name: 'Hong Kong',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '44',
-//     name: 'United kingdom',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '1',
-//     name: 'United States of America',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '1',
-//     name: 'Canada',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '61',
-//     name: 'Australia',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '81',
-//     name: 'Japan',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '65',
-//     name: 'Sigapore',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '60',
-//     name: 'Malaysia',
-//   },
-//   {
-//     src: TaiwanSvg,
-//     code: '66',
-//     name: 'Thailand',
-//   },
-// ];
+const Template: Story<PhoneTextFieldProps> = (args) => (
+  <PhoneTextField {...args} />
+);
 
-// export default {
-//   title: 'Components/TextField/PhoneTextField',
-//   component: PhoneTextField,
-//   argTypes: {
-//     value: {
-//       description: 'PhoneTextField value',
-//       table: {
-//         defaultValue: {
-//           summary: '',
-//         },
-//       },
-//     },
-//     placeholder: {
-//       description: 'Placeholder',
-//       table: {
-//         defaultValue: {
-//           summary: 'undefined',
-//         },
-//       },
-//     },
-//     onChange: {
-//       action: 'onChange',
-//       description: 'Trigger when select a country code',
-//       type: {
-//         require: true,
-//       },
-//       table: {
-//         defaultValue: {
-//           summary: 'undefined',
-//         },
-//       },
-//     },
-//     countryCodeList: {
-//       description: 'Country Code List (required)',
-//       type: {
-//         require: true,
-//       },
-//       table: {
-//         defaultValue: {
-//           summary: '[]',
-//         },
-//       },
-//     },
-//   },
-// } as Meta;
+export const Default: Story<PhoneTextFieldProps> = Template.bind({});
 
-// const Template: Story<PhoneTextFieldProps> = (args) => (
-//   <PhoneTextField {...args} />
-// );
+Default.args = {
+  value: '',
+  placeholder: 'Phone Number',
+  countryCodeList,
+};
 
-// export const Default: Story<PhoneTextFieldProps> = Template.bind({});
+export const Error: Story<PhoneTextFieldProps> = Template.bind({});
 
-// Default.args = {
-//   value: '',
-//   placeholder: 'Phone Number',
-//   countryCodeList,
-// };
+Error.args = {
+  ...Default.args,
+  error: true,
+  errorMessage: 'Invalid Phone',
+};
 
-// export const Error: Story<PhoneTextFieldProps> = Template.bind({});
+export const HasValue: Story<PhoneTextFieldProps> = Template.bind({});
 
-// Error.args = {
-//   ...Default.args,
-//   error: true,
-//   errorMessage: 'Invalid Phone',
-// };
+HasValue.args = {
+  ...Default.args,
+  countryCode: '1',
+  value: '0990000001',
+};
 
-// export const HasValue: Story<PhoneTextFieldProps> = Template.bind({});
+export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
+  return (
+    <Dialog open>
+      <DialogContent sx={{ height: 300 }}>
+        <PhoneTextField {...args} />
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-// HasValue.args = {
-//   ...Default.args,
-//   countryCode: '1',
-//   value: '0990000001',
-// };
+WithDialog.args = {
+  ...Default.args,
+  popperProps: {
+    disablePortal: true,
+  },
+};
 
-// export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
-//   const classes = useStyles();
-//   const [open, setOpen] = useState(false);
-//   return (
-//     <>
-//       <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-//         Open Dialog
-//       </Button>
-//       <Dialog open={open} onClose={() => setOpen(false)}>
-//         <DialogContent className={classes.dialogContent}>
-//           <PhoneTextField {...args} menuClassName={classes.popper} />
-//         </DialogContent>
-//       </Dialog>
-//     </>
-//   );
-// };
+export const CustomStyle: Story<PhoneTextFieldProps> = (args) => (
+  <PhoneTextField {...args} />
+);
 
-// WithDialog.args = {
-//   ...Default.args,
-// };
+CustomStyle.args = {
+  ...Default.args,
+  value: '0990000001',
+  sx: {
+    backgroundColor: 'black',
+  },
+  rootProps: {
+    sx: {
+      border: `1px solid ${colors.blue['300']}`,
+    },
+  },
+  inputProps: {
+    sx: {
+      color: 'pink',
+      '&::placeholder': {
+        color: 'pink',
+      },
+    },
+  },
+};
