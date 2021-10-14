@@ -1,22 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
+import { Dialog, DialogContent } from '@mui/material';
 import Dropdown from './Dropdown';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
-// import { Theme } from '@mui/material/styles';
-
-// const useStyles = makeStyles(
-//   (theme: Theme) => {
-//     return {
-//       dialogDropdownExample: {
-//         background: theme.color.box_bbg,
-//         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
-//       },
-//     };
-//   },
-//   {
-//     name: 'Dropdown',
-//   },
-// );
 
 const list: DropDownItem[] = [
   {
@@ -82,10 +68,19 @@ Selected.args = {
   selectedId: 'A004',
 };
 
-export const DialogStyle: Story<DropDownProps> = (args) => {
-  return <Dropdown {...args} />;
+export const WithDialog: Story<DropDownProps> = (args) => {
+  return (
+    <Dialog open>
+      <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
+        <Dropdown {...args} />
+      </DialogContent>
+    </Dialog>
+  );
 };
 
-DialogStyle.args = {
+WithDialog.args = {
   ...Default.args,
+  popperProps: {
+    disablePortal: true,
+  },
 };

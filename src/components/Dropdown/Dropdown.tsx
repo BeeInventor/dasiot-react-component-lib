@@ -10,6 +10,7 @@ import CheckSvg from '../../assets/image/svg/check.svg';
 
 const Root = styled('div')(({ theme }) => ({
   ...theme.text.Subtitle_16_Med,
+  minWidth: 220,
   userSelect: 'none',
   cursor: 'pointer',
   display: 'flex',
@@ -70,6 +71,7 @@ function Dropdown({
   selectedId,
   disabled,
   onSelect,
+  popperProps,
 }: DropDownProps): JSX.Element {
   const selectRef = useRef<HTMLDivElement>(null);
   const [selectedItem, setSelectedItem] = useState<DropDownItem | null>(null);
@@ -132,10 +134,10 @@ function Dropdown({
         <Icon>{isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}</Icon>
       </Root>
       <Popper
-        className="Dropdown-popper"
         anchorEl={selectRef.current}
         open={isOpen}
         placement="bottom"
+        {...popperProps}
       >
         <ClickAwayListener onClickAway={handleOnClickAway}>
           <List style={{ width: selectRef.current?.offsetWidth ?? 'auto' }}>

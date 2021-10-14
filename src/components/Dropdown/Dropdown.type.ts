@@ -1,3 +1,5 @@
+import { PopperProps } from '@mui/material';
+
 export interface DropDownItem {
   id: string;
   name: string;
@@ -10,6 +12,10 @@ export interface DropDownProps {
    */
   className?: string;
   /**
+   * For adjustment item styles
+   */
+  itemClassName?: string;
+  /**
    * Item list
    */
   list: DropDownItem[];
@@ -17,14 +23,6 @@ export interface DropDownProps {
    * Placeholder
    */
   placeholder?: string;
-  /**
-   * For adjustment list styles
-   */
-  listClassName?: string;
-  /**
-   * For adjustment item styles
-   */
-  itemClassName?: string;
   /**
    * Specify item
    */
@@ -37,4 +35,8 @@ export interface DropDownProps {
    * Disable dropdown
    */
   disabled?: boolean;
+  /**
+   * Custom popper props
+   */
+  popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
 }
