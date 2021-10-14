@@ -2,18 +2,15 @@ import {
   LanguageButtonProps,
   LanguageData,
 } from '../Button/LanguageButton/LanguageButton.types';
-import { InputHTMLAttributes, ReactNode } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
+import { BoxProps } from '@mui/material';
 
-export interface SearchbarProps {
-  className?: string;
-  operationNode?: ReactNode;
-  inputContainerClassName?: string;
+export interface SearchbarProps
+  extends Omit<BoxProps, 'onChange' | 'onSelect'> {
   value?: string;
-  onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSelect?: (lang: LanguageData) => void;
-  InputProps?: Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'onChange'
-  >;
+  operationNode?: ReactNode;
+  inputContainerProps: BoxProps;
   LanguageButtonProps: Omit<LanguageButtonProps, 'onSelect'>;
 }
