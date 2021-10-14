@@ -1,15 +1,12 @@
-import { InputHTMLAttributes } from 'react';
+import { InputBaseProps, BoxProps } from '@mui/material';
 
-export interface PasswordTextFieldProps {
-  externalContainerClassName?: string;
+export interface PasswordTextFieldProps extends Omit<BoxProps, 'onChange'> {
+  rootProps: BoxProps;
+  errorProps?: BoxProps;
   className?: string;
   placeholder?: string;
   onChange: (password: string) => void;
-  errorContainerClassName?: string;
   error?: boolean;
   errorMessage?: string;
-  inputProps?: Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'placeholder' | 'value' | 'onChange'
-  >;
+  inputProps?: InputBaseProps;
 }

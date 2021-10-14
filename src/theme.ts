@@ -61,43 +61,24 @@ export const color: Color = {
 };
 
 const theme = createTheme({
-  // overrides: {
-  //   MuiCssBaseline: {
-  //     '@global': {
-  // '*': {
-  //   fontFamily: [
-  //     'Noto Sans',
-  //     '"Noto Sans TC"',
-  //     'Roboto',
-  //     'Helvetica',
-  //     'Arial',
-  //     'sans-serif',
-  //   ].join(','),
-  // },
-  //       '@media screen and (-webkit-min-device-pixel-ratio:0)': {
-  //         'input[type="password"]:not(:placeholder-shown)': {
-  //           '-webkit-text-stroke-width': '0.4em',
-  //           letterSpacing: '-0.2em',
-  //           fontSize: '1.25rem',
-  //         },
-  //       },
-  //       '@media screen and (min--moz-device-pixel-ratio:0)': {
-  //         'input[type="password"]:not(:placeholder-shown)': {
-  //           '-webkit-text-stroke-width': '0.1em',
-  //           letterSpacing: '0.2em',
-  //           fontSize: '1rem',
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  typography: {
+    fontFamily: [
+      'Noto Sans',
+      '"Noto Sans TC"',
+      'Roboto',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `
-        body {
-          fontFamily: '"Noto Sans", "Noto Sans TC", "Roboto", "Helvetica", "Arial", "sans-serif"'
-        }
-      `,
+      styleOverrides: {
+        'input[type="password"]:not(:placeholder-shown)': {
+          font: 'caption',
+          fontSize: '1rem',
+        },
+      },
     },
   },
   palette: {
