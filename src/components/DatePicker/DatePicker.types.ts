@@ -1,6 +1,7 @@
+import { PopperProps, BoxProps } from '@mui/material';
 import { Locale } from 'date-fns';
 
-export interface DatePickerProps {
+export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
   type?: 'date' | 'range';
   placeholder?: string;
   locale?: Locale;
@@ -9,5 +10,8 @@ export interface DatePickerProps {
   limitFrom?: Date;
   limitTo?: Date;
   onSelect: (value: Date | [Date, Date]) => void;
-  calendarClassName?: string;
+  /**
+   * Custom popper props
+   */
+  popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
 }

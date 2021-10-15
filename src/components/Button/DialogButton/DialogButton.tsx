@@ -34,7 +34,7 @@ const Styled = styled(MUIButton)(({ theme }) => ({
   '& .MuiButton-endIcon': { marginLeft: '10px' },
 }));
 
-function DialogButton(props: DialogButtonProps): JSX.Element {
+const DialogButton: React.VFC<DialogButtonProps> = (props) => {
   const { className, previousIcon, nextIcon, color, ...otherProps } =
     props ?? {};
   return (
@@ -46,6 +46,6 @@ function DialogButton(props: DialogButtonProps): JSX.Element {
       {...otherProps}
     />
   );
-}
+};
 
 export default DialogButton;

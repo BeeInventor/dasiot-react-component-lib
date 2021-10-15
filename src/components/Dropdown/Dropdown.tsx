@@ -63,7 +63,7 @@ const ItemIcon = styled('div')(() => ({
   height: 40,
 }));
 
-function Dropdown({
+const Dropdown: React.VFC<DropDownProps> = ({
   className,
   list,
   itemClassName,
@@ -72,7 +72,7 @@ function Dropdown({
   disabled,
   onSelect,
   popperProps,
-}: DropDownProps): JSX.Element {
+}) => {
   const selectRef = useRef<HTMLDivElement>(null);
   const [selectedItem, setSelectedItem] = useState<DropDownItem | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -147,6 +147,6 @@ function Dropdown({
       </Popper>
     </>
   );
-}
+};
 
 export default Dropdown;
