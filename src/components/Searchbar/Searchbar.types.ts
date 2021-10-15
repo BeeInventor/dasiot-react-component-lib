@@ -11,6 +11,6 @@ export interface SearchbarProps
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSelect?: (lang: LanguageData) => void;
   operationNode?: ReactNode;
-  inputContainerProps: BoxProps;
+  inputContainerProps?: BoxProps;
   LanguageButtonProps: Omit<LanguageButtonProps, 'onSelect'>;
 }

@@ -1,7 +1,7 @@
 import { InputBaseProps, BoxProps } from '@mui/material';
 
 export interface PasswordTextFieldProps extends Omit<BoxProps, 'onChange'> {
-  rootProps: BoxProps;
+  rootProps?: BoxProps;
   errorProps?: BoxProps;
   className?: string;
   placeholder?: string;

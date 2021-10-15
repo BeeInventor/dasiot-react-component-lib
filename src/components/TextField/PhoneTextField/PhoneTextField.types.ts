@@ -7,7 +7,7 @@ export interface phoneData {
 }
 
 export interface PhoneTextFieldProps extends Omit<BoxProps, 'onChange'> {
-  rootProps: BoxProps;
+  rootProps?: BoxProps;
   menuProps?: BoxProps;
   errorProps?: BoxProps;
   placeholder?: string;
