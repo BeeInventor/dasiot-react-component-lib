@@ -1,23 +1,24 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+// import makeStyles from '@mui/material/styles/makeStyles';
 import LanguageButton from './LanguageButton';
 import { LanguageButtonProps } from './LanguageButton.types';
+import { colors } from '@mui/material';
 
-const useStyles = makeStyles(
-  () => ({
-    borderRed: {
-      border: '1px solid red',
-    },
-    borderGreen: {
-      border: '1px solid green',
-    },
-    borderBlue: {
-      border: '1px solid blue',
-    },
-  }),
-  { name: 'LanguageButtonStorybook' },
-);
+// const useStyles = makeStyles(
+//   () => ({
+//     borderRed: {
+//       border: '1px solid red',
+//     },
+//     borderGreen: {
+//       border: '1px solid green',
+//     },
+//     borderBlue: {
+//       border: '1px solid blue',
+//     },
+//   }),
+//   { name: 'LanguageButtonStorybook' },
+// );
 
 export default {
   title: 'Components/Button/LanguageButton',
@@ -78,18 +79,24 @@ InitialEnglish.args = {
   },
 };
 
-export const AdjustStyles: Story<LanguageButtonProps> = (args) => {
-  const classes = useStyles();
-  return (
-    <LanguageButton
-      {...args}
-      className={classes.borderRed}
-      menuClassName={classes.borderGreen}
-      itemClassName={classes.borderBlue}
-    />
-  );
+export const CustomStyles: Story<LanguageButtonProps> = (args) => {
+  return <LanguageButton {...args} />;
 };
 
-AdjustStyles.args = {
+CustomStyles.args = {
   ...Default.args,
+  sx: {
+    color: 'white',
+    backgroundColor: colors.blue['500'],
+  },
+  menuProps: {
+    sx: {
+      backgroundColor: colors.blue['500'],
+    },
+  },
+  itemProps: {
+    sx: {
+      color: 'white',
+    },
+  },
 };

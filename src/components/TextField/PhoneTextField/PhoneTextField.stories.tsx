@@ -1,22 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import PhoneTextField from '.';
 import { PhoneTextFieldProps } from './PhoneTextField.types';
 import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
-import Button from '../../Button';
-
-const useStyles = makeStyles(() => ({
-  dialogContent: {
-    height: 600,
-  },
-  popper: {
-    zIndex: 1400,
-  },
-}));
-
+import { colors } from '@mui/material';
 const countryCodeList = [
   {
     src: TaiwanSvg,
@@ -145,22 +134,43 @@ HasValue.args = {
 };
 
 export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
   return (
-    <>
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-        Open Dialog
-      </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogContent className={classes.dialogContent}>
-          <PhoneTextField {...args} menuClassName={classes.popper} />
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog open>
+      <DialogContent sx={{ height: 300 }}>
+        <PhoneTextField {...args} />
+      </DialogContent>
+    </Dialog>
   );
 };
 
 WithDialog.args = {
   ...Default.args,
+  popperProps: {
+    disablePortal: true,
+  },
+};
+
+export const CustomStyle: Story<PhoneTextFieldProps> = (args) => (
+  <PhoneTextField {...args} />
+);
+
+CustomStyle.args = {
+  ...Default.args,
+  value: '0990000001',
+  sx: {
+    backgroundColor: 'black',
+  },
+  rootProps: {
+    sx: {
+      border: `1px solid ${colors.blue['300']}`,
+    },
+  },
+  inputProps: {
+    sx: {
+      color: 'pink',
+      '&::placeholder': {
+        color: 'pink',
+      },
+    },
+  },
 };

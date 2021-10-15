@@ -1,62 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { SearchbarProps } from './Searchbar.types';
-import classnames from 'classnames';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import InputBase from '@mui/material/InputBase';
 import BtnIcSearch from '../../svg/BtnIcSearch';
 import LanguageButton from '../Button/LanguageButton';
 import { LanguageData } from '../Button/LanguageButton/LanguageButton.types';
 
-const useStyles = makeStyles(
-  (theme) => ({
-    container: {
-      display: 'flex',
-      filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1))',
-      backgroundColor: '#FFF',
-    },
-    searchInputContainer: {
-      flex: 1,
-      display: 'flex',
-      padding: '17px 48px',
-    },
-    searchInput: {
-      ...theme.text.Subtitle_16_Med,
-      display: 'block',
-      width: '100%',
-      height: '100%',
-      color: theme.color.secondary.$100,
-      border: 'none',
-      outline: 'none',
-      marginLeft: 16,
-      '&::placeholder': {
-        color: theme.color.secondary.$60,
-      },
-    },
-    operationContainer: {
-      display: 'flex',
-    },
-  }),
-  { name: 'Searchbar' },
-);
+const Root = styled(Box)(({}) => ({
+  display: 'flex',
+  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1))',
+  backgroundColor: '#FFF',
+}));
 
-const Searchbar: React.VFC<SearchbarProps> = ({
-  operationNode,
-  className,
-  inputContainerClassName,
-  InputProps,
-  LanguageButtonProps,
-  value,
-  onChange,
-  onSelect,
-}) => {
-  const classes = useStyles();
-  const { className: inputClassName, ...otherInputProps } = InputProps || {};
+const SearchInputContainer = styled(Box)(({}) => ({
+  flex: 1,
+  display: 'flex',
+  padding: '17px 48px',
+}));
+
+const SearchInput = styled(InputBase)(({ theme }) => ({
+  ...theme.text.Subtitle_16_Med,
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  color: theme.color.secondary.$100,
+  border: 'none',
+  outline: 'none',
+  marginLeft: 16,
+  '&::placeholder': {
+    color: theme.color.secondary.$60,
+  },
+}));
+
+const Operation = styled(Box)(({}) => ({
+  display: 'flex',
+}));
+
+const Searchbar: React.VFC<SearchbarProps> = (props) => {
+  const {
+    operationNode,
+    LanguageButtonProps,
+    value,
+    onChange,
+    onSelect,
+    inputContainerProps,
+    ...otherProps
+  } = props;
   const [inputValue, setInputValue] = useState<string | undefined>('');
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
 
-  const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleOnChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setInputValue(e.currentTarget.value);
     if (onChange) {
       onChange(e);
@@ -70,35 +70,23 @@ const Searchbar: React.VFC<SearchbarProps> = ({
   };
 
   return (
-    <div className={classnames(classes.container, className)}>
-      <div
-        className={classnames(
-          classes.searchInputContainer,
-          inputContainerClassName,
-        )}
-      >
+    <Root {...otherProps}>
+      <SearchInputContainer {...inputContainerProps}>
         <BtnIcSearch
           color={(inputValue ?? '') === '' ? '#A1A1A1' : '#3E3E3E'}
         />
-        <input
-          className={classnames(classes.searchInput, inputClassName)}
-          value={inputValue}
-          onChange={handleOnChange}
-          {...otherInputProps}
-        />
-      </div>
-      <div className={classes.operationContainer}>
+        <SearchInput value={inputValue} onChange={handleOnChange} />
+      </SearchInputContainer>
+      <Operation>
         {operationNode}
         <LanguageButton {...LanguageButtonProps} onSelect={handleOnSelect} />
-      </div>
-    </div>
+      </Operation>
+    </Root>
   );
 };
 
 Searchbar.defaultProps = {
   operationNode: undefined,
-  inputContainerClassName: '',
-  InputProps: undefined,
   value: '',
 };
 

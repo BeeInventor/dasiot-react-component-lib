@@ -1,23 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { Dialog, DialogContent } from '@mui/material';
 import Dropdown from './Dropdown';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
-import { Theme } from '@material-ui/core';
-
-const useStyles = makeStyles(
-  (theme: Theme) => {
-    return {
-      dialogDropdownExample: {
-        background: theme.color.box_bbg,
-        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
-      },
-    };
-  },
-  {
-    name: 'Dropdown',
-  },
-);
 
 const list: DropDownItem[] = [
   {
@@ -48,7 +33,21 @@ export default {
   argTypes: {
     onSelect: { action: 'onSelected' },
     disabled: {
-      control: 'boolean',
+      control: {
+        type: 'boolean',
+      },
+    },
+    className: {
+      control: 'string',
+    },
+    listClassName: {
+      control: 'string',
+    },
+    itemClassName: {
+      control: 'string',
+    },
+    selectedId: {
+      control: 'string',
     },
   },
 } as Meta;
@@ -69,11 +68,19 @@ Selected.args = {
   selectedId: 'A004',
 };
 
-export const DialogStyle: Story<DropDownProps> = (args) => {
-  const classes = useStyles();
-  return <Dropdown className={classes.dialogDropdownExample} {...args} />;
+export const WithDialog: Story<DropDownProps> = (args) => {
+  return (
+    <Dialog open>
+      <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
+        <Dropdown {...args} />
+      </DialogContent>
+    </Dialog>
+  );
 };
 
-DialogStyle.args = {
+WithDialog.args = {
   ...Default.args,
+  popperProps: {
+    disablePortal: true,
+  },
 };

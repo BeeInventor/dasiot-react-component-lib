@@ -1,9 +1,8 @@
 import React, { useState, VFC, useMemo, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { Theme } from '@material-ui/core';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Box } from '@mui/material';
+import Popper from '@mui/material/Popper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
   format,
   startOfWeek,
@@ -14,123 +13,116 @@ import {
   isBefore,
   isEqual,
   endOfDay,
+  addSeconds,
 } from 'date-fns';
+import { styled } from '@mui/material/styles';
 import { DatePickerProps } from './DatePicker.types';
 import calendarSVG from '../../assets/image/svg/btn_ic_calendar.svg';
 import arrowLeftSVG from '../../assets/image/svg/arrow-left.svg';
 import arrowRightSVG from '../../assets/image/svg/arrow-right.svg';
 import endOfMonth from 'date-fns/endOfMonth';
-import { addSeconds } from 'date-fns/esm';
+import Icon from '../Icon/Icon';
 
-const useStyles = makeStyles(
-  (theme: Theme) => ({
-    container: {
-      ...theme.text.Subtitle_16_Med,
-      cursor: 'pointer',
-      display: 'inline-flex',
-      minWidth: 156,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: '#FFF',
-      paddingLeft: 16,
-      borderRadius: 4,
-    },
-    placeholder: {
-      color: theme.color.secondary.$60,
-    },
-    icon: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 40,
-      height: 40,
-    },
-    calendar: {
-      userSelect: 'none',
-      display: 'inline-block',
-      backgroundColor: '#FFF',
-      padding: 32,
-      borderRadius: 8,
-      margin: '8px auto',
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
-    },
-    operation: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 10,
-    },
-    gridContainer: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(7, 32px)',
-      // columnGap: 8,
-      gridTemplateRows: 'repeat(6, 32px)',
-      rowGap: 10,
-    },
-    extenalItem: {
-      '&.start': {
-        borderTopLeftRadius: '50%',
-        borderBottomLeftRadius: '50%',
-      },
-      '&.end': {
-        borderTopRightRadius: '50%',
-        borderBottomRightRadius: '50%',
-      },
-      '&:nth-child(7n + 1)': {
-        borderTopLeftRadius: '50%',
-        borderBottomLeftRadius: '50%',
-      },
-      '&:nth-child(7n)': {
-        borderTopRightRadius: '50%',
-        borderBottomRightRadius: '50%',
-      },
-      '&.selected': {
-        '& > div': {
-          color: '#936A00',
-        },
-        backgroundColor: 'rgba(255, 193, 31, .2)',
-      },
-    },
-    item: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 32,
-      height: 32,
-      color: '#404040',
-    },
-    week: {
-      color: '#727272',
-      fontSize: 10,
-      fontFamily: '"Noto Sans Mono", monospace',
-      letterSpacing: '1.5px',
-      textTransform: 'uppercase',
-    },
-    day: {
-      cursor: 'pointer',
-      borderRadius: '50%',
-      '&.start, &.end': {
-        backgroundColor: 'rgba(255, 193, 31)',
-      },
-    },
-    currentMonth: {
-      color: '#808080',
-    },
-    cursorPointer: {
-      cursor: 'pointer',
-    },
-    notAllowed: {
+const Root = styled(Box)(({ theme }) => ({
+  ...theme.text.Subtitle_16_Med,
+  cursor: 'pointer',
+  display: 'inline-flex',
+  minWidth: 156,
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  backgroundColor: '#FFF',
+  paddingLeft: 16,
+  borderRadius: 4,
+}));
+
+const Placeholder = styled('span')(({ theme }) => ({
+  color: theme.color.secondary.$60,
+}));
+
+const Calendar = styled(Box, { label: 'Calendar' })(({}) => ({
+  userSelect: 'none',
+  display: 'inline-block',
+  backgroundColor: '#FFF',
+  padding: 32,
+  borderRadius: 8,
+  margin: '8px auto',
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+}));
+
+const Operation = styled(Box)(({}) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 10,
+  '& > img': {
+    cursor: 'pointer',
+    '&.notAllowed': {
       cursor: 'not-allowed',
     },
-    outOfRange: {
-      cursor: 'not-allowed',
-      color: 'rgba(128, 128, 128, 0.3)',
-    },
-  }),
-  {
-    name: 'DatePicker',
   },
-);
+}));
+
+const GridContainer = styled(Box)(({}) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(7, 32px)',
+  gridTemplateRows: 'repeat(6, 32px)',
+  rowGap: 10,
+}));
+
+const ExternalItem = styled(Box)(({}) => ({
+  '&.start': {
+    borderTopLeftRadius: '50%',
+    borderBottomLeftRadius: '50%',
+  },
+  '&.end': {
+    borderTopRightRadius: '50%',
+    borderBottomRightRadius: '50%',
+  },
+  '&:nth-child(7n + 1)': {
+    borderTopLeftRadius: '50%',
+    borderBottomLeftRadius: '50%',
+  },
+  '&:nth-child(7n)': {
+    borderTopRightRadius: '50%',
+    borderBottomRightRadius: '50%',
+  },
+  '&.selected': {
+    '& > div': {
+      color: '#936A00',
+    },
+    backgroundColor: 'rgba(255, 193, 31, .2)',
+  },
+}));
+
+const Item = styled(Box)(({}) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 32,
+  height: 32,
+  color: '#404040',
+  '&.week': {
+    color: '#727272',
+    fontSize: 10,
+    fontFamily: '"Noto Sans Mono", monospace',
+    letterSpacing: '1.5px',
+    textTransform: 'uppercase',
+  },
+  '&.day': {
+    cursor: 'pointer',
+    borderRadius: '50%',
+    '&.start, &.end': {
+      backgroundColor: 'rgba(255, 193, 31)',
+    },
+  },
+  '&.currentMonth': {
+    color: '#808080',
+  },
+  '&.outOfRange': {
+    cursor: 'not-allowed',
+    color: 'rgba(128, 128, 128, 0.3)',
+  },
+}));
 
 const DatePicker: VFC<DatePickerProps> = (props) => {
   const {
@@ -142,9 +134,9 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     onSelect,
     limitFrom,
     limitTo,
-    calendarClassName,
+    popperProps,
+    ...otherProps
   } = props;
-  const classes = useStyles();
   const containerRef = useRef(null);
   const [localStartDate, setLocalStartDate] = useState(startDate || new Date());
   const [localEndDate, setLocalEndDate] = useState(endDate || new Date());
@@ -194,14 +186,11 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     const week = [];
     for (let i = 0; i < 7; i += 1) {
       week.push(
-        <div
-          key={`week-string-${i}`}
-          className={classNames(classes.item, classes.week)}
-        >
+        <Item key={`week-string-${i}`} className="week">
           {format(addDays(startOfWeek(new Date()), i), 'iii', {
             locale,
           })}
-        </div>,
+        </Item>,
       );
     }
     return week;
@@ -247,9 +236,9 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
         format(day, 'yyyy-MM-dd') === localEndDateString;
 
       days.push(
-        <div
+        <ExternalItem
           key={`day-${day.getMonth()}-${day.getDate()}`}
-          className={classNames(classes.extenalItem, {
+          className={classNames({
             start: equalLocalStartDate,
             end: equalLocalEndDate,
             selected:
@@ -258,26 +247,26 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
               equalLocalEndDate,
           })}
         >
-          <div
-            className={classNames(classes.item, classes.day, {
+          <Item
+            className={classNames('day', {
               start: equalLocalStartDate,
               end: equalLocalEndDate,
-              [classes.outOfRange]:
+              outOfRange:
                 (limitFrom
                   ? isBefore(day, limitFrom) || isEqual(day, limitFrom)
                   : false) ||
                 (limitTo
                   ? isAfter(day, limitTo) || isEqual(day, limitTo)
                   : false),
-              [classes.currentMonth]:
+              currentMonth:
                 isAfter(day, endOfPreviousMonth) &&
                 isBefore(day, endOfCurrentMonth),
             })}
             onClick={() => handleOnSelectDate(day)}
           >
             {day.getDate()}
-          </div>
-        </div>,
+          </Item>
+        </ExternalItem>,
       );
     }
 
@@ -293,15 +282,11 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
 
   return (
     <>
-      <div
-        ref={containerRef}
-        className={classes.container}
-        onClick={() => setIsOpen(true)}
-      >
+      <Root ref={containerRef} onClick={() => setIsOpen(true)} {...otherProps}>
         {!isDirty ? (
-          <span className={classes.placeholder}>
+          <Placeholder>
             {type === 'date' ? placeholder : `${placeholder} - ${placeholder}`}
-          </span>
+          </Placeholder>
         ) : (
           <>
             {format(localStartDate, 'MM/dd', {
@@ -317,26 +302,22 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
             )}
           </>
         )}
-        <div className={classes.icon}>
+        <Icon>
           <img src={calendarSVG} />
-        </div>
-      </div>
+        </Icon>
+      </Root>
       <Popper
         open={isOpen}
         anchorEl={containerRef.current}
         placement="bottom-start"
-        popperRef={(ref) => {
-          if (calendarClassName) {
-            ref?.popper.classList.add(classNames(calendarClassName));
-          }
-        }}
+        {...popperProps}
       >
         <ClickAwayListener onClickAway={handleClosePopper}>
-          <div className={classes.calendar}>
-            <div className={classes.operation}>
+          <Calendar>
+            <Operation>
               <img
-                className={classNames(classes.cursorPointer, {
-                  [classes.notAllowed]: limitFrom
+                className={classNames({
+                  notAllowed: limitFrom
                     ? isBefore(
                         addMonths(startOfMonth(referenceDate), -1),
                         limitFrom,
@@ -354,8 +335,8 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
                 locale,
               })}
               <img
-                className={classNames(classes.cursorPointer, {
-                  [classes.notAllowed]: limitTo
+                className={classNames({
+                  notAllowed: limitTo
                     ? isAfter(
                         addMonths(startOfMonth(referenceDate), 1),
                         limitTo,
@@ -369,12 +350,12 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
                 src={arrowRightSVG}
                 onClick={handleNextMonth}
               />
-            </div>
-            <div className={classes.gridContainer}>
+            </Operation>
+            <GridContainer>
               {weekStrings}
               {days}
-            </div>
-          </div>
+            </GridContainer>
+          </Calendar>
         </ClickAwayListener>
       </Popper>
     </>

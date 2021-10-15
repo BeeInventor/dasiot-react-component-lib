@@ -1,33 +1,25 @@
 import React, { CSSProperties, VFC } from 'react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 interface Props {
   width?: CSSProperties['width'];
   height?: CSSProperties['height'];
 }
 
-const useStyles = makeStyles(() => ({
-  root: (props: Props) => ({
-    width: props.width ?? 40,
-    height: props.height ?? 40,
-  }),
-}));
-
 const ComponentIcPasswordDbg: VFC<Props & Omit<SvgIconProps, keyof Props>> = (
   props,
 ) => {
-  const localClasses = useStyles(props);
   const { viewBox = '0 0 40 40', ...otherProps } = props;
 
   return (
     <SvgIcon
-      classes={{
-        root: localClasses.root,
-      }}
       viewBox={viewBox}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      sx={{
+        width: props.width ?? 40,
+        height: props.height ?? 40,
+      }}
       {...otherProps}
     >
       <path

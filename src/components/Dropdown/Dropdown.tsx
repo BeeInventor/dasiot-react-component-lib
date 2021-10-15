@@ -1,80 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react';
-import classnames from 'classnames';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import Popper from '@material-ui/core/Popper';
+import classNames from 'classnames';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import Popper from '@mui/material/Popper';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Icon from '../Icon/Icon';
 import CheckSvg from '../../assets/image/svg/check.svg';
 
-const useStyles = makeStyles(
-  (theme) => ({
-    select: {
-      ...theme.text.Subtitle_16_Med,
-      userSelect: 'none',
-      cursor: 'pointer',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      color: theme.color.secondary.$80,
-      backgroundColor: '#FFF',
-      padding: '8px 0px 8px 16px',
-      borderRadius: 4,
-    },
-    'select-empty': {
-      color: theme.color.secondary.$60,
-    },
-    'select--disabled': {
-      opacity: 0.3,
-      pointerEvents: 'none',
-    },
-    icon: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 40,
-      height: 24,
-    },
-    list: {
-      backgroundColor: '#FFF',
-      margin: '8px auto',
-      borderRadius: 4,
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
-    },
-    item: {
-      ...theme.text.Subtitle_16_Med,
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      lineHeight: 2.5,
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, .05)',
-      },
-    },
-    itemIcon: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 40,
-      height: 40,
-    },
-  }),
-  { name: 'Dropdown' },
-);
+const Root = styled(Box)(({ theme }) => ({
+  ...theme.text.Subtitle_16_Med,
+  minWidth: 220,
+  userSelect: 'none',
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  color: theme.color.secondary.$80,
+  backgroundColor: '#FFF',
+  padding: '8px 0px 8px 16px',
+  borderRadius: 4,
+  '&.Dropdown-empty': {
+    color: theme.color.secondary.$60,
+  },
+  '&.Dropdown--disabled': {
+    opacity: 0.3,
+    pointerEvents: 'none',
+  },
+}));
 
-function Dropdown({
-  className,
-  list,
-  listClassName,
-  itemClassName,
-  placeholder,
-  selectedId,
-  disabled,
-  onSelect,
-}: DropDownProps): JSX.Element {
+const List = styled(Box)(() => ({
+  backgroundColor: '#FFF',
+  margin: '8px auto',
+  borderRadius: 4,
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+}));
+
+const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
+  ...theme.text.Subtitle_16_Med,
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  lineHeight: 2.5,
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, .05)',
+  },
+}));
+
+const Dropdown: React.VFC<DropDownProps> = (props) => {
+  const {
+    list,
+    itemProps,
+    placeholder,
+    selectedId,
+    disabled,
+    onSelect,
+    popperProps,
+    ...otherProps
+  } = props;
   const selectRef = useRef<HTMLDivElement>(null);
-  const classes = useStyles();
   const [selectedItem, setSelectedItem] = useState<DropDownItem | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -104,60 +90,54 @@ function Dropdown({
   };
 
   const items = list.map((item) => (
-    <div
+    <Item
       key={`dropdown-item-${item.id}`}
-      className={classnames(classes.item, itemClassName)}
+      className="Dropdown-item"
       onClick={() => handleOnClick(item)}
+      {...itemProps}
     >
-      <div className={classes.itemIcon}>
+      <Icon className="Dropdown-icon">
         {selectedItem?.id === item.id && <img src={CheckSvg} />}
-      </div>
+      </Icon>
       {item.name}
-    </div>
+    </Item>
   ));
 
   return (
     <>
-      <div
+      <Root
         ref={selectRef}
-        className={classnames(
-          classes.select,
+        className={classNames(
+          'Dropdown-root',
           {
-            [classes['select-empty']]: !selectedItem,
+            'Dropdown-empty': !selectedItem,
           },
-          className,
           {
-            [classes['select--disabled']]: disabled,
+            'Dropdown--disabled': disabled,
           },
         )}
         onClick={handleOnClickSelect}
+        {...otherProps}
       >
         {selectedItem?.name ?? placeholder}
-        <div className={classes.icon}>
+        <Icon className="Dropdown-icon">
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-        </div>
-      </div>
+        </Icon>
+      </Root>
       <Popper
         anchorEl={selectRef.current}
         open={isOpen}
         placement="bottom"
-        popperRef={(ref) => {
-          if (listClassName) {
-            ref?.popper.classList.add(classnames(listClassName));
-          }
-        }}
+        {...popperProps}
       >
         <ClickAwayListener onClickAway={handleOnClickAway}>
-          <div
-            className={classes.list}
-            style={{ width: selectRef.current?.offsetWidth ?? 'auto' }}
-          >
+          <List style={{ width: selectRef.current?.offsetWidth ?? 'auto' }}>
             {items}
-          </div>
+          </List>
         </ClickAwayListener>
       </Popper>
     </>
   );
-}
+};
 
 export default Dropdown;

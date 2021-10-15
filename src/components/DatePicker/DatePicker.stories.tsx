@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import DatePicker from '.';
 import { DatePickerProps } from './DatePicker.types';
 import localZhTw from 'date-fns/locale/zh-TW';
+import { Dialog, DialogContent } from '@mui/material';
 
 export default {
   title: 'Components/DatePicker',
@@ -71,4 +72,33 @@ RangeWithLimit.args = {
   placeholder: 'Time',
   limitFrom: new Date('2020-12-31T00:00:00+08:00'),
   limitTo: new Date('2022-01-01T00:00:00+08:00'),
+};
+
+export const WithDialog: Story<DatePickerProps> = (args) => {
+  return (
+    <Dialog
+      open
+      sx={{
+        '& .MuiPaper-root': {
+          backgroundColor: '#eee',
+        },
+      }}
+    >
+      <DialogContent
+        sx={{
+          minWidth: 400,
+          minHeight: 300,
+        }}
+      >
+        <DatePicker {...args} />
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+WithDialog.args = {
+  ...RangeWithLimit.args,
+  popperProps: {
+    disablePortal: true,
+  },
 };

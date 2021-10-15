@@ -64,11 +64,14 @@ export default [
     external: [
       'react',
       'react-dom',
+      'prop-types',
       'classnames',
       'date-fns',
-      '@material-ui/core',
-      '@material-ui/icons',
-      '@material-ui/types',
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/icons-material',
+      '@mui/material',
+      '@mui/styles',
     ],
   },
   {

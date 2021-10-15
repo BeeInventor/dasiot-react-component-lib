@@ -1,14 +1,17 @@
+import { PopperProps } from '@mui/material';
+import { BoxProps } from '@mui/system';
+
 export interface DropDownItem {
   id: string;
   name: string;
   value: string | number;
 }
 
-export interface DropDownProps {
+export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
   /**
-   * For adjustment Dropdown styles
+   * For adjustment item styles
    */
-  className?: string;
+  itemProps?: BoxProps;
   /**
    * Item list
    */
@@ -17,14 +20,6 @@ export interface DropDownProps {
    * Placeholder
    */
   placeholder?: string;
-  /**
-   * For adjustment list styles
-   */
-  listClassName?: string;
-  /**
-   * For adjustment item styles
-   */
-  itemClassName?: string;
   /**
    * Specify item
    */
@@ -37,4 +32,8 @@ export interface DropDownProps {
    * Disable dropdown
    */
   disabled?: boolean;
+  /**
+   * Custom popper props
+   */
+  popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
 }

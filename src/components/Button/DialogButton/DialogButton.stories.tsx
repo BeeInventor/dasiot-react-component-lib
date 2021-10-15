@@ -6,7 +6,36 @@ import { DialogButtonProps } from './DialogButton.types';
 export default {
   title: 'Components/Button/DialogButton',
   component: DialogButton,
-  argTypes: {},
+  argTypes: {
+    color: {
+      options: ['primary', 'secondary', 'success', 'error', 'info', 'warning'],
+      control: { type: 'radio' },
+    },
+    variant: {
+      options: ['contained', 'outlined', 'text', 'string'],
+      control: { type: 'radio' },
+    },
+    fullWidth: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    previousIcon: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    nextIcon: {
+      control: {
+        type: 'boolean',
+      },
+    },
+  },
 } as Meta;
 
 const Template: Story<DialogButtonProps> = (args) => <DialogButton {...args} />;
