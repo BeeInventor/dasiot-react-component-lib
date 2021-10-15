@@ -73,12 +73,7 @@ const theme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
-        'input[type="password"]:not(:placeholder-shown)': {
-          font: 'caption',
-          fontSize: '1rem',
-        },
-      },
+      styleOverrides: {},
     },
   },
   palette: {
