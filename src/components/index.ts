@@ -6,3 +6,4 @@ export { default as Searchbar } from './Searchbar';
 export { default as DialogButton } from './Button/DialogButton';
 export { default as Dropdown } from './Dropdown';
 export { default as DatePicker } from './DatePicker';
+export { default as Step } from './Step';
