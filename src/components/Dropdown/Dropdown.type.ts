@@ -1,4 +1,5 @@
 import { PopperProps } from '@mui/material';
+import { BoxProps } from '@mui/system';
 
 export interface DropDownItem {
   id: string;
@@ -6,15 +7,11 @@ export interface DropDownItem {
   value: string | number;
 }
 
-export interface DropDownProps {
-  /**
-   * For adjustment Dropdown styles
-   */
-  className?: string;
+export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
   /**
    * For adjustment item styles
    */
-  itemClassName?: string;
+  itemProps?: BoxProps;
   /**
    * Item list
    */

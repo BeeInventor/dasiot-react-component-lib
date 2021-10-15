@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
-const Icon = styled(Box)(({}) => ({
+const Icon = styled(Box, { label: 'Icon' })(({}) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

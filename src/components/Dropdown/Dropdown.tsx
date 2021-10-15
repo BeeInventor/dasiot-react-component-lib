@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import Popper from '@mui/material/Popper';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Icon from '../Icon/Icon';
 import CheckSvg from '../../assets/image/svg/check.svg';
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled(Box)(({ theme }) => ({
   ...theme.text.Subtitle_16_Med,
   minWidth: 220,
   userSelect: 'none',
@@ -29,22 +31,14 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const Icon = styled('div')(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: 40,
-  height: 24,
-}));
-
-const List = styled('div')(() => ({
+const List = styled(Box)(() => ({
   backgroundColor: '#FFF',
   margin: '8px auto',
   borderRadius: 4,
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
 }));
 
-const Item = styled('div')(({ theme }) => ({
+const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
   ...theme.text.Subtitle_16_Med,
   cursor: 'pointer',
   display: 'flex',
@@ -55,24 +49,17 @@ const Item = styled('div')(({ theme }) => ({
   },
 }));
 
-const ItemIcon = styled('div')(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: 40,
-  height: 40,
-}));
-
-const Dropdown: React.VFC<DropDownProps> = ({
-  className,
-  list,
-  itemClassName,
-  placeholder,
-  selectedId,
-  disabled,
-  onSelect,
-  popperProps,
-}) => {
+const Dropdown: React.VFC<DropDownProps> = (props) => {
+  const {
+    list,
+    itemProps,
+    placeholder,
+    selectedId,
+    disabled,
+    onSelect,
+    popperProps,
+    ...otherProps
+  } = props;
   const selectRef = useRef<HTMLDivElement>(null);
   const [selectedItem, setSelectedItem] = useState<DropDownItem | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -105,12 +92,13 @@ const Dropdown: React.VFC<DropDownProps> = ({
   const items = list.map((item) => (
     <Item
       key={`dropdown-item-${item.id}`}
-      className={itemClassName}
+      className="Dropdown-item"
       onClick={() => handleOnClick(item)}
+      {...itemProps}
     >
-      <ItemIcon>
+      <Icon className="Dropdown-icon">
         {selectedItem?.id === item.id && <img src={CheckSvg} />}
-      </ItemIcon>
+      </Icon>
       {item.name}
     </Item>
   ));
@@ -120,18 +108,21 @@ const Dropdown: React.VFC<DropDownProps> = ({
       <Root
         ref={selectRef}
         className={classNames(
+          'Dropdown-root',
           {
             'Dropdown-empty': !selectedItem,
           },
           {
             'Dropdown--disabled': disabled,
           },
-          className,
         )}
         onClick={handleOnClickSelect}
+        {...otherProps}
       >
         {selectedItem?.name ?? placeholder}
-        <Icon>{isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}</Icon>
+        <Icon className="Dropdown-icon">
+          {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+        </Icon>
       </Root>
       <Popper
         anchorEl={selectRef.current}
