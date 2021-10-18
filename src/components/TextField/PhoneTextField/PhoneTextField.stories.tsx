@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { colors } from '@mui/material';
 import { Meta, Story } from '@storybook/react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import PhoneTextField from '.';
+import Button from '../../Button';
 import { PhoneTextFieldProps } from './PhoneTextField.types';
 import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
-import { colors } from '@mui/material';
 const countryCodeList = [
   {
     src: TaiwanSvg,
@@ -134,12 +135,18 @@ HasValue.args = {
 };
 
 export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog open>
-      <DialogContent sx={{ height: 300 }}>
-        <PhoneTextField {...args} />
-      </DialogContent>
-    </Dialog>
+    <div>
+      <Button variant="contained" onClick={() => setIsOpen(true)}>
+        Open Dialog
+      </Button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogContent sx={{ height: 300 }}>
+          <PhoneTextField {...args} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

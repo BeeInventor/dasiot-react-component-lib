@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react';
 import { Dialog, DialogContent } from '@mui/material';
-import Dropdown from './Dropdown';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
+import Dropdown from './Dropdown';
+import Button from '../Button';
 
 const list: DropDownItem[] = [
   {
@@ -69,12 +70,18 @@ Selected.args = {
 };
 
 export const WithDialog: Story<DropDownProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog open>
-      <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
-        <Dropdown {...args} />
-      </DialogContent>
-    </Dialog>
+    <div>
+      <Button variant="contained" onClick={() => setIsOpen(true)}>
+        Open Dialog
+      </Button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
+          <Dropdown {...args} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react';
 import DatePicker from '.';
 import { DatePickerProps } from './DatePicker.types';
 import localZhTw from 'date-fns/locale/zh-TW';
 import { Dialog, DialogContent } from '@mui/material';
+import Button from '../Button';
 
 export default {
   title: 'Components/DatePicker',
@@ -75,24 +76,31 @@ RangeWithLimit.args = {
 };
 
 export const WithDialog: Story<DatePickerProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog
-      open
-      sx={{
-        '& .MuiPaper-root': {
-          backgroundColor: '#eee',
-        },
-      }}
-    >
-      <DialogContent
+    <div>
+      <Button variant="contained" onClick={() => setIsOpen(true)}>
+        Open Dialog
+      </Button>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
         sx={{
-          minWidth: 400,
-          minHeight: 300,
+          '& .MuiPaper-root': {
+            backgroundColor: '#eee',
+          },
         }}
       >
-        <DatePicker {...args} />
-      </DialogContent>
-    </Dialog>
+        <DialogContent
+          sx={{
+            minWidth: 400,
+            minHeight: 300,
+          }}
+        >
+          <DatePicker {...args} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
