@@ -217,9 +217,20 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
           setLocalStartDate(date);
           onSelect([date, localEndDate]);
         } else {
-          const end = endOfDay(date);
+          let start: Date;
+          let end: Date;
+
+          if (isBefore(date, localStartDate)) {
+            start = date;
+            end = endOfDay(localStartDate);
+            console.log(start, end);
+          } else {
+            start = localStartDate;
+            end = endOfDay(date);
+          }
+          setLocalStartDate(start);
           setLocalEndDate(end);
-          onSelect([localStartDate, end]);
+          onSelect([start, end]);
         }
         setClickCount((clickCount + 1) % 2);
       }
