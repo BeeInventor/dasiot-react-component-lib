@@ -33,6 +33,12 @@ export default {
         type: 'date',
       },
     },
+    disabled: {
+      description: 'Disable DatePicker',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 } as Meta;
 

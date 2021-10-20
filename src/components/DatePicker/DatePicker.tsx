@@ -8,6 +8,7 @@ import {
   startOfWeek,
   addDays,
   startOfMonth,
+  endOfMonth,
   addMonths,
   isAfter,
   isBefore,
@@ -16,14 +17,15 @@ import {
   addSeconds,
 } from 'date-fns';
 import { styled } from '@mui/material/styles';
-import { DatePickerProps } from './DatePicker.types';
-import calendarSVG from '../../assets/image/svg/btn_ic_calendar.svg';
+import { DatePickerProps, StyledRootProps } from './DatePicker.types';
 import arrowLeftSVG from '../../assets/image/svg/arrow-left.svg';
 import arrowRightSVG from '../../assets/image/svg/arrow-right.svg';
-import endOfMonth from 'date-fns/endOfMonth';
+import cancelCircleSVG from '../../assets/image/svg/cancel-circle.svg';
 import Icon from '../Icon/Icon';
+import BtnIcCalendar from '../../svg/BtnIcCalendar';
+import theme from '../../theme';
 
-const Root = styled(Box)(({ theme }) => ({
+const Root = styled(Box)<StyledRootProps>(({ theme, disabled }) => ({
   ...theme.text.Subtitle_16_Med,
   cursor: 'pointer',
   display: 'inline-flex',
@@ -33,6 +35,9 @@ const Root = styled(Box)(({ theme }) => ({
   backgroundColor: '#FFF',
   paddingLeft: 16,
   borderRadius: 4,
+  ...(disabled
+    ? { pointerEvents: 'none', backgroundColor: theme.color.secondary.$40 }
+    : {}),
 }));
 
 const Placeholder = styled('span')(({ theme }) => ({
@@ -69,20 +74,22 @@ const GridContainer = styled(Box)(({}) => ({
   rowGap: 10,
 }));
 
-const ExternalItem = styled(Box)(({}) => ({
+const ExternalItem = styled(Box)<{ type: 'date' | 'range' }>(({ type }) => ({
   '&.start': {
     borderTopLeftRadius: '50%',
     borderBottomLeftRadius: '50%',
+    borderRadius: type === 'date' ? '50%' : undefined,
   },
   '&.end': {
     borderTopRightRadius: '50%',
     borderBottomRightRadius: '50%',
+    borderRadius: type === 'date' ? '50%' : undefined,
   },
-  '&:nth-child(7n + 1)': {
+  '&:nth-of-type(7n + 1)': {
     borderTopLeftRadius: '50%',
     borderBottomLeftRadius: '50%',
   },
-  '&:nth-child(7n)': {
+  '&:nth-of-type(7n)': {
     borderTopRightRadius: '50%',
     borderBottomRightRadius: '50%',
   },
@@ -126,7 +133,7 @@ const Item = styled(Box)(({}) => ({
 
 const DatePicker: VFC<DatePickerProps> = (props) => {
   const {
-    type,
+    type = 'date',
     locale,
     startDate,
     endDate,
@@ -135,28 +142,23 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     limitFrom,
     limitTo,
     popperProps,
+    disabled,
     ...otherProps
   } = props;
   const containerRef = useRef(null);
-  const [localStartDate, setLocalStartDate] = useState(startDate || new Date());
-  const [localEndDate, setLocalEndDate] = useState(endDate || new Date());
+  const [localStartDate, setLocalStartDate] = useState<Date>();
+  const [localEndDate, setLocalEndDate] = useState<Date>();
   const [referenceDate, setReferenceDate] = useState(startDate || new Date());
-  const [clickCount, setClickCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    if (startDate && !isEqual(startDate, localStartDate)) {
+    if (startDate && !localStartDate) {
       setLocalStartDate(startDate);
       setReferenceDate(startDate);
     }
-    if (endDate && !isEqual(endDate, localEndDate)) {
+    if (endDate && !localEndDate) {
       setLocalEndDate(endDate);
     }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    if (startDate || endDate) setIsDirty(true);
   }, [startDate, endDate]);
 
   const handlePrevious = () => {
@@ -179,7 +181,6 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
 
   const handleClosePopper = () => {
     setIsOpen(false);
-    setClickCount(0);
   };
 
   const weekStrings = useMemo(() => {
@@ -199,40 +200,41 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
   const days = useMemo(() => {
     const days = [];
     const beginDate = startOfWeek(startOfMonth(referenceDate));
-    const localStartDateString = format(localStartDate, 'yyyy-MM-dd');
-    const localEndDateString = format(localEndDate, 'yyyy-MM-dd');
+    const localStartDateString = localStartDate
+      ? format(localStartDate, 'yyyy-MM-dd')
+      : '';
+    const localEndDateString = localEndDate
+      ? format(localEndDate, 'yyyy-MM-dd')
+      : '';
 
     const handleOnSelectDate = (date: Date) => {
       if (limitFrom && (isBefore(date, limitFrom) || isEqual(date, limitFrom)))
         return;
       if (limitTo && (isAfter(date, limitTo) || isEqual(date, limitTo))) return;
 
-      setIsDirty(true);
       if (type === 'date') {
         setLocalStartDate(date);
-        setLocalEndDate(date);
         onSelect(date);
       } else {
-        if (clickCount === 0) {
-          setLocalStartDate(date);
-          onSelect([date, localEndDate]);
-        } else {
-          let start: Date;
-          let end: Date;
+        let start: Date | undefined = localStartDate;
+        let end: Date | undefined = localEndDate;
 
+        if (localStartDate) {
           if (isBefore(date, localStartDate)) {
             start = date;
             end = endOfDay(localStartDate);
-            console.log(start, end);
           } else {
             start = localStartDate;
             end = endOfDay(date);
           }
-          setLocalStartDate(start);
-          setLocalEndDate(end);
-          onSelect([start, end]);
+        } else {
+          start = date;
+          setLocalStartDate(date);
         }
-        setClickCount((clickCount + 1) % 2);
+
+        setLocalStartDate(start);
+        setLocalEndDate(end);
+        onSelect([start, end]);
       }
     };
 
@@ -249,12 +251,16 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
       days.push(
         <ExternalItem
           key={`day-${day.getMonth()}-${day.getDate()}`}
+          type={type}
           className={classNames({
             start: equalLocalStartDate,
             end: equalLocalEndDate,
             selected:
               equalLocalStartDate ||
-              (isAfter(day, localStartDate) && isBefore(day, localEndDate)) ||
+              (localStartDate &&
+                localEndDate &&
+                isAfter(day, localStartDate) &&
+                isBefore(day, localEndDate)) ||
               equalLocalEndDate,
           })}
         >
@@ -282,43 +288,65 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     }
 
     return days;
-  }, [
-    referenceDate,
-    localStartDate,
-    localEndDate,
-    clickCount,
-    limitFrom,
-    limitTo,
-  ]);
+  }, [referenceDate, localStartDate, localEndDate, limitFrom, limitTo]);
+
+  const handleClearDates = (
+    e: React.MouseEvent<HTMLDivElement> | undefined,
+  ) => {
+    e?.stopPropagation();
+    setLocalStartDate(undefined);
+    setLocalEndDate(undefined);
+    if (type === 'date') {
+      onSelect(undefined);
+    } else {
+      onSelect([undefined, undefined]);
+    }
+  };
 
   return (
     <>
-      <Root ref={containerRef} onClick={() => setIsOpen(true)} {...otherProps}>
-        {!isDirty ? (
-          <Placeholder>
-            {type === 'date' ? placeholder : `${placeholder} - ${placeholder}`}
-          </Placeholder>
+      <Root
+        ref={containerRef}
+        disabled={disabled}
+        onClick={() => setIsOpen(true)}
+        {...otherProps}
+      >
+        {localStartDate ? (
+          format(localStartDate, 'MM/dd', {
+            locale,
+          })
         ) : (
+          <Placeholder>{placeholder}</Placeholder>
+        )}
+        {type === 'range' && (
           <>
-            {format(localStartDate, 'MM/dd', {
-              locale,
-            })}
-            {type === 'range' && (
-              <>
-                {' - '}
-                {format(localEndDate, 'MM/dd', {
-                  locale,
-                })}
-              </>
+            {' - '}
+            {localEndDate ? (
+              format(localEndDate, 'MM/dd', {
+                locale,
+              })
+            ) : (
+              <Placeholder>{placeholder}</Placeholder>
             )}
           </>
         )}
+        {(localStartDate || localEndDate) && (
+          <Icon onClick={handleClearDates}>
+            <img src={cancelCircleSVG} />
+          </Icon>
+        )}
         <Icon>
-          <img src={calendarSVG} />
+          <BtnIcCalendar
+            sx={{
+              '& path': {
+                stroke: disabled ? theme.color.secondary.$60 : '#606060',
+              },
+            }}
+          />
         </Icon>
       </Root>
       <Popper
-        open={isOpen}
+        open={disabled ? false : isOpen}
         anchorEl={containerRef.current}
         placement="bottom-start"
         {...popperProps}
