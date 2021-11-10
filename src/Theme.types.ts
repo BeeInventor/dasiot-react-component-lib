@@ -29,9 +29,10 @@ export interface Color {
     $100: string;
   };
   highlight: string;
+  box_bbg: string;
 }
 
-declare module '@material-ui/core/styles/createTheme' {
+declare module '@mui/material/styles' {
   interface Theme {
     color: Color;
     text: Text;

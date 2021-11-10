@@ -1,8 +1,12 @@
+import React, { useState } from 'react';
+import { colors } from '@mui/material';
 import { Meta, Story } from '@storybook/react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import PhoneTextField from '.';
+import Button from '../../Button';
 import { PhoneTextFieldProps } from './PhoneTextField.types';
-const TaiwanSvg = require('../../../assets/image/svg/flag_Taiwan.svg');
-
+import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
 const countryCodeList = [
   {
     src: TaiwanSvg,
@@ -60,7 +64,45 @@ export default {
   title: 'Components/TextField/PhoneTextField',
   component: PhoneTextField,
   argTypes: {
-    onChange: { action: 'onChange' },
+    value: {
+      description: 'PhoneTextField value',
+      table: {
+        defaultValue: {
+          summary: '',
+        },
+      },
+    },
+    placeholder: {
+      description: 'Placeholder',
+      table: {
+        defaultValue: {
+          summary: 'undefined',
+        },
+      },
+    },
+    onChange: {
+      action: 'onChange',
+      description: 'Trigger when select a country code',
+      type: {
+        require: true,
+      },
+      table: {
+        defaultValue: {
+          summary: 'undefined',
+        },
+      },
+    },
+    countryCodeList: {
+      description: 'Country Code List (required)',
+      type: {
+        require: true,
+      },
+      table: {
+        defaultValue: {
+          summary: '[]',
+        },
+      },
+    },
   },
 } as Meta;
 
@@ -90,4 +132,52 @@ HasValue.args = {
   ...Default.args,
   countryCode: '1',
   value: '0990000001',
+};
+
+export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div>
+      <Button variant="contained" onClick={() => setIsOpen(true)}>
+        Open Dialog
+      </Button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogContent sx={{ height: 300 }}>
+          <PhoneTextField {...args} />
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+WithDialog.args = {
+  ...Default.args,
+  popperProps: {
+    disablePortal: true,
+  },
+};
+
+export const CustomStyle: Story<PhoneTextFieldProps> = (args) => (
+  <PhoneTextField {...args} />
+);
+
+CustomStyle.args = {
+  ...Default.args,
+  value: '0990000001',
+  sx: {
+    backgroundColor: 'black',
+  },
+  rootProps: {
+    sx: {
+      border: `1px solid ${colors.blue['300']}`,
+    },
+  },
+  inputProps: {
+    sx: {
+      color: 'pink',
+      '&::placeholder': {
+        color: 'pink',
+      },
+    },
+  },
 };

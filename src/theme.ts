@@ -1,4 +1,4 @@
-import createTheme from '@material-ui/core/styles/createTheme';
+import createTheme from '@mui/material/styles/createTheme';
 import { Color, Text } from './Theme.types';
 
 export const text: Text = {
@@ -57,45 +57,23 @@ export const color: Color = {
     $100: '#3E3E3E',
   },
   highlight: '#FF6B00',
+  box_bbg: '#F3F3F3',
 };
 
 const theme = createTheme({
-  overrides: {
+  typography: {
+    fontFamily: [
+      'Noto Sans',
+      '"Noto Sans TC"',
+      'Roboto',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        body: {
-          fontFamily: [
-            '"Noto Sans TC"',
-            'Roboto',
-            'Helvetica',
-            'Arial',
-            'sans-serif',
-          ].join(','),
-        },
-        input: {
-          fontFamily: [
-            '"Noto Sans TC"',
-            'Roboto',
-            'Helvetica',
-            'Arial',
-            'sans-serif',
-          ].join(','),
-        },
-        '@media screen and (-webkit-min-device-pixel-ratio:0)': {
-          'input[type="password"]:not(:placeholder-shown)': {
-            '-webkit-text-stroke-width': '0.4em',
-            letterSpacing: '-0.2em',
-            fontSize: '1.25rem',
-          },
-        },
-        '@media screen and (min--moz-device-pixel-ratio:0)': {
-          'input[type="password"]:not(:placeholder-shown)': {
-            '-webkit-text-stroke-width': '0.1em',
-            letterSpacing: '0.2em',
-            fontSize: '1rem',
-          },
-        },
-      },
+      styleOverrides: {},
     },
   },
   palette: {

@@ -37,44 +37,66 @@ yarn add @beeinventor/dasiot-react-component-lib
 ### Import Component
 
 1. Add font into **index.html \<head\>** as below
+
 ```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
 <link
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
 />
 ```
 
-2. Setting Theme
+2. Setting Theme & Import Component
 
 ```tsx
 // index.tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { theme } from '@beeinventor/dasiot-react-component-lib';
+import {
+  ThemeProvider,
+  CssBaseline,
+  createTheme,
+} from '@mui/material';
+import {
+  theme as beeinventerTheme,
+  Button,
+} from '@beeinventor/dasiot-react-component-lib';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
-```
+const myTheme = createTheme({
+  ...beeinventerTheme,
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#E5E5E5',
+        },
+      },
+    },
+  },
+});
 
-1. Import Compoment
-
-```tsx
-// App.tsx
-import { Button } from '@beeinventor/dasiot-react-component-lib';
-
-const App = () => {
+function App() {
   return (
-    <Button />;
+    <div className="App">
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
+        <Button variant="contained">Test</Button>
+      </ThemeProvider>
+    </div>
   );
 }
+
+export default App;
 ```

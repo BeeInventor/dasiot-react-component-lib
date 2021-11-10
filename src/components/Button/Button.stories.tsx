@@ -1,32 +1,37 @@
+import React from 'react';
 import { Meta, Story } from '@storybook/react';
+import { ButtonProps } from '@mui/material/Button';
 import Button from '.';
-import { ButtonProps } from '../../types/Button';
 
 export default {
-  title: 'Components/Button',
+  title: 'Components/Button/Button',
   component: Button,
   argTypes: {
-    height: {
-      description: 'Button height',
+    color: {
+      options: ['primary', 'secondary', 'success', 'error', 'info', 'warning'],
+      control: { type: 'radio' },
+    },
+    variant: {
+      options: ['contained', 'outlined', 'text', 'string'],
+      control: { type: 'radio' },
+    },
+    fullWidth: {
+      control: { type: 'boolean' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
     },
   },
 } as Meta;
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
-const Default: Story<ButtonProps> = Template.bind({});
+export const Default: Story<ButtonProps> = Template.bind({});
 
 Default.args = {
-  height: 32,
+  color: 'primary',
   children: 'Button',
   variant: 'contained',
   fullWidth: false,
   disabled: false,
-};
-
-export const Primary: Story<ButtonProps> = Template.bind({});
-
-Primary.args = {
-  ...Default.args,
-  color: 'primary',
 };

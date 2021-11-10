@@ -19,7 +19,9 @@ module.exports = {
     'lib/**/*.js',
     'lib/**/*.ts',
     'rollup.config.js',
-    '**/*.stories.tsx',
   ],
-  rules: {},
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+  },
 };

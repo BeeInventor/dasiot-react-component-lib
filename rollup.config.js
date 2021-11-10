@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
+import url from '@rollup/plugin-url';
 
 const getFiles = (entry, extensions = [], excludeExtensions = []) => {
   let fileNames = [];
@@ -52,11 +53,26 @@ export default [
     plugins: [
       peerDepsExternal(),
       resolve(),
+      url({
+        limit: 10 * 1024,
+        emitFiles: true,
+      }),
       commonjs(),
       typescript({ tsconfig: './tsconfig.json' }),
       terser(),
     ],
-    external: ['react', 'react-dom', 'classnames'],
+    external: [
+      'react',
+      'react-dom',
+      'prop-types',
+      'classnames',
+      'date-fns',
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/icons-material',
+      '@mui/material',
+      '@mui/styles',
+    ],
   },
   {
     input: 'lib/index.d.ts',
