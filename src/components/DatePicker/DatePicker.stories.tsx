@@ -116,3 +116,29 @@ WithDialog.args = {
     disablePortal: true,
   },
 };
+
+export const ExternalReset: Story<DatePickerProps> = (args) => {
+  const [date, setDate] = useState<Date>();
+  return (
+    <div>
+      <DatePicker
+        {...args}
+        startDate={date}
+        onSelect={(date) => {
+          setDate(date as Date);
+        }}
+      />
+      <Button
+        variant="contained"
+        sx={{ ml: '8px' }}
+        onClick={() => setDate(undefined)}
+      >
+        Reset
+      </Button>
+    </div>
+  );
+};
+
+ExternalReset.args = {
+  ...Default.args,
+};

@@ -146,17 +146,21 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     ...otherProps
   } = props;
   const containerRef = useRef(null);
-  const [localStartDate, setLocalStartDate] = useState<Date>();
-  const [localEndDate, setLocalEndDate] = useState<Date>();
+  const [localStartDate, setLocalStartDate] = useState<Date | undefined>();
+  const [localEndDate, setLocalEndDate] = useState<Date | undefined>();
   const [referenceDate, setReferenceDate] = useState(startDate || new Date());
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (startDate && !localStartDate) {
+    if (startDate !== localStartDate) {
       setLocalStartDate(startDate);
-      setReferenceDate(startDate);
+      if (startDate) {
+        setReferenceDate(startDate);
+      } else {
+        setReferenceDate(new Date());
+      }
     }
-    if (endDate && !localEndDate) {
+    if (endDate !== localEndDate) {
       setLocalEndDate(endDate);
     }
   }, [startDate, endDate]);
