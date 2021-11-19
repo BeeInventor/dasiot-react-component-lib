@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Meta, Story } from '@storybook/react';
-import DatePicker from '.';
-import { DatePickerProps } from './DatePicker.types';
 import localZhTw from 'date-fns/locale/zh-TW';
+import { styled } from '@mui/material/styles';
+import { Meta, Story } from '@storybook/react';
 import { Dialog, DialogContent } from '@mui/material';
+
+import DatePicker from './DatePicker';
+import { DatePickerProps } from './DatePicker.types';
 import Button from '../Button';
 
 export default {
@@ -141,4 +143,17 @@ export const ExternalReset: Story<DatePickerProps> = (args) => {
 
 ExternalReset.args = {
   ...Default.args,
+};
+
+const StyledDatePicker = styled(DatePicker)(() => ({
+  width: '100%',
+}));
+
+export const FullWidth: Story<DatePickerProps> = (args) => {
+  return <StyledDatePicker {...args} />;
+};
+
+FullWidth.args = {
+  dateFormat: 'yyyy-MM-dd',
+  startDate: new Date('2021-09-15T00:00:00+08:00'),
 };

@@ -38,6 +38,10 @@ const Root = styled(Box)<StyledRootProps>(({ theme, disabled }) => ({
   ...(disabled
     ? { pointerEvents: 'none', backgroundColor: theme.color.secondary.$40 }
     : {}),
+  '& > .DatePicker-operation': {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 const Placeholder = styled('span')(({ theme }) => ({
@@ -133,6 +137,7 @@ const Item = styled(Box)(({}) => ({
 
 const DatePicker: VFC<DatePickerProps> = (props) => {
   const {
+    className,
     type = 'date',
     locale,
     startDate,
@@ -143,6 +148,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     limitTo,
     popperProps,
     disabled,
+    dateFormat,
     ...otherProps
   } = props;
   const containerRef = useRef(null);
@@ -310,13 +316,14 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
   return (
     <>
       <Root
+        className={`DatePicker${className ? ' ' + className : ''}`}
         ref={containerRef}
         disabled={disabled}
         onClick={() => setIsOpen(true)}
         {...otherProps}
       >
         {localStartDate ? (
-          format(localStartDate, 'MM/dd', {
+          format(localStartDate, dateFormat ?? 'MM/dd', {
             locale,
           })
         ) : (
@@ -326,7 +333,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
           <>
             {' - '}
             {localEndDate ? (
-              format(localEndDate, 'MM/dd', {
+              format(localEndDate, dateFormat ?? 'MM/dd', {
                 locale,
               })
             ) : (
@@ -334,20 +341,22 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
             )}
           </>
         )}
-        {(localStartDate || localEndDate) && (
-          <Icon onClick={handleClearDates}>
-            <img src={cancelCircleSVG} />
+        <div className="DatePicker-operation">
+          {(localStartDate || localEndDate) && (
+            <Icon onClick={handleClearDates}>
+              <img src={cancelCircleSVG} />
+            </Icon>
+          )}
+          <Icon>
+            <BtnIcCalendar
+              sx={{
+                '& path': {
+                  stroke: disabled ? theme.color.secondary.$60 : '#606060',
+                },
+              }}
+            />
           </Icon>
-        )}
-        <Icon>
-          <BtnIcCalendar
-            sx={{
-              '& path': {
-                stroke: disabled ? theme.color.secondary.$60 : '#606060',
-              },
-            }}
-          />
-        </Icon>
+        </div>
       </Root>
       <Popper
         open={disabled ? false : isOpen}
