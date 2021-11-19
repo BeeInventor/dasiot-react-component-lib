@@ -6,7 +6,7 @@ export interface StyledRootProps {
 }
 
 export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
-  className: string;
+  className?: string;
   type?: 'date' | 'range';
   placeholder?: string;
   locale?: Locale;
