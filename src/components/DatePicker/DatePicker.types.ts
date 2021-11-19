@@ -6,6 +6,7 @@ export interface StyledRootProps {
 }
 
 export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
+  className: string;
   type?: 'date' | 'range';
   placeholder?: string;
   locale?: Locale;
@@ -14,6 +15,7 @@ export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
   limitFrom?: Date;
   limitTo?: Date;
   disabled?: boolean;
+  dateFormat?: string;
   onSelect: (
     value: Date | undefined | [Date | undefined, Date | undefined],
   ) => void;
