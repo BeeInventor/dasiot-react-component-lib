@@ -70,10 +70,40 @@ const theme = createTheme({
       'Arial',
       'sans-serif',
     ].join(','),
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {},
+    h2: {
+      fontSize: '1.75rem',
+      lineHeight: 1.5,
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+    },
+    h3: {
+      fontSize: '1rem',
+      lineHeight: 1.5,
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+    },
+    h4: {
+      fontSize: '0.88rem',
+      lineHeight: 1.5,
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+    },
+    subtitle1: {
+      fontSize: '2.5rem',
+      lineHeight: 1.2,
+      fontWeight: 700,
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.88rem',
+      lineHeight: 1.5,
+    },
+    caption: {
+      fontSize: '0.63rem',
+      lineHeight: 1.5,
     },
   },
   palette: {

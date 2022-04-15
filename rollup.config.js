@@ -41,7 +41,7 @@ export default [
   {
     input: [
       './src/index.ts',
-      ...getFiles('./src/components', extensions, excludeExtensions),
+      // ...getFiles('./src/components', extensions, excludeExtensions),
     ],
     output: {
       dir: 'lib',

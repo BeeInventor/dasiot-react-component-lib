@@ -38,7 +38,7 @@ declare module '@mui/material/styles' {
     text: Text;
   }
   interface ThemeOptions {
-    color?: Color;
-    text: Text;
+    color?: Partial<Color>;
+    text?: Partial<Text>;
   }
 }
