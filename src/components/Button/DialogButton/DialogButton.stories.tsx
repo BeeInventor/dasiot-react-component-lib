@@ -40,26 +40,43 @@ export default {
 
 const Template: Story<DialogButtonProps> = (args) => <DialogButton {...args} />;
 
-const Default: Story<DialogButtonProps> = Template.bind({});
+export const Default: Story<DialogButtonProps> = Template.bind({});
 
 Default.args = {
+  color: 'primary',
   variant: 'contained',
+  children: 'Back',
   fullWidth: false,
   disabled: false,
+  previousIcon: false,
+  nextIcon: false,
 };
 
-export const Primary: Story<DialogButtonProps> = Template.bind({});
+export const DefaultLight: Story<DialogButtonProps> = Template.bind({});
 
-Primary.args = {
+DefaultLight.parameters = {
+  backgrounds: {
+    default: 'light',
+  },
+};
+DefaultLight.args = {
   ...Default.args,
-  children: 'Back',
-  color: 'primary',
+  mode: 'light',
+  color: 'secondary',
+  variant: 'outlined',
 };
 
-export const PrimaryWithIcon: Story<DialogButtonProps> = Template.bind({});
+export const Loading: Story<DialogButtonProps> = Template.bind({});
 
-PrimaryWithIcon.args = {
-  ...Primary.args,
+Loading.args = {
+  ...Default.args,
+  isLoading: true,
+};
+
+export const WithIcon: Story<DialogButtonProps> = Template.bind({});
+
+WithIcon.args = {
+  ...Default.args,
   previousIcon: true,
   nextIcon: false,
 };

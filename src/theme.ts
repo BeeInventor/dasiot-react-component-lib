@@ -56,6 +56,9 @@ export const color: Color = {
     $80: '#656565',
     $100: '#3E3E3E',
   },
+  green: {
+    $100: '#78DC00',
+  },
   highlight: '#FF6B00',
   box_bbg: '#F3F3F3',
 };

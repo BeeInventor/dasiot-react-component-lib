@@ -20,11 +20,15 @@ export const parameters = {
     },
   },
   backgrounds: {
-    default: 'figma',
+    default: 'dark',
     values: [
       {
-        name: 'figma',
-        value: '#E5E5E5',
+        name: 'dark',
+        value: '#3E3E3E',
+      },
+      {
+        name: 'light',
+        value: '#EBEBEB',
       },
     ],
   },

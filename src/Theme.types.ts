@@ -28,6 +28,9 @@ export interface Color {
     $80: string;
     $100: string;
   };
+  green: {
+    $100: string;
+  };
   highlight: string;
   box_bbg: string;
 }
