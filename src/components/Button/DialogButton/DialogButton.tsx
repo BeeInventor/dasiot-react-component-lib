@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import React from 'react';
 import MUIButton from '@mui/material/Button';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
@@ -38,17 +37,30 @@ const Button = styled(MUIButton)<ButtonProps>`
 
   ${({ theme }) => ({
     ...theme.typography.body2,
+    '&.MuiButton-text': {
+      '&[mode="light"]': {
+        color: theme.color.secondary.$60,
+      },
+    },
+
+    '&.Mui-disabled': {
+      color: 'white',
+      '&[mode="light"]': {
+        color: theme.color.secondary.$100,
+      },
+    },
+
+    '&.MuiButton-contained': {
+      '&[mode="light"]': {
+        color: 'white',
+      },
+    },
+
     '&.MuiButton-containedPrimary': {
       '&:hover': {
         backgroundColor: theme.color.primary.$80,
       },
-      '&.loading': {
-        pointerEvents: 'none',
-        border: `1px solid ${theme.color.primary.$100}`,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      },
       '&.Mui-disabled': {
-        color: 'white',
         backgroundColor: theme.color.primary.$80,
       },
     },
@@ -59,20 +71,31 @@ const Button = styled(MUIButton)<ButtonProps>`
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
       },
       '&.Mui-disabled': {
-        color: 'white',
         backgroundColor: theme.color.secondary.$80,
       },
     },
 
     '&.MuiButton-containedSuccess': {
-      border: `1px solid ${theme.color.green.$100}`,
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      },
       '&.Mui-disabled': {
-        color: 'white',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: theme.palette.success.dark,
+      },
+    },
+
+    '&.MuiButton-containedWarning': {
+      '&.Mui-disabled': {
+        backgroundColor: theme.palette.warning.dark,
+      },
+    },
+
+    '&.MuiButton-containedInfo': {
+      '&.Mui-disabled': {
+        backgroundColor: theme.palette.info.dark,
+      },
+    },
+
+    '&.MuiButton-containedError': {
+      '&.Mui-disabled': {
+        backgroundColor: theme.palette.error.dark,
       },
     },
 
@@ -85,30 +108,56 @@ const Button = styled(MUIButton)<ButtonProps>`
       },
     },
 
+    '&.MuiButton-outlinedPrimary': {
+      '&.Mui-disabled': {
+        border: `1px solid ${theme.palette.primary.dark}`,
+      },
+    },
+
     '&.MuiButton-outlinedSecondary': {
-      borderColor: `1px solid ${theme.color.secondary.$60}`,
-      '&:hover': {
-        borderColor: theme.color.secondary.$100,
+      '&[mode="dark"]': {
+        borderColor: 'white',
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        },
+      },
+    },
+
+    '&.MuiButton-outlinedSuccess': {
+      '&.Mui-disabled': {
+        border: `1px solid ${theme.palette.success.dark}`,
+      },
+    },
+
+    '&.MuiButton-outlinedWarning': {
+      '&.Mui-disabled': {
+        border: `1px solid ${theme.palette.warning.dark}`,
+      },
+    },
+
+    '&.MuiButton-outlinedInfo': {
+      '&.Mui-disabled': {
+        border: `1px solid ${theme.palette.info.dark}`,
+      },
+    },
+
+    '&.MuiButton-outlinedError': {
+      '&.Mui-disabled': {
+        border: `1px solid ${theme.palette.error.dark}`,
       },
     },
   })}
 `;
 
 const DialogButton: React.VFC<DialogButtonProps> = ({
-  className,
   mode = 'dark',
   previousIcon,
   nextIcon,
-  isLoading = false,
   ...props
 }) => {
   return (
     <Button
       mode={mode}
-      className={classnames({
-        className,
-        loading: isLoading,
-      })}
       startIcon={previousIcon && <ChevronLeft />}
       endIcon={nextIcon && <ChevronRight />}
       {...props}
