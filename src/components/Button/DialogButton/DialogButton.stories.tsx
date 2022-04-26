@@ -12,6 +12,9 @@ const Title = styled('h2')`
 
 const Block = styled('div')`
   margin-bottom: 8px;
+  & > button {
+    margin: 0 8px;
+  }
 `;
 
 export default {
@@ -118,7 +121,6 @@ const Template: Story<DialogButtonProps> = (args) => (
 export const Default: Story<DialogButtonProps> = Template.bind({});
 
 Default.args = {
-  sx: { margin: '0 8px' },
   mode: 'dark',
   fullWidth: false,
   disabled: false,
