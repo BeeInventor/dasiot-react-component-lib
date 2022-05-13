@@ -29,13 +29,21 @@ const Root = styled(Box)(({ theme }) => ({
     opacity: 0.3,
     pointerEvents: 'none',
   },
+  '&.dark': {
+    color: 'white',
+    backgroundColor: 'rgba(0, 0 ,0, 0.2)',
+  },
 }));
 
-const List = styled(Box)(() => ({
+const List = styled(Box)(({ theme }) => ({
   backgroundColor: '#FFF',
   margin: '8px auto',
   borderRadius: 4,
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+  '&.dark': {
+    color: 'white',
+    backgroundColor: theme.color.secondary.$100,
+  },
 }));
 
 const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
@@ -58,6 +66,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     disabled,
     onSelect,
     popperProps,
+    mode = 'light',
     ...otherProps
   } = props;
   const selectRef = useRef<HTMLDivElement>(null);
@@ -115,6 +124,10 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
           {
             'Dropdown--disabled': disabled,
           },
+          {
+            dark: mode === 'dark',
+            light: mode === 'light',
+          },
         )}
         onClick={handleOnClickSelect}
         {...otherProps}
@@ -131,7 +144,13 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
         {...popperProps}
       >
         <ClickAwayListener onClickAway={handleOnClickAway}>
-          <List style={{ width: selectRef.current?.offsetWidth ?? 'auto' }}>
+          <List
+            className={classNames({
+              dark: mode === 'dark',
+              light: mode === 'light',
+            })}
+            style={{ width: selectRef.current?.offsetWidth ?? 'auto' }}
+          >
             {items}
           </List>
         </ClickAwayListener>

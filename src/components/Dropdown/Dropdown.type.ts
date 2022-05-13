@@ -36,4 +36,5 @@ export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
    * Custom popper props
    */
   popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
+  mode?: 'dark' | 'light';
 }

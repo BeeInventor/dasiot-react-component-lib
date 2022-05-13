@@ -34,21 +34,25 @@ export default {
   argTypes: {
     onSelect: { action: 'onSelected' },
     disabled: {
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
+      defaultValue: false,
     },
     className: {
-      control: 'string',
+      control: 'text',
     },
     listClassName: {
-      control: 'string',
+      control: 'text',
     },
     itemClassName: {
-      control: 'string',
+      control: 'text',
     },
     selectedId: {
-      control: 'string',
+      control: 'text',
+    },
+    mode: {
+      control: 'radio',
+      options: ['dark', 'light'],
+      defaultValue: 'light',
     },
   },
 } as Meta;
@@ -89,5 +93,19 @@ WithDialog.args = {
   ...Default.args,
   popperProps: {
     disablePortal: true,
+  },
+};
+
+export const DarkMode: Story<DropDownProps> = Template.bind({});
+
+DarkMode.args = {
+  mode: 'dark',
+  list,
+  selectedId: 'A001',
+};
+
+DarkMode.parameters = {
+  backgrounds: {
+    default: 'secondary80',
   },
 };
