@@ -1,14 +1,13 @@
-import { PopperProps, BoxProps } from '@mui/material';
-import { Mode } from 'components/main.types';
+import { BoxProps, PopperProps } from '@mui/material';
 import { Locale } from 'date-fns';
 
 export interface StyledRootProps {
   disabled?: boolean;
-  mode?: Mode;
+  mode?: 'dark' | 'light';
 }
 
 export interface StyledMode {
-  mode?: Mode;
+  mode?: 'dark' | 'light';
 }
 
 export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
@@ -22,7 +21,7 @@ export interface DatePickerProps extends Omit<BoxProps, 'onSelect'> {
   limitTo?: Date;
   disabled?: boolean;
   dateFormat?: string;
-  mode?: Mode;
+  mode?: 'dark' | 'light';
   onSelect: (
     value: Date | undefined | [Date | undefined, Date | undefined],
   ) => void;

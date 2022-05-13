@@ -59,6 +59,7 @@ DefaultDark.parameters = {
     default: 'light',
   },
 };
+
 DefaultDark.args = {
   placeholder: 'Time',
   mode: 'dark',
