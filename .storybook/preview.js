@@ -30,6 +30,10 @@ export const parameters = {
         name: 'light',
         value: '#EBEBEB',
       },
+      {
+        name: 'secondary80',
+        value: '#656565',
+      },
     ],
   },
 };
