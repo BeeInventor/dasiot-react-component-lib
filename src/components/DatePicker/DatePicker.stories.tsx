@@ -52,6 +52,18 @@ Default.args = {
   placeholder: 'Time',
 };
 
+export const DefaultDark: Story<DatePickerProps> = Template.bind({});
+
+DefaultDark.parameters = {
+  backgrounds: {
+    default: 'light',
+  },
+};
+DefaultDark.args = {
+  placeholder: 'Time',
+  mode: 'dark',
+};
+
 export const ZhTW: Story<DatePickerProps> = Template.bind({});
 
 ZhTW.args = {
