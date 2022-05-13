@@ -1,38 +1,42 @@
-import React, { useState, VFC, useMemo, useEffect, useRef } from 'react';
-import classNames from 'classnames';
 import { Box } from '@mui/material';
-import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Popper from '@mui/material/Popper';
+import { styled } from '@mui/material/styles';
+import classNames from 'classnames';
 import {
-  format,
-  startOfWeek,
   addDays,
-  startOfMonth,
-  endOfMonth,
   addMonths,
+  addSeconds,
+  endOfDay,
+  endOfMonth,
+  format,
   isAfter,
   isBefore,
   isEqual,
-  endOfDay,
-  addSeconds,
+  startOfMonth,
+  startOfWeek,
 } from 'date-fns';
-import { styled } from '@mui/material/styles';
-import { DatePickerProps, StyledRootProps } from './DatePicker.types';
+import React, { useEffect, useMemo, useRef, useState, VFC } from 'react';
 import arrowLeftSVG from '../../assets/image/svg/arrow-left.svg';
 import arrowRightSVG from '../../assets/image/svg/arrow-right.svg';
 import cancelCircleSVG from '../../assets/image/svg/cancel-circle.svg';
-import Icon from '../Icon/Icon';
 import BtnIcCalendar from '../../svg/BtnIcCalendar';
-import theme from '../../theme';
+import Icon from '../Icon/Icon';
+import {
+  DatePickerProps,
+  StyledMode,
+  StyledRootProps,
+} from './DatePicker.types';
 
-const Root = styled(Box)<StyledRootProps>(({ theme, disabled }) => ({
+const Root = styled(Box)<StyledRootProps>(({ theme, disabled, mode }) => ({
   ...theme.text.Subtitle_16_Med,
+  color: mode === 'dark' ? 'white' : '#000',
   cursor: 'pointer',
   display: 'inline-flex',
   minWidth: 156,
   justifyContent: 'space-between',
   alignItems: 'center',
-  backgroundColor: '#FFF',
+  backgroundColor: mode === 'dark' ? theme.color.secondary.$80 : '#FFF',
   paddingLeft: 16,
   borderRadius: 4,
   ...(disabled
@@ -44,21 +48,24 @@ const Root = styled(Box)<StyledRootProps>(({ theme, disabled }) => ({
   },
 }));
 
-const Placeholder = styled('span')(({ theme }) => ({
-  color: theme.color.secondary.$60,
+const Placeholder = styled('span')<StyledMode>(({ theme, mode }) => ({
+  color: mode === 'dark' ? '#FFF' : theme.color.secondary.$60,
 }));
 
-const Calendar = styled(Box, { label: 'Calendar' })(({}) => ({
-  userSelect: 'none',
-  display: 'inline-block',
-  backgroundColor: '#FFF',
-  padding: 32,
-  borderRadius: 8,
-  margin: '8px auto',
-  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
-}));
+const Calendar = styled(Box, { label: 'Calendar' })<StyledMode>(
+  ({ mode, theme }) => ({
+    userSelect: 'none',
+    display: 'inline-block',
+    backgroundColor: mode === 'dark' ? theme.color.secondary.$100 : '#FFF',
+    padding: 32,
+    borderRadius: 8,
+    margin: '8px auto',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+  }),
+);
 
-const Operation = styled(Box)(({}) => ({
+const Operation = styled(Box)<StyledMode>(({ mode }) => ({
+  color: mode === 'dark' ? 'white' : '#000',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -105,15 +112,15 @@ const ExternalItem = styled(Box)<{ type: 'date' | 'range' }>(({ type }) => ({
   },
 }));
 
-const Item = styled(Box)(({}) => ({
+const Item = styled(Box)<StyledMode>(({ mode, theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   width: 32,
   height: 32,
-  color: '#404040',
+  color: mode === 'dark' ? theme.color.secondary.$80 : '#404040',
   '&.week': {
-    color: '#727272',
+    color: mode === 'dark' ? theme.color.secondary.$60 : '#727272',
     fontSize: 10,
     fontFamily: '"Noto Sans Mono", monospace',
     letterSpacing: '1.5px',
@@ -127,11 +134,11 @@ const Item = styled(Box)(({}) => ({
     },
   },
   '&.currentMonth': {
-    color: '#808080',
+    color: mode === 'dark' ? '#FFF' : '#808080',
   },
   '&.outOfRange': {
     cursor: 'not-allowed',
-    color: 'rgba(128, 128, 128, 0.3)',
+    color: mode === 'dark' ? '#FFF' : 'rgba(128, 128, 128, 0.3)',
   },
 }));
 
@@ -149,6 +156,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     popperProps,
     disabled,
     dateFormat,
+    mode,
     ...otherProps
   } = props;
   const containerRef = useRef(null);
@@ -197,7 +205,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
     const week = [];
     for (let i = 0; i < 7; i += 1) {
       week.push(
-        <Item key={`week-string-${i}`} className="week">
+        <Item key={`week-string-${i}`} className="week" mode={mode}>
           {format(addDays(startOfWeek(new Date()), i), 'iii', {
             locale,
           })}
@@ -275,6 +283,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
           })}
         >
           <Item
+            mode={mode}
             className={classNames('day', {
               start: equalLocalStartDate,
               end: equalLocalEndDate,
@@ -320,6 +329,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
         ref={containerRef}
         disabled={disabled}
         onClick={() => setIsOpen(true)}
+        mode={mode}
         {...otherProps}
       >
         {localStartDate ? (
@@ -327,7 +337,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
             locale,
           })
         ) : (
-          <Placeholder>{placeholder}</Placeholder>
+          <Placeholder mode={mode}>{placeholder}</Placeholder>
         )}
         {type === 'range' && (
           <>
@@ -351,7 +361,8 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
             <BtnIcCalendar
               sx={{
                 '& path': {
-                  stroke: disabled ? theme.color.secondary.$60 : '#606060',
+                  stroke: mode === 'dark' ? '#FFF' : '#606060',
+                  // stroke: disabled ? theme.color.secondary.$60 : '#606060',
                 },
               }}
             />
@@ -365,8 +376,8 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
         {...popperProps}
       >
         <ClickAwayListener onClickAway={handleClosePopper}>
-          <Calendar>
-            <Operation>
+          <Calendar mode={mode}>
+            <Operation mode={mode}>
               <img
                 className={classNames({
                   notAllowed: limitFrom
