@@ -82,7 +82,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
         }
       }
     }
-  }, [selectedId]);
+  }, [selectedId, list]);
 
   const handleOnClickSelect = () => {
     setIsOpen(true);
