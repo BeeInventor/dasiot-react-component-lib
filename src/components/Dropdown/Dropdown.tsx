@@ -66,6 +66,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     disabled,
     onSelect,
     popperProps,
+    selectionId,
     mode = 'light',
     ...otherProps
   } = props;
@@ -107,19 +108,21 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     onSelect(item.value, item);
   };
 
-  const items = list.map((item) => (
-    <Item
-      key={`dropdown-item-${item.id}`}
-      className="Dropdown-item"
-      onClick={() => handleOnClick(item)}
-      {...itemProps}
-    >
-      <Icon className="Dropdown-icon">
-        {selectedItem?.id === item.id && <img src={CheckSvg} />}
-      </Icon>
-      {item.name}
-    </Item>
-  ));
+  const items = list
+    .filter((item) => item.id !== selectionId)
+    .map((item) => (
+      <Item
+        key={`dropdown-item-${item.id}`}
+        className="Dropdown-item"
+        onClick={() => handleOnClick(item)}
+        {...itemProps}
+      >
+        <Icon className="Dropdown-icon">
+          {selectedItem?.id === item.id && <img src={CheckSvg} />}
+        </Icon>
+        {item.name}
+      </Item>
+    ));
 
   return (
     <>

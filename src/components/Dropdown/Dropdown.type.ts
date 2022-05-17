@@ -37,4 +37,8 @@ export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
    */
   popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
   mode?: 'dark' | 'light';
+  /**
+   * filter the list out of this id
+   */
+  selectionId?: string;
 }
