@@ -73,6 +73,14 @@ Selected.args = {
   selectedId: 'A004',
 };
 
+export const Selection: Story<DropDownProps> = Template.bind({});
+
+Selection.args = {
+  ...Default.args,
+  selectedId: 'A004',
+  selectionId: 'A003',
+};
+
 export const WithDialog: Story<DropDownProps> = (args) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
