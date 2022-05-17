@@ -82,7 +82,16 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
         }
       }
     }
-  }, [selectedId, list]);
+  }, [selectedId]);
+
+  useEffect(() => {
+    for (let i = 0; i < list.length; i++) {
+      if (selectedId === list[i].id) {
+        setSelectedItem(list[i]);
+        break;
+      }
+    }
+  }, [list]);
 
   const handleOnClickSelect = () => {
     setIsOpen(true);
