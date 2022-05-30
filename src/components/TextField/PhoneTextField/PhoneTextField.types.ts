@@ -1,4 +1,5 @@
 import { BoxProps, InputBaseProps, PopperProps } from '@mui/material';
+import { Mode } from 'components/main.types';
 import { CountryCodeData } from '../../../Theme.types';
 
 export interface phoneData {
@@ -19,4 +20,5 @@ export interface PhoneTextFieldProps extends Omit<BoxProps, 'onChange'> {
   errorMessage?: string;
   inputProps?: InputBaseProps;
   popperProps?: Omit<PopperProps, 'open' | 'anchorEl'>;
+  mode?: Mode;
 }

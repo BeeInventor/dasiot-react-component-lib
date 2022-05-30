@@ -11,6 +11,8 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { CountryCodeData } from '../../../Theme.types';
 import ComponentIcPhoneDbg from '../../../svg/ComponentIcPhoneDbg';
 import IcErrorIfo from '../../../svg/IcErrorIfo';
+import ComponentIcPhoneDbgBlack from '../../../svg/ComponentIcPhoneDbgBlack';
+import { Mode } from 'components/main.types';
 
 const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 50;
@@ -20,15 +22,19 @@ const Root = styled(Box)(({}) => ({
   flexDirection: 'column',
 }));
 
-const TextField = styled(Box)(({ theme }) => ({
+interface ModeProps {
+  mode?: Mode;
+}
+
+const TextField = styled(Box)<ModeProps>(({ theme, mode }) => ({
   ...theme.text.Body_16_Reg,
   display: 'flex',
   alignItems: 'center',
   minWidth: DEFAULT_WIDTH,
   height: DEFAULT_HEIGHT,
   minHeight: DEFAULT_HEIGHT,
-  color: '#FFFFFF',
-  backgroundColor: 'rgba(0, 0, 0, .5)',
+  color: mode === 'light' ? theme.color.secondary.$100 : '#FFF',
+  backgroundColor: mode === 'light' ? '#F5F5F5' : 'rgba(0, 0, 0, .5)',
   borderRadius: 4,
   padding: '13px 24px',
   '&.container--error': {
@@ -48,10 +54,10 @@ const PhoneCode = styled(Box)(({}) => ({
   },
 }));
 
-const Input = styled(InputBase)(({ theme }) => ({
+const Input = styled(InputBase)<ModeProps>(({ theme, mode }) => ({
   ...theme.text.Body_16_Reg,
   flex: 1,
-  color: 'white',
+  color: mode === 'light' ? theme.color.secondary.$100 : 'white',
   backgroundColor: 'transparent',
   outline: 'none',
   border: 'none',
@@ -60,10 +66,10 @@ const Input = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Separator = styled(Box)(({}) => ({
+const Separator = styled(Box)<ModeProps>(({ mode }) => ({
   width: 2,
   height: '100%',
-  border: '1px solid #FFFFFF',
+  border: `1px solid ${mode === 'light' ? '#3E3E3E' : '#FFFFFF'} `,
   borderRadius: 1,
 }));
 
@@ -122,6 +128,7 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
     error,
     errorMessage,
     popperProps,
+    mode,
     ...otherProps
   } = props;
   const containerDOM = useRef<HTMLDivElement>(null);
@@ -186,9 +193,14 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
         className={classnames({
           'container--error': error,
         })}
+        mode={mode}
         {...otherProps}
       >
-        <ComponentIcPhoneDbg style={{ marginRight: 6 }} />
+        {mode === 'light' ? (
+          <ComponentIcPhoneDbgBlack style={{ marginRight: 6 }} />
+        ) : (
+          <ComponentIcPhoneDbg style={{ marginRight: 6 }} />
+        )}
         <PhoneCode onClick={() => setShowMenu(!showMenu)}>
           <span className="code-text">{`+${selectedCode}`}</span>
           {showMenu ? (
@@ -196,13 +208,14 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
           ) : (
             <KeyboardArrowDownIcon style={{ margin: '0 6px' }} />
           )}
-          <Separator />
+          <Separator mode={mode} />
         </PhoneCode>
         <Input
           type="tel"
           placeholder={placeholder}
           value={inputValue}
           onChange={handleInputOnChange}
+          mode={mode}
           {...inputProps}
         />
       </TextField>
