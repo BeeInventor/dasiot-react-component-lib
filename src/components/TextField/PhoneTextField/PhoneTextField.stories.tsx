@@ -118,6 +118,15 @@ Default.args = {
   countryCodeList,
 };
 
+export const ModeLight: Story<PhoneTextFieldProps> = Template.bind({});
+
+ModeLight.args = {
+  value: '',
+  placeholder: 'Phone Number',
+  countryCodeList,
+  mode: 'light',
+};
+
 export const Error: Story<PhoneTextFieldProps> = Template.bind({});
 
 Error.args = {
