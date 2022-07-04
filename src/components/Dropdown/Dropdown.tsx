@@ -82,6 +82,8 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
           break;
         }
       }
+    } else {
+      setSelectedItem(null);
     }
   }, [selectedId]);
 
