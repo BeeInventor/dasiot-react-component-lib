@@ -22,16 +22,19 @@ const Root = styled(Box)(({ theme }) => ({
   backgroundColor: '#FFF',
   padding: '8px 0px 8px 16px',
   borderRadius: 4,
+  '&.dark': {
+    color: 'white',
+    backgroundColor: 'rgba(0, 0 ,0, 0.2)',
+  },
   '&.Dropdown-empty': {
     color: theme.color.secondary.$60,
+    '&.dark': {
+      color: theme.color.secondary.$80,
+    },
   },
   '&.Dropdown--disabled': {
     opacity: 0.3,
     pointerEvents: 'none',
-  },
-  '&.dark': {
-    color: 'white',
-    backgroundColor: 'rgba(0, 0 ,0, 0.2)',
   },
 }));
 
@@ -82,6 +85,8 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
           break;
         }
       }
+    } else if (selectedId === undefined) {
+      setSelectedItem(null);
     }
   }, [selectedId]);
 
