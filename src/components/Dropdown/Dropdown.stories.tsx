@@ -121,7 +121,7 @@ DarkMode.parameters = {
 export const Reset: Story<DropDownProps> = (args) => {
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const handleUnselect = () => {
-    setSelectedId('');
+    setSelectedId(undefined);
   };
   return (
     <div>
