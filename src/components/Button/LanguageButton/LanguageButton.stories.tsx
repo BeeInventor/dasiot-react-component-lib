@@ -26,9 +26,6 @@ export default {
   argTypes: {
     list: {
       description: 'Language list',
-      type: {
-        require: true,
-      },
       table: {
         defaultValue: {
           summary: '[]',

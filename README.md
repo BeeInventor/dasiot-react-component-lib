@@ -64,11 +64,7 @@ yarn add @beeinventor/dasiot-react-component-lib
 ```tsx
 // index.tsx
 import React from 'react';
-import {
-  ThemeProvider,
-  CssBaseline,
-  createTheme,
-} from '@mui/material';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import {
   theme as beeinventerTheme,
   Button,

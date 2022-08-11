@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Meta, Story } from '@storybook/react';
 import { Dialog, DialogContent } from '@mui/material';
-import { DropDownItem, DropDownProps } from './Dropdown.type';
-import Dropdown from './Dropdown';
+import { Meta, Story } from '@storybook/react';
+import React, { useState } from 'react';
 import Button from '../Button';
+import Dropdown from './Dropdown';
+import { DropDownItem, DropDownProps } from './Dropdown.type';
 
 const list: DropDownItem[] = [
   {
@@ -73,6 +73,14 @@ Selected.args = {
   selectedId: 'A004',
 };
 
+export const Selection: Story<DropDownProps> = Template.bind({});
+
+Selection.args = {
+  ...Default.args,
+  selectedId: 'A004',
+  selectionId: 'A003',
+};
+
 export const WithDialog: Story<DropDownProps> = (args) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -105,6 +113,41 @@ DarkMode.args = {
 };
 
 DarkMode.parameters = {
+  backgrounds: {
+    default: 'secondary80',
+  },
+};
+
+export const Reset: Story<DropDownProps> = (args) => {
+  const [selectedId, setSelectedId] = useState<string | undefined>();
+  const handleUnselect = () => {
+    setSelectedId(undefined);
+  };
+  return (
+    <div>
+      <Button
+        variant="contained"
+        onClick={handleUnselect}
+        sx={{ marginBottom: '10px' }}
+      >
+        Reset All
+      </Button>
+      <Dropdown
+        {...args}
+        selectedId={selectedId}
+        onSelect={(value) => setSelectedId(value as string)}
+      />
+    </div>
+  );
+};
+
+Reset.args = {
+  mode: 'dark',
+  list,
+  placeholder: 'Please Select Item',
+};
+
+Reset.parameters = {
   backgrounds: {
     default: 'secondary80',
   },

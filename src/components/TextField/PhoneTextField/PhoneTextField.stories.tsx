@@ -83,9 +83,6 @@ export default {
     onChange: {
       action: 'onChange',
       description: 'Trigger when select a country code',
-      type: {
-        require: true,
-      },
       table: {
         defaultValue: {
           summary: 'undefined',
@@ -94,9 +91,6 @@ export default {
     },
     countryCodeList: {
       description: 'Country Code List (required)',
-      type: {
-        require: true,
-      },
       table: {
         defaultValue: {
           summary: '[]',
@@ -116,6 +110,15 @@ Default.args = {
   value: '',
   placeholder: 'Phone Number',
   countryCodeList,
+};
+
+export const ModeLight: Story<PhoneTextFieldProps> = Template.bind({});
+
+ModeLight.args = {
+  value: '',
+  placeholder: 'Phone Number',
+  countryCodeList,
+  mode: 'light',
 };
 
 export const Error: Story<PhoneTextFieldProps> = Template.bind({});

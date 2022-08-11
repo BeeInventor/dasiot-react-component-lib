@@ -13,9 +13,6 @@ export default {
     onChange: { action: 'search-input-onchange' },
     LanguageButtonProps: {
       description: 'LanguageButton props',
-      type: {
-        require: true,
-      },
     },
     onSelect: {
       description: 'Trigger when select a language',

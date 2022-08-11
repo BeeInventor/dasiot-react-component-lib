@@ -22,16 +22,19 @@ const Root = styled(Box)(({ theme }) => ({
   backgroundColor: '#FFF',
   padding: '8px 0px 8px 16px',
   borderRadius: 4,
+  '&.dark': {
+    color: 'white',
+    backgroundColor: 'rgba(0, 0 ,0, 0.2)',
+  },
   '&.Dropdown-empty': {
     color: theme.color.secondary.$60,
+    '&.dark': {
+      color: theme.color.secondary.$80,
+    },
   },
   '&.Dropdown--disabled': {
     opacity: 0.3,
     pointerEvents: 'none',
-  },
-  '&.dark': {
-    color: 'white',
-    backgroundColor: 'rgba(0, 0 ,0, 0.2)',
   },
 }));
 
@@ -66,6 +69,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     disabled,
     onSelect,
     popperProps,
+    selectionId,
     mode = 'light',
     ...otherProps
   } = props;
@@ -81,8 +85,19 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
           break;
         }
       }
+    } else if (selectedId === undefined) {
+      setSelectedItem(null);
     }
   }, [selectedId]);
+
+  useEffect(() => {
+    for (let i = 0; i < list.length; i++) {
+      if (selectedId === list[i].id) {
+        setSelectedItem(list[i]);
+        break;
+      }
+    }
+  }, [list]);
 
   const handleOnClickSelect = () => {
     setIsOpen(true);
@@ -98,19 +113,21 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     onSelect(item.value, item);
   };
 
-  const items = list.map((item) => (
-    <Item
-      key={`dropdown-item-${item.id}`}
-      className="Dropdown-item"
-      onClick={() => handleOnClick(item)}
-      {...itemProps}
-    >
-      <Icon className="Dropdown-icon">
-        {selectedItem?.id === item.id && <img src={CheckSvg} />}
-      </Icon>
-      {item.name}
-    </Item>
-  ));
+  const items = list
+    .filter((item) => item.id !== selectionId)
+    .map((item) => (
+      <Item
+        key={`dropdown-item-${item.id}`}
+        className="Dropdown-item"
+        onClick={() => handleOnClick(item)}
+        {...itemProps}
+      >
+        <Icon className="Dropdown-icon">
+          {selectedItem?.id === item.id && <img src={CheckSvg} />}
+        </Icon>
+        {item.name}
+      </Item>
+    ));
 
   return (
     <>
