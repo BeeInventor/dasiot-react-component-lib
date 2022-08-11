@@ -8,11 +8,11 @@ import InputBase from '@mui/material/InputBase';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { Mode } from '../../main.types';
 import { CountryCodeData } from '../../../Theme.types';
 import ComponentIcPhoneDbg from '../../../svg/ComponentIcPhoneDbg';
 import IcErrorIfo from '../../../svg/IcErrorIfo';
 import ComponentIcPhoneDbgBlack from '../../../svg/ComponentIcPhoneDbgBlack';
-import { Mode } from 'components/main.types';
 
 const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 50;

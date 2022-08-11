@@ -83,9 +83,6 @@ export default {
     onChange: {
       action: 'onChange',
       description: 'Trigger when select a country code',
-      type: {
-        require: true,
-      },
       table: {
         defaultValue: {
           summary: 'undefined',
@@ -94,9 +91,6 @@ export default {
     },
     countryCodeList: {
       description: 'Country Code List (required)',
-      type: {
-        require: true,
-      },
       table: {
         defaultValue: {
           summary: '[]',

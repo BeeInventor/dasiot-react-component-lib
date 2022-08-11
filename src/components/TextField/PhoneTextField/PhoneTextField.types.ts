@@ -1,5 +1,5 @@
 import { BoxProps, InputBaseProps, PopperProps } from '@mui/material';
-import { Mode } from 'components/main.types';
+import { Mode } from '../../main.types';
 import { CountryCodeData } from '../../../Theme.types';
 
 export interface phoneData {
