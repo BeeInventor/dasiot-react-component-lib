@@ -31,17 +31,21 @@ const TextField = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Input = styled(InputBase)(({ theme }) => ({
-  ...theme.text.Body_16_Reg,
-  flex: 1,
-  color: 'white',
-  backgroundColor: 'transparent',
-  outline: 'none',
-  border: 'none',
-  '&::placeholder': {
-    color: '#9C9C9C',
-  },
-}));
+const Input = styled(InputBase)`
+  ${({ theme }) => ({ ...theme.text.Body_16_Reg })};
+  flex: 1;
+  color: white;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }
+  input[data-autocompleted] {
+    background-color: transparent !important;
+  }
+`;
 
 const ErrorMessage = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -81,6 +85,7 @@ const PasswordTextField: VFC<PasswordTextFieldProps> = (props) => {
         <ComponentIcPasswordDbg style={{ marginRight: 6 }} />
         <Input
           type="password"
+          name="password"
           placeholder={placeholder}
           value={inputValue}
           onChange={handleInputOnChange}
