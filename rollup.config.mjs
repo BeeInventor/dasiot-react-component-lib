@@ -1,4 +1,4 @@
-import fs from 'fs';
+// import fs from 'fs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -7,35 +7,35 @@ import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
 import url from '@rollup/plugin-url';
 
-const getFiles = (entry, extensions = [], excludeExtensions = []) => {
-  let fileNames = [];
-  const dirs = fs.readdirSync(entry);
+// const getFiles = (entry, extensions = [], excludeExtensions = []) => {
+//   let fileNames = [];
+//   const dirs = fs.readdirSync(entry);
 
-  dirs.forEach((dir) => {
-    const path = `${entry}/${dir}`;
+//   dirs.forEach((dir) => {
+//     const path = `${entry}/${dir}`;
 
-    if (fs.lstatSync(path).isDirectory()) {
-      fileNames = [
-        ...fileNames,
-        ...getFiles(path, extensions, excludeExtensions),
-      ];
+//     if (fs.lstatSync(path).isDirectory()) {
+//       fileNames = [
+//         ...fileNames,
+//         ...getFiles(path, extensions, excludeExtensions),
+//       ];
 
-      return;
-    }
+//       return;
+//     }
 
-    if (
-      !excludeExtensions.some((exclude) => dir.endsWith(exclude)) &&
-      extensions.some((ext) => dir.endsWith(ext))
-    ) {
-      fileNames.push(path);
-    }
-  });
+//     if (
+//       !excludeExtensions.some((exclude) => dir.endsWith(exclude)) &&
+//       extensions.some((ext) => dir.endsWith(ext))
+//     ) {
+//       fileNames.push(path);
+//     }
+//   });
 
-  return fileNames;
-};
+//   return fileNames;
+// };
 
-const extensions = ['.js', '.ts', '.jsx', '.tsx'];
-const excludeExtensions = ['.stories.tsx', '.types.ts'];
+// const extensions = ['.js', '.ts', '.jsx', '.tsx'];
+// const excludeExtensions = ['.stories.tsx', '.types.ts'];
 
 export default [
   {
@@ -45,7 +45,7 @@ export default [
     ],
     output: {
       dir: 'lib',
-      format: 'esm',
+      format: 'cjs',
       preserveModules: true,
       preserveModulesRoot: 'src',
       sourcemap: true,
