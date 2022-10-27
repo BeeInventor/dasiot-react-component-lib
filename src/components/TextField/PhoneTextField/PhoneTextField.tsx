@@ -27,7 +27,7 @@ interface ModeProps {
 }
 
 const TextField = styled(Box)<ModeProps>(({ theme, mode }) => ({
-  ...theme.text.Body_16_Reg,
+  ...theme.typography.body1,
   display: 'flex',
   alignItems: 'center',
   minWidth: DEFAULT_WIDTH,
@@ -54,25 +54,17 @@ const PhoneCode = styled(Box)(({}) => ({
   },
 }));
 
-const Input = styled(InputBase)<ModeProps>`
-  ${({ theme }) => ({ ...theme.text.Body_16_Reg })};
-  flex: 1;
-  color: ${({ theme, mode }) =>
-    mode === 'light' ? theme.color.secondary.$100 : 'white'};
-  background-color: transparent;
-  outline: none;
-  border: none;
-  &::placeholder {
-    color: #9c9c9c;
-  }
-  input:-webkit-autofill,
-  input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
-  }
-  input[data-autocompleted] {
-    background-color: transparent !important;
-  }
-`;
+const Input = styled(InputBase)<ModeProps>(({ theme, mode }) => ({
+  ...theme.typography.body1,
+  flex: 1,
+  color: mode === 'light' ? theme.color.secondary.$100 : 'white',
+  backgroundColor: 'transparent',
+  outline: 'none',
+  border: 'none',
+  '&::placeholder': {
+    color: '#9C9C9C',
+  },
+}));
 
 const Separator = styled(Box)<ModeProps>(({ mode }) => ({
   width: 2,
@@ -93,7 +85,7 @@ const Menu = styled(Box)(({}) => ({
 }));
 
 const Item = styled(Box)(({ theme }) => ({
-  ...theme.text.Body_14_Reg,
+  ...theme.typography.body2,
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
@@ -118,7 +110,7 @@ const ErrorMessage = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  ...theme.text.Caption_12_Reg,
+  ...theme.typography.caption,
   color: theme.color.highlight,
 }));
 

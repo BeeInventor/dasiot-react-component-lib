@@ -9,7 +9,7 @@ interface StyledButtonProps {
 }
 
 const StyledButton = styled(MuiButton)<StyledButtonProps>(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   padding: '4px 32px',
   borderRadius: 90000,
   textTransform: 'none',

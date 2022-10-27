@@ -29,7 +29,7 @@ import {
 } from './DatePicker.types';
 
 const Root = styled(Box)<StyledRootProps>(({ theme, disabled, mode }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   color: mode === 'dark' ? 'white' : '#000',
   cursor: 'pointer',
   display: 'inline-flex',
