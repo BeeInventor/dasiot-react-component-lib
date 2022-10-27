@@ -66,36 +66,16 @@ export default {
   argTypes: {
     value: {
       description: 'PhoneTextField value',
-      table: {
-        defaultValue: {
-          summary: '',
-        },
-      },
     },
     placeholder: {
       description: 'Placeholder',
-      table: {
-        defaultValue: {
-          summary: 'undefined',
-        },
-      },
     },
     onChange: {
       action: 'onChange',
       description: 'Trigger when select a country code',
-      table: {
-        defaultValue: {
-          summary: 'undefined',
-        },
-      },
     },
     countryCodeList: {
       description: 'Country Code List (required)',
-      table: {
-        defaultValue: {
-          summary: '[]',
-        },
-      },
     },
   },
 } as Meta;
