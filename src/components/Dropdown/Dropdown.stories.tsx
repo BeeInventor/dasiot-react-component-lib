@@ -35,7 +35,6 @@ export default {
     onSelect: { action: 'onSelected' },
     disabled: {
       control: 'boolean',
-      defaultValue: false,
     },
     className: {
       control: 'text',
@@ -52,7 +51,6 @@ export default {
     mode: {
       control: 'radio',
       options: ['dark', 'light'],
-      defaultValue: 'light',
     },
   },
 } as Meta;

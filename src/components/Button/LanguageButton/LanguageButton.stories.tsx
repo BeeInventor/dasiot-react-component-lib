@@ -1,24 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-// import makeStyles from '@mui/material/styles/makeStyles';
 import LanguageButton from './LanguageButton';
 import { LanguageButtonProps } from './LanguageButton.types';
 import { colors } from '@mui/material';
-
-// const useStyles = makeStyles(
-//   () => ({
-//     borderRed: {
-//       border: '1px solid red',
-//     },
-//     borderGreen: {
-//       border: '1px solid green',
-//     },
-//     borderBlue: {
-//       border: '1px solid blue',
-//     },
-//   }),
-//   { name: 'LanguageButtonStorybook' },
-// );
 
 export default {
   title: 'Components/Button/LanguageButton',
@@ -26,20 +10,10 @@ export default {
   argTypes: {
     list: {
       description: 'Language list',
-      table: {
-        defaultValue: {
-          summary: '[]',
-        },
-      },
     },
     onSelect: {
       action: 'onSelect',
       description: 'Trigger when select a language',
-      table: {
-        defaultValue: {
-          summary: '(lang: LanguageData) => void',
-        },
-      },
     },
   },
 } as Meta;
