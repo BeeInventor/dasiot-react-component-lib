@@ -16,7 +16,7 @@ const Root = styled(Box)(({}) => ({
 }));
 
 const TextField = styled(Box)(({ theme }) => ({
-  ...theme.text.Body_16_Reg,
+  ...theme.typography.body1,
   display: 'flex',
   alignItems: 'center',
   minWidth: DEFAULT_WIDTH,
@@ -31,27 +31,23 @@ const TextField = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Input = styled(InputBase)`
-  ${({ theme }) => ({ ...theme.text.Body_16_Reg })};
-  flex: 1;
-  color: white;
-  background-color: transparent;
-  outline: none;
-  border: none;
-  input:-webkit-autofill,
-  input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
-  }
-  input[data-autocompleted] {
-    background-color: transparent !important;
-  }
-`;
+const Input = styled(InputBase)(({ theme }) => ({
+  ...theme.typography.body1,
+  flex: 1,
+  color: 'white',
+  backgroundColor: 'transparent',
+  outline: 'none',
+  border: 'none',
+  '&::placeholder': {
+    color: '#9C9C9C',
+  },
+}));
 
 const ErrorMessage = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  ...theme.text.Caption_12_Reg,
+  ...theme.typography.caption,
   color: theme.color.highlight,
 }));
 

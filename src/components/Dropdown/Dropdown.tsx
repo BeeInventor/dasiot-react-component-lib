@@ -11,7 +11,7 @@ import Icon from '../Icon/Icon';
 import CheckSvg from '../../assets/image/svg/check.svg';
 
 const Root = styled(Box)(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   minWidth: 220,
   userSelect: 'none',
   cursor: 'pointer',
@@ -50,7 +50,7 @@ const List = styled(Box)(({ theme }) => ({
 }));
 
 const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',

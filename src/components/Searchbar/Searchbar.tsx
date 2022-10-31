@@ -20,7 +20,7 @@ const SearchInputContainer = styled(Box)(({}) => ({
 }));
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   display: 'flex',
   alignItems: 'center',
   width: '100%',
