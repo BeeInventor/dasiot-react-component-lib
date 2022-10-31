@@ -1,66 +1,45 @@
 import createTheme from '@mui/material/styles/createTheme';
-import { Color, Text } from './Theme.types';
-
-export const text: Text = {
-  Head_20_Bold: {
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: 20,
-    lineHeight: 1.35,
-  },
-  Head_20_Medium: {
-    fontWeight: 500,
-    fontSize: 20,
-    lineHeight: 1.35,
-  },
-  Head_Sub_18_Bold: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 1.33,
-  },
-  Subtitle_16_Med: {
-    fontWeight: 500,
-    fontSize: 16,
-    lineHeight: 1.5,
-  },
-  Subtitle_14_Reg: {
-    fontWeight: 'normal',
-    fontSize: 14,
-    lineHeight: 1.357,
-  },
-  Body_16_Reg: {
-    fontWeight: 'normal',
-    fontSize: 16,
-    lineHeight: 1.5,
-  },
-  Body_14_Reg: {
-    fontWeight: 'normal',
-    fontSize: 14,
-    lineHeight: 1.57,
-  },
-  Caption_12_Reg: {
-    fontWeight: 'normal',
-    fontSize: 12,
-    lineHeight: 2,
-  },
-};
+import { Color } from './Theme.types';
 
 export const color: Color = {
   primary: {
+    $60: '#FFCE4F',
     $80: '#FFB905',
     $100: '#E6A600',
   },
   secondary: {
+    $20: '#F3F3F3',
     $40: '#E5E5E5',
     $60: '#A1A1A1',
     $80: '#656565',
     $100: '#3E3E3E',
+    $120: '#333333',
+    $140: '#262626',
+  },
+  gray: {
+    $235: '#EBEBEB',
+    $240: '#F0F0F0',
+    $245: '#F5F5F5',
+    $250: '#FAFAFA',
+  },
+  red: {
+    $100: '#FF6B00',
+    $120: '#CC0000',
   },
   green: {
     $100: '#78DC00',
   },
+  lightRed: '#FF4500',
   highlight: '#FF6B00',
   box_bbg: '#F3F3F3',
+  random: {
+    $1: '#58B99E',
+    $2: '#E96363',
+    $3: '#EF8C34',
+    $4: '#5296D5',
+    $5: '#B152C6',
+    $6: '#1C4252',
+  },
 };
 
 const theme = createTheme({
@@ -73,8 +52,14 @@ const theme = createTheme({
       'Arial',
       'sans-serif',
     ].join(','),
-    h2: {
+    h1: {
       fontSize: '1.75rem',
+      lineHeight: 1.5,
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: '1.25rem',
       lineHeight: 1.5,
       fontFamily: 'Montserrat',
       fontWeight: 700,
@@ -86,14 +71,19 @@ const theme = createTheme({
       fontWeight: 700,
     },
     h4: {
-      fontSize: '0.88rem',
+      fontSize: '0.875rem',
       lineHeight: 1.5,
       fontFamily: 'Montserrat',
       fontWeight: 700,
     },
     subtitle1: {
       fontSize: '2.5rem',
-      lineHeight: 1.2,
+      lineHeight: 1.3,
+      fontWeight: 700,
+    },
+    subtitle2: {
+      fontSize: '1.875rem',
+      lineHeight: 1.3,
       fontWeight: 700,
     },
     body1: {
@@ -101,11 +91,11 @@ const theme = createTheme({
       lineHeight: 1.5,
     },
     body2: {
-      fontSize: '0.88rem',
+      fontSize: '0.875rem',
       lineHeight: 1.5,
     },
     caption: {
-      fontSize: '0.63rem',
+      fontSize: '0.625rem',
       lineHeight: 1.5,
     },
   },
@@ -118,7 +108,6 @@ const theme = createTheme({
     },
   },
   color,
-  text,
 });
 
 export default theme;

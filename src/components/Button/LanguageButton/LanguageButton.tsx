@@ -11,7 +11,7 @@ import languageIcon from '../../../assets/image/svg/btn_ic_lan.svg';
 import checkIcon from '../../../assets/image/svg/check.svg';
 
 const Root = styled(Box)(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   cursor: 'pointer',
   display: 'inline-flex',
   alignItems: 'center',
@@ -34,7 +34,7 @@ const Menu = styled(Box)(({}) => ({
 }));
 
 const Item = styled(Box)(({ theme }) => ({
-  ...theme.text.Subtitle_16_Med,
+  ...theme.typography.h3,
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
