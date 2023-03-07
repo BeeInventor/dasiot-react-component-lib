@@ -1,9 +1,10 @@
 import { Dialog, DialogContent } from '@mui/material';
 import { Meta, Story } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../Button';
 import Dropdown from './Dropdown';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
+import DropdownV2 from './DropdownV2';
 
 const list: DropDownItem[] = [
   {
@@ -149,4 +150,28 @@ Reset.parameters = {
   backgrounds: {
     default: 'secondary80',
   },
+};
+
+export const Version2: Story<DropDownProps> = (args) => {
+  const [selectedId, setSelectedId] = useState<string | undefined>();
+
+  useEffect(() => {
+    console.log(selectedId);
+  }, [selectedId]);
+
+  return (
+    <div>
+      <DropdownV2
+        {...args}
+        selectedId={selectedId}
+        onSelect={(value) => setSelectedId(value as string)}
+      />
+    </div>
+  );
+};
+
+Version2.args = {
+  mode: 'dark',
+  list,
+  placeholder: 'Please Select Item',
 };
