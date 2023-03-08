@@ -9,23 +9,23 @@ import DropdownV2 from './DropdownV2';
 const list: DropDownItem[] = [
   {
     id: 'A001',
+    value: 'A001',
     name: 'Distributor',
-    value: 'Distributor',
   },
   {
     id: 'A002',
+    value: 'A002',
     name: 'Distributor A',
-    value: 'Distributor-A',
   },
   {
     id: 'A003',
+    value: 'A003',
     name: 'Distributor B',
-    value: 'Distributor-B',
   },
   {
     id: 'A004',
+    value: 'A004',
     name: 'Distributor C',
-    value: 'Distributor-C',
   },
 ];
 
