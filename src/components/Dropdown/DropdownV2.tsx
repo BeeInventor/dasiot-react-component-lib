@@ -109,7 +109,6 @@ const DropdownV2: React.VFC<DropDownProps> = (props) => {
 
   const handleOnClick = (item: DropDownItem) => {
     setIsOpen(false);
-    setSelectedItem(item);
     onSelect(item.value, item);
   };
 

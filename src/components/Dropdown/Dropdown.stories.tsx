@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from '@mui/material';
 import { Meta, Story } from '@storybook/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../Button';
 import Dropdown from './Dropdown';
 import { DropDownItem, DropDownProps } from './Dropdown.type';
@@ -154,10 +154,6 @@ Reset.parameters = {
 
 export const Version2: Story<DropDownProps> = (args) => {
   const [selectedId, setSelectedId] = useState<string | undefined>();
-
-  useEffect(() => {
-    console.log(selectedId);
-  }, [selectedId]);
 
   return (
     <div>
