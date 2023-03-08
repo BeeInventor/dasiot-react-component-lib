@@ -148,7 +148,7 @@ const DropdownV2: React.VFC<DropDownProps> = (props) => {
         onClick={handleOnClickSelect}
         {...otherProps}
       >
-        {selectedId ?? placeholder}
+        {selectedItem?.name ?? placeholder}
         <Icon className="Dropdown-icon">
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </Icon>
