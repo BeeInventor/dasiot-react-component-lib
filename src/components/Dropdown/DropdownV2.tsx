@@ -78,7 +78,7 @@ const DropdownV2: React.VFC<DropDownProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedId) {
+    if (selectedId && selectedId !== selectedItem?.id) {
       for (let i = 0; i < list.length; i++) {
         if (selectedId === list[i].id) {
           setSelectedItem(list[i]);
@@ -136,7 +136,7 @@ const DropdownV2: React.VFC<DropDownProps> = (props) => {
         className={classNames(
           'Dropdown-root',
           {
-            'Dropdown-empty': !selectedItem,
+            'Dropdown-empty': !selectedId,
           },
           {
             'Dropdown--disabled': disabled,
@@ -149,7 +149,7 @@ const DropdownV2: React.VFC<DropDownProps> = (props) => {
         onClick={handleOnClickSelect}
         {...otherProps}
       >
-        {selectedItem?.name ?? placeholder}
+        {selectedId ?? placeholder}
         <Icon className="Dropdown-icon">
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </Icon>
