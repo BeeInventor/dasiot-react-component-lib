@@ -48,16 +48,29 @@ const List = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface LabelColorProps {
+interface PathLabelProps {
   color: string;
 }
 
-const LabelColor = styled('span')<LabelColorProps>`
+const PathLabel = styled('span')<PathLabelProps>`
   margin: 0;
   padding: 0;
   width: 14px;
   height: 14px;
   border-radius: 50%;
+  background-color: ${({ color }) => color};
+`;
+
+interface OrgLabelProps {
+  color: string;
+}
+
+const OrgLabel = styled('span')<OrgLabelProps>`
+  margin: 0;
+  padding: 0;
+  width: 6px;
+  height: 14px;
+  border-radius: 3px;
   background-color: ${({ color }) => color};
 `;
 
@@ -96,6 +109,7 @@ const DropdownColor: React.VFC<DropDownColorProps> = (props) => {
     popperProps,
     selectionId,
     mode = 'light',
+    type = 'path',
     ...otherProps
   } = props;
   const selectRef = useRef<HTMLDivElement>(null);
@@ -150,7 +164,11 @@ const DropdownColor: React.VFC<DropDownColorProps> = (props) => {
         {...itemProps}
       >
         <Icon className="Dropdown-icon">
-          <LabelColor color={item.color} />
+          {type === 'path' ? (
+            <PathLabel color={item.color} />
+          ) : (
+            <OrgLabel color={item.color} />
+          )}
         </Icon>
         {item.name}
       </Item>
@@ -178,7 +196,12 @@ const DropdownColor: React.VFC<DropDownColorProps> = (props) => {
       >
         {selectedItem?.name ? (
           <ContainerLabel>
-            <LabelColor color={selectedItem?.color ?? '#000'} />
+            {type === 'path' ? (
+              <PathLabel color={selectedItem?.color ?? '#000'} />
+            ) : (
+              <OrgLabel color={selectedItem?.color ?? '#000'} />
+            )}
+
             {selectedItem?.name ?? placeholder}
           </ContainerLabel>
         ) : (
