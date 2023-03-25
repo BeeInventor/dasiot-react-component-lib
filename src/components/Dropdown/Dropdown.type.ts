@@ -17,6 +17,10 @@ export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
    */
   list: DropDownItem[];
   /**
+   * Contain Exceptance
+   */
+  isExceptance?: boolean;
+  /**
    * Placeholder
    */
   placeholder?: string;

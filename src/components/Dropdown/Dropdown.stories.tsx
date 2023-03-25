@@ -65,6 +65,14 @@ Default.args = {
   list,
 };
 
+export const Exceptance: Story<DropDownProps> = Template.bind({});
+
+Exceptance.args = {
+  placeholder: 'Select',
+  list,
+  isExceptance: true,
+};
+
 export const Selected: Story<DropDownProps> = Template.bind({});
 
 Selected.args = {

@@ -49,20 +49,42 @@ const List = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
+interface ItemProps {
+  isExceptance?: boolean;
+}
+
+const Item = styled(Box, {
+  label: 'Dropdown-item',
+  shouldForwardProp: (prop) => prop !== 'isExceptance',
+})<ItemProps>(({ theme, isExceptance }) => ({
   ...theme.typography.h3,
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   lineHeight: 2.5,
+  position: 'relative',
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, .05)',
+  },
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '1px',
+    width: '98%',
+    margin: 'auto',
+    borderBottom: isExceptance
+      ? `1px solid ${theme.color.secondary.$40}`
+      : 'none',
   },
 }));
 
 const Dropdown: React.VFC<DropDownProps> = (props) => {
   const {
     list,
+    isExceptance,
     itemProps,
     placeholder,
     selectedId,
@@ -115,11 +137,12 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
 
   const items = list
     .filter((item) => item.id !== selectionId)
-    .map((item) => (
+    .map((item, i) => (
       <Item
         key={`dropdown-item-${item.id}`}
         className="Dropdown-item"
         onClick={() => handleOnClick(item)}
+        isExceptance={isExceptance && i === 0}
         {...itemProps}
       >
         <Icon className="Dropdown-icon">
