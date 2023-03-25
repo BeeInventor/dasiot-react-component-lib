@@ -73,7 +73,7 @@ const Item = styled(Box, {
     right: 0,
     bottom: 0,
     height: '1px',
-    width: '98%',
+    width: '90%',
     margin: 'auto',
     borderBottom: isExceptance
       ? `1px solid ${theme.color.secondary.$40}`
