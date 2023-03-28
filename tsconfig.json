@@ -16,11 +16,7 @@
     "esModuleInterop": true,
     "emitDeclarationOnly": false,
     "baseUrl": "src/",
-    "paths": {
-      "components": ["src/components/*"]
-    }
   },
   "include": ["src/**/*.tsx", "src/**/*.ts"],
   "exclude": ["lib", "node_modules"],
-  "types": ["typePatches"]
 }
