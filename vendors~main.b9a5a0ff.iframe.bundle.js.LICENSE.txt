@@ -48,17 +48,17 @@ object-assign
  */
 
 /**
- * @license React
- * react-is.production.min.js
+ * @mui/material v5.11.14
  *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
+ * @license MIT
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-/** @license MUI v5.10.8
+/**
+ * @mui/styled-engine v5.11.11
  *
+ * @license MIT
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
