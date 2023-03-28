@@ -23,3 +23,10 @@ Default.args = {
     placeholder: 'Distributor',
   },
 };
+
+export const FullWidth: Story<SearchTextFieldProps> = Template.bind({});
+
+FullWidth.args = {
+  ...Default.args,
+  width: '100%',
+};

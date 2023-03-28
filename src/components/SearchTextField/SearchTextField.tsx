@@ -17,6 +17,7 @@ const Container = styled(Box)`
 
   & > input {
     display: inline-block;
+    width: 100%;
     font: inherit;
     font-size: 1rem;
     font-weight: 500;
@@ -28,6 +29,10 @@ const Container = styled(Box)`
     &::placeholder {
       color: ${({ theme }) => theme.color.secondary.$60};
     }
+  }
+
+  & > svg {
+    flex: 0 0 auto;
   }
 `;
 
