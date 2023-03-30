@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import OrgText, { OrgTextProps } from '.';
+import OrgText, { OrgTextProps } from './OrgText';
 
 export default {
   title: 'Components/OrgText',
