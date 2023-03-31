@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material';
 import React from 'react';
 
 import { SearchTextFieldProps } from './SearchTextField.type';
-import SearchSvgIcon from '../../svg/SearchSvgIcon';
+import SearchSvgIcon from '../../../svg/SearchSvgIcon';
 
 const Container = styled(Box)`
   display: inline-flex;
