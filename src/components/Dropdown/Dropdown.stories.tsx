@@ -30,7 +30,7 @@ const list: DropDownItem[] = [
 ];
 
 export default {
-  title: 'Components/Dropdown',
+  title: 'Components/Dropdown/Dropdown',
   component: Dropdown,
   argTypes: {
     onSelect: { action: 'onSelected' },

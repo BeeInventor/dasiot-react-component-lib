@@ -11,3 +11,4 @@ export { default as DatePicker } from './DatePicker';
 export { default as Step } from './Step';
 export { default as SearchTextField } from './TextField/SearchTextField';
 export { default as OrgText } from './OrgText';
+export { default as StatusDropdown } from './Dropdown/StatusDropdown';
