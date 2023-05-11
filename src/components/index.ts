@@ -12,3 +12,4 @@ export { default as Step } from './Step';
 export { default as SearchTextField } from './TextField/SearchTextField';
 export { default as OrgText } from './OrgText';
 export { default as StatusDropdown } from './Dropdown/StatusDropdown';
+export { default as CheckboxLight } from './Checkbox/CheckboxLight';
