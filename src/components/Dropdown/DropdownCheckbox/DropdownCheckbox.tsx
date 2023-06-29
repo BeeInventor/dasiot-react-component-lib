@@ -49,32 +49,6 @@ const List = styled(Box)(({ theme }) => ({
   },
 }));
 
-// interface PathLabelProps {
-//   color: string;
-// }
-
-// const PathLabel = styled('span')<PathLabelProps>`
-//   margin: 0;
-//   padding: 0;
-//   width: 14px;
-//   height: 14px;
-//   border-radius: 50%;
-//   background-color: ${({ color }) => color};
-// `;
-
-// interface OrgLabelProps {
-//   color: string;
-// }
-
-// const OrgLabel = styled('span')<OrgLabelProps>`
-//   margin: 0;
-//   padding: 0;
-//   width: 6px;
-//   height: 14px;
-//   border-radius: 3px;
-//   background-color: ${({ color }) => color};
-// `;
-
 interface ItemProps {
   selected: boolean;
 }
