@@ -70,7 +70,7 @@ const listOrg: DropDownColorItem[] = [
 ];
 
 export default {
-  title: 'Components/DropdownColor',
+  title: 'Components/Dropdown/DropdownColor',
   component: DropdownColor,
   argTypes: {
     onSelect: { action: 'onSelected' },
