@@ -22,6 +22,21 @@ const list: DropdownCheckboxItem[] = [
     value: 'floor-3',
     name: 'Floor 3',
   },
+  {
+    id: 'floor-4',
+    value: 'floor-4',
+    name: 'Floor 4',
+  },
+  {
+    id: 'floor-5',
+    value: 'floor-5',
+    name: 'Floor 5',
+  },
+  {
+    id: 'floor-6',
+    value: 'floor-6',
+    name: 'Floor 6',
+  },
 ];
 
 export default {
@@ -52,7 +67,10 @@ export default {
 } as Meta;
 
 export const Default: Story<DropdownCheckboxProps> = (args) => {
-  const [selectedIds, setSelectedIds] = useState<string[]>();
+  const [selectedIds, setSelectedIds] = useState<string[]>([
+    list[0].value as string,
+    list[1].value as string,
+  ]);
 
   return (
     <div>
@@ -68,5 +86,6 @@ export const Default: Story<DropdownCheckboxProps> = (args) => {
 Default.args = {
   mode: 'dark',
   list,
+
   placeholder: 'Please Select Item',
 };

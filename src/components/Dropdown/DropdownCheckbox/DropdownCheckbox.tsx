@@ -57,9 +57,9 @@ const Item = styled(Box, { label: 'Dropdown-item' })<ItemProps>(
   ({ theme, selected }) => ({
     ...theme.typography.h3,
     cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    lineHeight: 2.5,
+    // display: 'flex',
+    // alignItems: 'center',
+    // lineHeight: 2.5,
     '&:hover': {
       backgroundColor: 'rgba(0, 0, 0, .05)',
     },
@@ -70,6 +70,10 @@ const Item = styled(Box, { label: 'Dropdown-item' })<ItemProps>(
 const ContainerLabel = styled('div')`
   display: flex;
   align-items: center;
+  max-width: 320px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   gap: 10px;
 `;
 
@@ -108,6 +112,8 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
   useEffect(() => {
     if (selectedIds === undefined || selectedIds.length === 0) {
       setItemChecked([]);
+    } else {
+      setItemChecked(selectedIds);
     }
   }, [selectedIds]);
 
@@ -127,7 +133,7 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
     .map((item) => (
       <Item
         key={`dropdown-item-${item.id}`}
-        className="Dropdown-item"
+        // className="Dropdown-item"
         selected={itemChecked.includes(item.value as string)}
         {...itemProps}
       >
