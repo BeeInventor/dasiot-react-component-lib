@@ -104,12 +104,6 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
   };
 
   useEffect(() => {
-    if (itemChecked.length > 0) {
-      onSelect(itemChecked);
-    }
-  }, [itemChecked]);
-
-  useEffect(() => {
     if (selectedIds === undefined || selectedIds.length === 0) {
       setItemChecked([]);
     } else {
@@ -126,6 +120,7 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
       updateValue.push(newValue);
     }
     setItemChecked(updateValue);
+    onSelect(updateValue);
   };
 
   const items = list
