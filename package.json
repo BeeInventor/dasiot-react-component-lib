@@ -1,6 +1,6 @@
 {
   "name": "@beeinventor/dasiot-react-component-lib",
-  "version": "1.7.3",
+  "version": "1.8.0",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
