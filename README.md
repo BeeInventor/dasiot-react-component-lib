@@ -5,13 +5,13 @@
 1. Install packages
 
 ```sh
-npm install
+pnpm install
 ```
 
 2. Open Storybook
 
 ```sh
-npm run storybook
+pnpm run storybook
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ npm run storybook
 3. Run
 
 ```sh
-yarn add @beeinventor/dasiot-react-component-lib
+pnpm add @beeinventor/dasiot-react-component-lib
 ```
 
 ### Import Component
