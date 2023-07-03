@@ -1,53 +1,57 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import PasswordTextField from '.';
-import { PasswordTextFieldProps } from './PasswordTextField.types';
 import { colors } from '@mui/material';
 
-export default {
+const meta: Meta<typeof PasswordTextField> = {
   title: 'Components/TextField/PasswordTextField',
   component: PasswordTextField,
   argTypes: {
     onChange: { action: 'onChange' },
   },
-} as Meta;
-
-const Template: Story<PasswordTextFieldProps> = (args) => (
-  <PasswordTextField {...args} />
-);
-
-export const Default: Story<PasswordTextFieldProps> = Template.bind({});
-
-Default.args = {
-  placeholder: 'Password',
 };
 
-export const Error: Story<PasswordTextFieldProps> = Template.bind({});
+export default meta;
 
-Error.args = {
-  ...Default.args,
-  error: true,
-  errorMessage: 'Password length at least 8 characters',
-};
+type Story = StoryObj<typeof PasswordTextField>;
 
-export const CustomStyle: Story<PasswordTextFieldProps> = Template.bind({});
-
-CustomStyle.args = {
-  ...Default.args,
-  sx: {
-    backgroundColor: 'black',
+export const Default: Story = {
+  args: {
+    placeholder: 'Password',
   },
-  rootProps: {
+  render: (args) => <PasswordTextField {...args} />,
+};
+
+export const Error: Story = {
+  args: {
+    placeholder: 'Password',
+    error: true,
+    errorMessage: 'Password length at least 8 characters',
+  },
+  render: (args) => <PasswordTextField {...args} />,
+};
+
+export const CustomStyle: Story = {
+  args: {
+    placeholder: 'Password',
+    error: true,
+    errorMessage: 'Password length at least 8 characters',
     sx: {
-      border: `1px solid ${colors.blue['300']}`,
+      backgroundColor: 'black',
     },
-  },
-  inputProps: {
-    sx: {
-      color: 'pink',
-      '&::placeholder': {
+    rootProps: {
+      sx: {
+        border: `1px solid ${colors.blue['300']}`,
+      },
+    },
+    inputProps: {
+      sx: {
         color: 'pink',
+        '&::placeholder': {
+          color: 'pink',
+        },
       },
     },
   },
+  render: (args) => <PasswordTextField {...args} />,
 };

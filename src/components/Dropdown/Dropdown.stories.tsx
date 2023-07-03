@@ -1,9 +1,9 @@
 import { Dialog, DialogContent } from '@mui/material';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import Button from '../Button';
 import Dropdown from './Dropdown';
-import { DropDownItem, DropDownProps } from './Dropdown.type';
+import { DropDownItem } from './Dropdown.type';
 import DropdownV2 from './DropdownV2';
 
 const list: DropDownItem[] = [
@@ -29,7 +29,7 @@ const list: DropDownItem[] = [
   },
 ];
 
-export default {
+const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown/Dropdown',
   component: Dropdown,
   argTypes: {
@@ -40,12 +40,12 @@ export default {
     className: {
       control: 'text',
     },
-    listClassName: {
-      control: 'text',
-    },
-    itemClassName: {
-      control: 'text',
-    },
+    // listClassName: {
+    //   control: 'text',
+    // },
+    // itemClassName: {
+    //   control: 'text',
+    // },
     selectedId: {
       control: 'text',
     },
@@ -54,128 +54,135 @@ export default {
       options: ['dark', 'light'],
     },
   },
-} as Meta;
-
-const Template: Story<DropDownProps> = (args) => <Dropdown {...args} />;
-
-export const Default: Story<DropDownProps> = Template.bind({});
-
-Default.args = {
-  placeholder: 'Select',
-  list,
 };
 
-export const Exceptance: Story<DropDownProps> = Template.bind({});
+export default meta;
 
-Exceptance.args = {
-  placeholder: 'Select',
-  list,
-  isExceptance: true,
+type Story = StoryObj<typeof Dropdown>;
+
+export const Default: Story = {
+  render: () => <Dropdown list={list} onSelect={() => {}} />,
 };
 
-export const Selected: Story<DropDownProps> = Template.bind({});
-
-Selected.args = {
-  ...Default.args,
-  selectedId: 'A004',
+export const Exceptance: Story = {
+  render: () => (
+    <Dropdown
+      placeholder="Select"
+      list={list}
+      isExceptance
+      onSelect={() => {}}
+    />
+  ),
 };
 
-export const Selection: Story<DropDownProps> = Template.bind({});
-
-Selection.args = {
-  ...Default.args,
-  selectedId: 'A004',
-  selectionId: 'A003',
+export const Selected: Story = {
+  render: () => (
+    <Dropdown
+      placeholder="Select"
+      list={list}
+      selectedId="A004"
+      onSelect={() => {}}
+    />
+  ),
 };
 
-export const WithDialog: Story<DropDownProps> = (args) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div>
-      <Button variant="contained" onClick={() => setIsOpen(true)}>
-        Open Dialog
-      </Button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
-          <Dropdown {...args} />
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
+export const Selection: Story = {
+  render: () => (
+    <Dropdown
+      placeholder="Select"
+      list={list}
+      selectedId="A004"
+      selectionId="A003"
+      onSelect={() => {}}
+    />
+  ),
 };
 
-WithDialog.args = {
-  ...Default.args,
-  popperProps: {
-    disablePortal: true,
+export const WithDialog: Story = {
+  args: {
+    list,
+    popperProps: {
+      disablePortal: true,
+    },
+  },
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <div>
+        <Button variant="contained" onClick={() => setIsOpen(true)}>
+          Open Dialog
+        </Button>
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+          <DialogContent sx={{ height: 300, backgroundColor: '#eee' }}>
+            <Dropdown {...args} />
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
   },
 };
 
-export const DarkMode: Story<DropDownProps> = Template.bind({});
-
-DarkMode.args = {
-  mode: 'dark',
-  list,
-  selectedId: 'A001',
-};
-
-DarkMode.parameters = {
-  backgrounds: {
-    default: 'secondary80',
+export const Reset: Story = {
+  parameters: {
+    backgrounds: {
+      default: 'light',
+    },
+  },
+  args: {
+    mode: 'dark',
+    list,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>();
+    const handleUnselect = () => {
+      setSelectedId(undefined);
+    };
+    return (
+      <div>
+        <Button
+          variant="contained"
+          onClick={handleUnselect}
+          sx={{ marginBottom: '10px' }}
+        >
+          Reset All
+        </Button>
+        <Dropdown
+          {...args}
+          selectedId={selectedId}
+          onSelect={(value) => setSelectedId(value as string)}
+        />
+      </div>
+    );
   },
 };
 
-export const Reset: Story<DropDownProps> = (args) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>();
-  const handleUnselect = () => {
-    setSelectedId(undefined);
-  };
-  return (
-    <div>
-      <Button
-        variant="contained"
-        onClick={handleUnselect}
-        sx={{ marginBottom: '10px' }}
-      >
-        Reset All
-      </Button>
-      <Dropdown
-        {...args}
-        selectedId={selectedId}
-        onSelect={(value) => setSelectedId(value as string)}
-      />
-    </div>
-  );
-};
-
-Reset.args = {
-  mode: 'dark',
-  list,
-  placeholder: 'Please Select Item',
-};
-
-Reset.parameters = {
-  backgrounds: {
-    default: 'secondary80',
+export const DarkMode: Story = {
+  args: {
+    mode: 'dark',
+    list,
+    selectedId: 'A001',
   },
+  render: (args) => <Dropdown {...args} />,
 };
 
-export const Version2: Story<DropDownProps> = (args) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>();
+export const Version2: Story = {
+  args: {
+    mode: 'dark',
+    list,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>();
 
-  return (
-    <div>
-      <DropdownV2
-        {...args}
-        selectedId={selectedId}
-        onSelect={(value) => setSelectedId(value as string)}
-      />
-    </div>
-  );
-};
-
-Version2.args = {
-  mode: 'dark',
-  list,
-  placeholder: 'Please Select Item',
+    return (
+      <div>
+        <DropdownV2
+          {...args}
+          selectedId={selectedId}
+          onSelect={(value) => setSelectedId(value as string)}
+        />
+      </div>
+    );
+  },
 };

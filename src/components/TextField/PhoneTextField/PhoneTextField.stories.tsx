@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { colors } from '@mui/material';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import PhoneTextField from '.';
 import Button from '../../Button';
-import { PhoneTextFieldProps } from './PhoneTextField.types';
 import TaiwanSvg from '../../../assets/image/svg/flag_Taiwan.svg';
 const countryCodeList = [
   {
@@ -60,7 +59,7 @@ const countryCodeList = [
   },
 ];
 
-export default {
+const meta: Meta<typeof PhoneTextField> = {
   title: 'Components/TextField/PhoneTextField',
   component: PhoneTextField,
   argTypes: {
@@ -78,89 +77,97 @@ export default {
       description: 'Country Code List (required)',
     },
   },
-} as Meta;
-
-const Template: Story<PhoneTextFieldProps> = (args) => (
-  <PhoneTextField {...args} />
-);
-
-export const Default: Story<PhoneTextFieldProps> = Template.bind({});
-
-Default.args = {
-  value: '',
-  placeholder: 'Phone Number',
-  countryCodeList,
 };
 
-export const ModeLight: Story<PhoneTextFieldProps> = Template.bind({});
+export default meta;
 
-ModeLight.args = {
-  value: '',
-  placeholder: 'Phone Number',
-  countryCodeList,
-  mode: 'light',
-};
+type Story = StoryObj<typeof PhoneTextField>;
 
-export const Error: Story<PhoneTextFieldProps> = Template.bind({});
-
-Error.args = {
-  ...Default.args,
-  error: true,
-  errorMessage: 'Invalid Phone',
-};
-
-export const HasValue: Story<PhoneTextFieldProps> = Template.bind({});
-
-HasValue.args = {
-  ...Default.args,
-  countryCode: '1',
-  value: '0990000001',
-};
-
-export const WithDialog: Story<PhoneTextFieldProps> = (args) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div>
-      <Button variant="contained" onClick={() => setIsOpen(true)}>
-        Open Dialog
-      </Button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogContent sx={{ height: 300 }}>
-          <PhoneTextField {...args} />
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-
-WithDialog.args = {
-  ...Default.args,
-  popperProps: {
-    disablePortal: true,
+export const Default: Story = {
+  args: {
+    value: '',
+    placeholder: 'Phone Number',
+    countryCodeList,
   },
+  render: (args) => <PhoneTextField {...args} />,
 };
 
-export const CustomStyle: Story<PhoneTextFieldProps> = (args) => (
-  <PhoneTextField {...args} />
-);
-
-CustomStyle.args = {
-  ...Default.args,
-  value: '0990000001',
-  sx: {
-    backgroundColor: 'black',
+export const ModeLight: Story = {
+  args: {
+    value: '',
+    placeholder: 'Phone Number',
+    countryCodeList,
+    mode: 'light',
   },
-  rootProps: {
-    sx: {
-      border: `1px solid ${colors.blue['300']}`,
+  render: (args) => <PhoneTextField {...args} />,
+};
+
+export const Error: Story = {
+  args: {
+    value: '',
+    placeholder: 'Phone Number',
+    countryCodeList,
+    error: true,
+    errorMessage: 'Invalid Phone',
+  },
+  render: (args) => <PhoneTextField {...args} />,
+};
+
+export const HasValue: Story = {
+  args: {
+    value: '0990000001',
+    placeholder: 'Phone Number',
+    countryCodeList,
+    countryCode: '1',
+  },
+  render: (args) => <PhoneTextField {...args} />,
+};
+
+export const WithDialog: Story = {
+  args: {
+    value: '',
+    placeholder: 'Phone Number',
+    countryCodeList,
+    popperProps: {
+      disablePortal: true,
     },
   },
-  inputProps: {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <div>
+        <Button variant="contained" onClick={() => setIsOpen(true)}>
+          Open Dialog
+        </Button>
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+          <DialogContent sx={{ height: 300 }}>
+            <PhoneTextField {...args} />
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  },
+};
+
+export const CustomStyle: Story = {
+  args: {
+    value: '0990000001',
     sx: {
-      color: 'pink',
-      '&::placeholder': {
+      backgroundColor: 'black',
+    },
+    rootProps: {
+      sx: {
+        border: `1px solid ${colors.blue['300']}`,
+      },
+    },
+    inputProps: {
+      sx: {
         color: 'pink',
+        '&::placeholder': {
+          color: 'pink',
+        },
       },
     },
   },
+  render: (args) => <PhoneTextField {...args} />,
 };

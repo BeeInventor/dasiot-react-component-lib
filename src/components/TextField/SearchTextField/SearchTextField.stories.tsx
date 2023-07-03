@@ -1,32 +1,35 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { SearchTextFieldProps } from './SearchTextField.type';
 import SearchTextField from './SearchTextField';
 
-export default {
+const meta: Meta<typeof SearchTextField> = {
   title: 'Components/TextField/SearchTextField',
   component: SearchTextField,
   argTypes: {
     onChange: { action: 'onChange' },
   },
-} as Meta;
-
-const Template: Story<SearchTextFieldProps> = (args) => (
-  <SearchTextField {...args} />
-);
-
-export const Default: Story<SearchTextFieldProps> = Template.bind({});
-
-Default.args = {
-  inputProps: {
-    placeholder: 'Distributor',
-  },
 };
 
-export const FullWidth: Story<SearchTextFieldProps> = Template.bind({});
+export default meta;
 
-FullWidth.args = {
-  ...Default.args,
-  width: '100%',
+type Story = StoryObj<typeof SearchTextField>;
+
+export const Default: Story = {
+  args: {
+    inputProps: {
+      placeholder: 'Distributor',
+    },
+  },
+  render: (args) => <SearchTextField {...args} />,
+};
+
+export const FullWidth: Story = {
+  args: {
+    inputProps: {
+      placeholder: 'Distributor',
+      width: '100%',
+    },
+  },
+  render: (args) => <SearchTextField {...args} />,
 };

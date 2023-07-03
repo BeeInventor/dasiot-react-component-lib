@@ -1,7 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import DropdownColor from './DropdownColor';
-import { DropDownColorItem, DropDownColorProps } from './DropdownColor.type';
+import { DropDownColorItem } from './DropdownColor.type';
 
 const list: DropDownColorItem[] = [
   {
@@ -69,7 +69,7 @@ const listOrg: DropDownColorItem[] = [
   },
 ];
 
-export default {
+const meta: Meta<typeof DropdownColor> = {
   title: 'Components/Dropdown/DropdownColor',
   component: DropdownColor,
   argTypes: {
@@ -80,12 +80,12 @@ export default {
     className: {
       control: 'text',
     },
-    listClassName: {
-      control: 'text',
-    },
-    itemClassName: {
-      control: 'text',
-    },
+    // listClassName: {
+    //   control: 'text',
+    // },
+    // itemClassName: {
+    //   control: 'text',
+    // },
     selectedId: {
       control: 'text',
     },
@@ -94,46 +94,51 @@ export default {
       options: ['dark', 'light'],
     },
   },
-} as Meta;
-
-export const DropdownColorPath: Story<DropDownColorProps> = (args) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>('path-a');
-
-  return (
-    <div>
-      <DropdownColor
-        {...args}
-        selectedId={selectedId}
-        onSelect={(value) => setSelectedId(value as string)}
-        type="path"
-      />
-    </div>
-  );
 };
 
-DropdownColorPath.args = {
-  mode: 'dark',
-  list,
-  placeholder: 'Please Select Item',
+export default meta;
+
+type Story = StoryObj<typeof DropdownColor>;
+
+export const DropdownColorPath: Story = {
+  args: {
+    mode: 'dark',
+    list,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>('path-a');
+
+    return (
+      <div>
+        <DropdownColor
+          {...args}
+          selectedId={selectedId}
+          onSelect={(value) => setSelectedId(value as string)}
+          type="path"
+        />
+      </div>
+    );
+  },
 };
+export const DropdownColorOrg: Story = {
+  args: {
+    mode: 'dark',
+    list: listOrg,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>('path-a');
 
-export const DropdownColorOrg: Story<DropDownColorProps> = (args) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>('path-a');
-
-  return (
-    <div>
-      <DropdownColor
-        {...args}
-        selectedId={selectedId}
-        onSelect={(value) => setSelectedId(value as string)}
-        type="org"
-      />
-    </div>
-  );
-};
-
-DropdownColorOrg.args = {
-  mode: 'dark',
-  list: listOrg,
-  placeholder: 'Please Select Item',
+    return (
+      <div>
+        <DropdownColor
+          {...args}
+          selectedId={selectedId}
+          onSelect={(value) => setSelectedId(value as string)}
+          type="org"
+        />
+      </div>
+    );
+  },
 };
