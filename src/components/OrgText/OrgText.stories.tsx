@@ -1,28 +1,32 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import OrgText, { OrgTextProps } from './OrgText';
+import OrgText from './OrgText';
 
-export default {
+const meta: Meta<typeof OrgText> = {
   title: 'Components/OrgText',
   component: OrgText,
   argTypes: {},
   parameters: {
     backgrounds: { default: 'light' },
   },
-} as Meta;
-
-const Template: Story<OrgTextProps> = (args) => <OrgText {...args} />;
-
-export const Default: Story<OrgTextProps> = Template.bind({});
-
-Default.args = {
-  orgName: 'BeeInventor',
 };
 
-export const SpecificColor: Story<OrgTextProps> = Template.bind({});
+export default meta;
 
-SpecificColor.args = {
-  ...Default.args,
-  orgColor: '#58B99E',
+type Story = StoryObj<typeof OrgText>;
+
+export const Default: Story = {
+  args: {
+    orgName: 'BeeInventor',
+  },
+  render: (args) => <OrgText {...args} />,
+};
+
+export const SpecificColor: Story = {
+  args: {
+    orgName: 'BeeInventor',
+    orgColor: '#58B99E',
+  },
+  render: (args) => <OrgText {...args} />,
 };

@@ -1,10 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import DropdownCheckbox from './DropdownCheckbox';
-import {
-  DropdownCheckboxItem,
-  DropdownCheckboxProps,
-} from './DropdownColor.type';
+import { DropdownCheckboxItem } from './DropdownColor.type';
 
 const list: DropdownCheckboxItem[] = [
   {
@@ -39,7 +36,7 @@ const list: DropdownCheckboxItem[] = [
   },
 ];
 
-export default {
+const meta: Meta<typeof DropdownCheckbox> = {
   title: 'Components/Dropdown/DropdownCheckbox',
   component: DropdownCheckbox,
   argTypes: {
@@ -50,42 +47,46 @@ export default {
     className: {
       control: 'text',
     },
-    listClassName: {
-      control: 'text',
-    },
-    itemClassName: {
-      control: 'text',
-    },
-    selectedId: {
-      control: 'text',
-    },
+    // listClassName: {
+    //   control: 'text',
+    // },
+    // itemClassName: {
+    //   control: 'text',
+    // },
+    // selectedId: {
+    //   control: 'text',
+    // },
     mode: {
       control: 'radio',
       options: ['dark', 'light'],
     },
   },
-} as Meta;
-
-export const Default: Story<DropdownCheckboxProps> = (args) => {
-  const [selectedIds, setSelectedIds] = useState<string[]>([
-    list[0].value as string,
-    list[1].value as string,
-  ]);
-
-  return (
-    <div>
-      <DropdownCheckbox
-        {...args}
-        selectedIds={selectedIds}
-        onSelect={(values) => setSelectedIds(values as string[])}
-      />
-    </div>
-  );
 };
 
-Default.args = {
-  mode: 'dark',
-  list,
+export default meta;
 
-  placeholder: 'Please Select Item',
+type Story = StoryObj<typeof DropdownCheckbox>;
+
+export const Default: Story = {
+  args: {
+    mode: 'dark',
+    list,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedIds, setSelectedIds] = useState<string[]>([
+      list[0].value as string,
+      list[1].value as string,
+    ]);
+
+    return (
+      <div>
+        <DropdownCheckbox
+          {...args}
+          selectedIds={selectedIds}
+          onSelect={(values) => setSelectedIds(values as string[])}
+        />
+      </div>
+    );
+  },
 };

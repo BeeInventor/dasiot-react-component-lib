@@ -18,7 +18,8 @@
     "baseUrl": "src/",
     "paths": {
       "components": ["src/components/*"]
-    }
+    },
+    "preserveSymlinks": true
   },
   "include": ["src/**/*.tsx", "src/**/*.ts"],
   "exclude": ["lib", "node_modules"],

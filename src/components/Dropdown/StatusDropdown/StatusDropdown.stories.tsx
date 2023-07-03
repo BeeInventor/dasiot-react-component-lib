@@ -1,12 +1,12 @@
 import React from 'react';
 import { styled } from '@mui/material';
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import theme from '../../../theme';
 
 import StatusDropdown, { StatusDropdownProps } from './StatusDropdown';
 
-export default {
+const meta: Meta<typeof StatusDropdown> = {
   title: 'Components/Dropdown/StatusDropdown',
   component: StatusDropdown,
   argTypes: {
@@ -15,7 +15,11 @@ export default {
   parameters: {
     backgrounds: { default: 'light' },
   },
-} as Meta;
+};
+
+export default meta;
+
+type Story = StoryObj<typeof StatusDropdown>;
 
 const Block = styled('div')`
   display: flex;
@@ -50,29 +54,28 @@ const statusMap: StatusDropdownProps['statusMap'] = {
   },
 };
 
-const Template: Story<StatusDropdownProps> = (args) => (
-  <Block>
-    <div>
-      <StatusDropdown {...args} defaultStatus="open" />
-      <StatusDropdown {...args} defaultStatus="open" disabled />
-    </div>
-    <div>
-      <StatusDropdown {...args} defaultStatus="inProgress" />
-      <StatusDropdown {...args} defaultStatus="inProgress" disabled />
-    </div>
-    <div>
-      <StatusDropdown {...args} defaultStatus="completed" />
-      <StatusDropdown {...args} defaultStatus="completed" disabled />
-    </div>
-    <div>
-      <StatusDropdown {...args} defaultStatus="suspend" />
-      <StatusDropdown {...args} defaultStatus="suspend" disabled />
-    </div>
-  </Block>
-);
-
-export const Default: Story<StatusDropdownProps> = Template.bind({});
-
-Default.args = {
-  statusMap,
+export const Default: Story = {
+  args: {
+    statusMap,
+  },
+  render: (args) => (
+    <Block>
+      <div>
+        <StatusDropdown {...args} defaultStatus="open" />
+        <StatusDropdown {...args} defaultStatus="open" disabled />
+      </div>
+      <div>
+        <StatusDropdown {...args} defaultStatus="inProgress" />
+        <StatusDropdown {...args} defaultStatus="inProgress" disabled />
+      </div>
+      <div>
+        <StatusDropdown {...args} defaultStatus="completed" />
+        <StatusDropdown {...args} defaultStatus="completed" disabled />
+      </div>
+      <div>
+        <StatusDropdown {...args} defaultStatus="suspend" />
+        <StatusDropdown {...args} defaultStatus="suspend" disabled />
+      </div>
+    </Block>
+  ),
 };
