@@ -1,6 +1,10 @@
 {
   "name": "@beeinventor/dasiot-react-component-lib",
+<<<<<<< Updated upstream
   "version": "1.8.0",
+=======
+  "version": "1.7.5",
+>>>>>>> Stashed changes
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [

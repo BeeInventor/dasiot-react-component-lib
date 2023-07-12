@@ -87,6 +87,7 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
     onSelect,
     popperProps,
     selectionId,
+
     mode = 'light',
     ...otherProps
   } = props;
@@ -111,16 +112,41 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
     }
   }, [selectedIds]);
 
-  const onChangeCheckbox = (value: any) => {
+  const onChangeCheckbox = (value: any, checked: boolean) => {
     const newValue = value;
     const updateValue = [...itemChecked];
-    if (itemChecked.includes(newValue)) {
-      updateValue.splice(updateValue.indexOf(newValue), 1);
+
+    if (newValue === 'all' && checked) {
+      const resetValue = [...list.map((l) => l.value as string)];
+      setItemChecked(resetValue);
+      onSelect(resetValue);
+    } else if (newValue === 'all' && !checked) {
+      setItemChecked([]);
+      onSelect([]);
     } else {
-      updateValue.push(newValue);
+      const isContainAll = itemChecked.includes('all');
+      if (isContainAll) {
+        if (updateValue.indexOf('all') > -1) {
+          updateValue.splice(updateValue.indexOf('all'), 1);
+        }
+        if (newValue !== 'all') {
+          if (itemChecked.includes(newValue)) {
+            updateValue.splice(updateValue.indexOf(newValue), 1);
+          } else {
+            updateValue.push(newValue);
+          }
+        }
+      } else {
+        if (itemChecked.includes(newValue)) {
+          updateValue.splice(updateValue.indexOf(newValue), 1);
+        } else {
+          updateValue.push(newValue);
+        }
+      }
+
+      setItemChecked(updateValue);
+      onSelect(updateValue);
     }
-    setItemChecked(updateValue);
-    onSelect(updateValue);
   };
 
   const items = list
@@ -133,7 +159,10 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
         {...itemProps}
       >
         <CheckboxLight
-          checked={itemChecked.includes(item.value as string)}
+          checked={
+            itemChecked.includes(item.value as string) ||
+            itemChecked.includes('all')
+          }
           label={item.name}
           value={item.value}
           onChange={onChangeCheckbox}
@@ -161,7 +190,9 @@ const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
         onClick={handleOnClickSelect}
         {...otherProps}
       >
-        {itemChecked && itemChecked.length > 0 ? (
+        {itemChecked.includes('all') ? (
+          list.find((d) => d.value === 'all')?.name
+        ) : itemChecked && itemChecked.length > 0 ? (
           <ContainerLabel>
             {list
               .filter((t) => itemChecked.includes(t.value as string))

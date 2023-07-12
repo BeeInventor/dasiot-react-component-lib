@@ -5,6 +5,11 @@ import { DropdownCheckboxItem } from './DropdownColor.type';
 
 const list: DropdownCheckboxItem[] = [
   {
+    id: 'all',
+    value: 'all',
+    name: 'All',
+  },
+  {
     id: 'floor-1',
     value: 'floor-1',
     name: 'Floor 1',
@@ -74,10 +79,10 @@ export const Default: Story = {
     placeholder: 'Please Select Item',
   },
   render: (args) => {
-    const [selectedIds, setSelectedIds] = useState<string[]>([
-      list[0].value as string,
-      list[1].value as string,
-    ]);
+    const [selectedIds, setSelectedIds] = useState<string[]>(
+      list.map((d) => d.value as string),
+    );
+  
 
     return (
       <div>
