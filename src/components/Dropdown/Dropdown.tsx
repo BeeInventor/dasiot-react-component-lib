@@ -91,7 +91,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
     disabled,
     onSelect,
     popperProps,
-    selectionId,
+    selectionIds,
     mode = 'light',
     ...otherProps
   } = props;
@@ -136,7 +136,7 @@ const Dropdown: React.VFC<DropDownProps> = (props) => {
   };
 
   const items = list
-    .filter((item) => item.id !== selectionId)
+    .filter((item) => !selectionIds?.includes(item.id))
     .map((item, i) => (
       <Item
         key={`dropdown-item-${item.id}`}

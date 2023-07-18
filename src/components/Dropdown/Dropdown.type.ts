@@ -44,5 +44,5 @@ export interface DropDownProps extends Omit<BoxProps, 'onSelect'> {
   /**
    * filter the list out of this id
    */
-  selectionId?: string;
+  selectionIds?: string[];
 }
