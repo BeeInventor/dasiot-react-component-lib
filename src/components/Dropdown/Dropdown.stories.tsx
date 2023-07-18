@@ -87,15 +87,31 @@ export const Selected: Story = {
 };
 
 export const Selection: Story = {
-  render: () => (
-    <Dropdown
-      placeholder="Select"
-      list={list}
-      selectedId="A004"
-      selectionId="A003"
-      onSelect={() => {}}
-    />
-  ),
+  render: () => {
+    const [selectionIds, setSelectionIds] = useState<string[]>([]);
+    const [selectedId, setSelectedId] = useState<string>();
+
+    const onChange = (value: string | number) => {
+      const updateValue = [...selectionIds];
+      if (selectionIds.includes(value as string)) {
+        updateValue.splice(updateValue.indexOf(value as string), 1);
+      } else {
+        updateValue.push(value as string);
+      }
+      setSelectionIds(updateValue);
+      setSelectedId(value as string);
+    };
+
+    return (
+      <Dropdown
+        placeholder="Select"
+        selectedId={selectedId}
+        list={list}
+        selectionIds={selectionIds}
+        onSelect={onChange}
+      />
+    );
+  },
 };
 
 export const WithDialog: Story = {
