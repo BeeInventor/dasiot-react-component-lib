@@ -1,0 +1,2 @@
+import{r as e}from"./index-0750f9e0.js";import{S as o}from"./SvgIcon-9dec3fb2.js";const i=t=>e.createElement(o,{fill:"none",xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24",...t},e.createElement("rect",{width:"24",height:"24",rx:"4",fill:"#E6A600"}),e.createElement("path",{d:"M7 12.6951L10.3049 16L17.5 9",stroke:"white",strokeWidth:"3",strokeLinecap:"round",strokeLinejoin:"round"}));export{i as C};
+//# sourceMappingURL=CheckboxSvgIcon-cb125583.js.map

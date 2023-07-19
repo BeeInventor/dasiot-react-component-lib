@@ -1,2 +1,0 @@
-import{R as e}from"./index-0750f9e0.js";import{S as o}from"./SvgIcon-79c8218a.js";const m=t=>{const{width:r=24,height:c=24,viewBox:i="0 0 24 24",...l}=t;return e.createElement(o,{viewBox:i,fill:"none",xmlns:"http://www.w3.org/2000/svg",...l,sx:{width:r,height:c}},e.createElement("circle",{cx:"12",cy:"12",r:"6",fill:"#FF6B00"}),e.createElement("circle",{cx:"12",cy:"9",r:"1",fill:"white"}),e.createElement("rect",{x:"11",y:"11",width:"2",height:"5",rx:"1",fill:"white"}))};export{m as I};
-//# sourceMappingURL=IcErrorIfo-6501358a.js.map
