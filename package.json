@@ -14,9 +14,10 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o docs",
+    "build-storybook": "storybook build -o docs && touch ./docs/.nojekyll",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
+    "prepare": "husky install",
     "build": "rollup -c"
   },
   "browserslist": {
@@ -79,7 +80,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-storybook": "^0.6.12",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "react": "^18.0.0",

@@ -37,7 +37,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-storybook: ^0.6.12
   fsevents: ^2.3.2
-  husky: ^6.0.0
+  husky: ^7.0.0
   lint-staged: ^11.0.0
   prettier: ^2.3.0
   react: ^18.0.0
@@ -95,7 +95,7 @@ devDependencies:
   eslint-config-prettier: 8.8.0_eslint@7.32.0
   eslint-plugin-prettier: 4.2.1_wbjvq5l5nilmuxvc4ylcjwialu
   eslint-plugin-storybook: 0.6.12_jofidmxrjzhj7l6vknpw5ecvfe
-  husky: 6.0.0
+  husky: 7.0.4
   lint-staged: 11.2.6
   prettier: 2.8.8
   react: 18.2.0
@@ -6384,8 +6384,9 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: true
 
-  /husky/6.0.0:
-    resolution: {integrity: sha512-SQS2gDTB7tBN486QSoKPKQItZw97BMOd+Kdb6ghfpBc0yXyzrddI0oDV5MkDAbuB4X2mO3/nj60TRMcYxwzZeQ==}
+  /husky/7.0.4:
+    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
+    engines: {node: '>=12'}
     hasBin: true
     dev: true
 
