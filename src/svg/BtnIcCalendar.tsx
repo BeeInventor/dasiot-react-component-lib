@@ -1,12 +1,14 @@
-import React, { CSSProperties, VFC } from 'react';
+import React from 'react';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 interface Props {
-  width?: CSSProperties['width'];
-  height?: CSSProperties['height'];
+  width?: number;
+  height?: number;
 }
 
-const BtnIcCalendar: VFC<Props & Omit<SvgIconProps, keyof Props>> = (props) => {
+const BtnIcCalendar: React.FC<Props & Omit<SvgIconProps, keyof Props>> = (
+  props,
+) => {
   const { viewBox = '0 0 24 26', sx, ...otherProps } = props;
 
   return (

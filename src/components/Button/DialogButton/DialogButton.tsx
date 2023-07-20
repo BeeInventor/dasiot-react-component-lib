@@ -149,7 +149,7 @@ const Button = styled(MUIButton)<ButtonProps>`
   })}
 `;
 
-const DialogButton: React.VFC<DialogButtonProps> = ({
+const DialogButton: React.FC<DialogButtonProps> = ({
   mode = 'dark',
   previousIcon,
   nextIcon,

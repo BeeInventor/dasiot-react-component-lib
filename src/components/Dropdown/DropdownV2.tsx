@@ -60,7 +60,7 @@ const Item = styled(Box, { label: 'Dropdown-item' })(({ theme }) => ({
   },
 }));
 
-const DropdownV2: React.VFC<DropDownProps> = (props) => {
+const DropdownV2: React.FC<DropDownProps> = (props) => {
   const {
     list,
     itemProps,

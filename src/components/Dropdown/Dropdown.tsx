@@ -81,7 +81,7 @@ const Item = styled(Box, {
   },
 }));
 
-const Dropdown: React.VFC<DropDownProps> = (props) => {
+const Dropdown: React.FC<DropDownProps> = (props) => {
   const {
     list,
     isExceptance,

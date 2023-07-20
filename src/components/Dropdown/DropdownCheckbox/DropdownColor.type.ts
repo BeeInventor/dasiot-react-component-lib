@@ -1,5 +1,4 @@
-import { PopperProps } from '@mui/material';
-import { BoxProps } from '@mui/system';
+import { PopperProps, BoxProps } from '@mui/material';
 
 export interface DropdownCheckboxItem {
   id: string;

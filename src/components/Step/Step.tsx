@@ -32,7 +32,7 @@ const Bar = styled(Box, { label: 'Step' })(({ theme }) => ({
   },
 }));
 
-const Step: React.VFC<StepProps> = (props) => {
+const Step: React.FC<StepProps> = (props) => {
   const { className, current, list, ...otherProps } = props;
 
   const itemComponents = list.map((item, index) => {

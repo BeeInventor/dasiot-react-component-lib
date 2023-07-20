@@ -144,7 +144,7 @@ export interface ButtonProps extends MuiButtonProps {
   mode?: Mode;
 }
 
-const Button: React.VFC<ButtonProps> = ({ mode = 'dark', ...props }) => {
+const Button: React.FC<ButtonProps> = ({ mode = 'dark', ...props }) => {
   return <StyledButton mode={mode} {...props} />;
 };
 
