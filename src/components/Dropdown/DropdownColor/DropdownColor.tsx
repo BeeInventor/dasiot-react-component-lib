@@ -98,7 +98,7 @@ const ContainerLabel = styled('div')`
   gap: 10px;
 `;
 
-const DropdownColor: React.VFC<DropDownColorProps> = (props) => {
+const DropdownColor: React.FC<DropDownColorProps> = (props) => {
   const {
     list,
     itemProps,

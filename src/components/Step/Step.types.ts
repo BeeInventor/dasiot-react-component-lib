@@ -1,4 +1,4 @@
-import { BoxProps } from '@mui/system';
+import { BoxProps } from '@mui/material';
 
 export interface StepItem {
   id: string;

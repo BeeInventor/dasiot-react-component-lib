@@ -27,6 +27,11 @@ const list: DropDownItem[] = [
     value: 'A004',
     name: 'Distributor C',
   },
+  {
+    id: 'A004',
+    value: 'A004',
+    name: 'Very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long',
+  },
 ];
 
 const meta: Meta<typeof Dropdown> = {
@@ -62,6 +67,30 @@ type Story = StoryObj<typeof Dropdown>;
 
 export const Default: Story = {
   render: () => <Dropdown list={list} onSelect={() => {}} />,
+};
+
+export const FixItemTooLong: Story = {
+  render: () => (
+    <Dropdown
+      list={list}
+      onSelect={() => {}}
+      popperProps={{
+        sx: {
+          '& .Dropdown-icon': {
+            flexShrink: 0,
+          },
+          '& .Dropdown-item': {
+            '> span': {
+              minWidth: 0,
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            },
+          },
+        },
+      }}
+    />
+  ),
 };
 
 export const Exceptance: Story = {

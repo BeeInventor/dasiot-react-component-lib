@@ -77,7 +77,7 @@ const ContainerLabel = styled('div')`
   gap: 10px;
 `;
 
-const DropdownCheckbox: React.VFC<DropdownCheckboxProps> = (props) => {
+const DropdownCheckbox: React.FC<DropdownCheckboxProps> = (props) => {
   const {
     list,
     itemProps,

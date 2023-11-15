@@ -38,7 +38,7 @@ const Operation = styled(Box)(({}) => ({
   display: 'flex',
 }));
 
-const Searchbar: React.VFC<SearchbarProps> = (props) => {
+const Searchbar: React.FC<SearchbarProps> = (props) => {
   const {
     operationNode,
     LanguageButtonProps,
@@ -79,7 +79,11 @@ const Searchbar: React.VFC<SearchbarProps> = (props) => {
       </SearchInputContainer>
       <Operation>
         {operationNode}
-        <LanguageButton {...LanguageButtonProps} onSelect={handleOnSelect} />
+        <LanguageButton
+          list={[]}
+          {...LanguageButtonProps}
+          onSelect={handleOnSelect}
+        />
       </Operation>
     </Root>
   );

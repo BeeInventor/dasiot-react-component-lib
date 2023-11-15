@@ -1,13 +1,13 @@
-import React, { CSSProperties, VFC } from 'react';
+import React, { FC } from 'react';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 interface Props {
-  width?: CSSProperties['width'];
-  height?: CSSProperties['height'];
+  width?: number;
+  height?: number;
   color?: string;
 }
 
-const BtnIcSearch: VFC<Props & Omit<SvgIconProps, keyof Props>> = (props) => {
+const BtnIcSearch: FC<Props & Omit<SvgIconProps, keyof Props>> = (props) => {
   const { viewBox = '0 0 40 40', color = '#606060', ...otherProps } = props;
 
   return (

@@ -1,12 +1,12 @@
-import React, { CSSProperties, VFC } from 'react';
+import React, { FC } from 'react';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 interface Props {
-  width?: CSSProperties['width'];
-  height?: CSSProperties['height'];
+  width?: number;
+  height?: number;
 }
 
-const IcErrorIfo: VFC<Props & Omit<SvgIconProps, keyof Props>> = (props) => {
+const IcErrorIfo: FC<Props & Omit<SvgIconProps, keyof Props>> = (props) => {
   const {
     width = 24,
     height = 24,

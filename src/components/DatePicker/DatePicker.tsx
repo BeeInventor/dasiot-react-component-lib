@@ -202,7 +202,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
   };
 
   const weekStrings = useMemo(() => {
-    const week = [];
+    const week: React.ReactNode[] = [];
     for (let i = 0; i < 7; i += 1) {
       week.push(
         <Item key={`week-string-${i}`} className="week" mode={mode}>
@@ -216,7 +216,7 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
   }, []);
 
   const days = useMemo(() => {
-    const days = [];
+    const days: React.ReactNode[] = [];
     const beginDate = startOfWeek(startOfMonth(referenceDate));
     const localStartDateString = localStartDate
       ? format(localStartDate, 'yyyy-MM-dd')

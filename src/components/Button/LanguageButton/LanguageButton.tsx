@@ -1,7 +1,6 @@
 import React, { VFC, useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
-import Popper from '@mui/material/Popper';
-import Box from '@mui/system/Box';
+import { Box, Popper } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ClickAwayListener from '@mui/material/ClickAwayListener';

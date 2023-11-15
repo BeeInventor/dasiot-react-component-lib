@@ -10,8 +10,8 @@ import {
 import ArrowDown from '../../../svg/ArrowDown';
 
 interface ContainerProps extends HTMLAttributes<HTMLButtonElement> {
-  color?: React.CSSProperties['color'];
-  bgColor?: React.CSSProperties['backgroundColor'];
+  color?: string;
+  bgColor?: string;
   disabled?: boolean;
 }
 
@@ -59,7 +59,7 @@ const Paper = styled(MuiPaper)`
 `;
 
 interface ItemProps {
-  color?: React.CSSProperties['color'];
+  color?: string;
 }
 
 const Item = styled('div')<ItemProps>`
@@ -95,8 +95,8 @@ export interface StatusDropdownProps {
   defaultStatus?: string;
   statusMap: {
     [status: string]: {
-      color?: React.CSSProperties['color'];
-      bgColor?: React.CSSProperties['backgroundColor'];
+      color?: string;
+      bgColor?: string;
       displayName: string;
     };
   };
