@@ -36,6 +36,13 @@ const Root = styled(Box)(({ theme }) => ({
     opacity: 0.3,
     pointerEvents: 'none',
   },
+
+  '& .selected-name': {
+    minWidth: 0,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+  },
 }));
 
 const List = styled(Box)(({ theme }) => ({
@@ -148,7 +155,7 @@ const Dropdown: React.FC<DropDownProps> = (props) => {
         <Icon className="Dropdown-icon">
           {selectedItem?.id === item.id && <img src={CheckSvg} />}
         </Icon>
-        {item.name}
+        <span title={item.name}>{item.name}</span>
       </Item>
     ));
 
@@ -172,7 +179,12 @@ const Dropdown: React.FC<DropDownProps> = (props) => {
         onClick={handleOnClickSelect}
         {...otherProps}
       >
-        {selectedItem?.name ?? placeholder}
+        <span
+          className="selected-name"
+          title={selectedItem?.name ?? placeholder}
+        >
+          {selectedItem?.name ?? placeholder}
+        </span>
         <Icon className="Dropdown-icon">
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </Icon>
