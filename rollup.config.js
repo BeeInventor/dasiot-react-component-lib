@@ -71,7 +71,6 @@ export default [
       '@emotion/styled',
       '@mui/icons-material',
       '@mui/material',
-      '@mui/styles',
     ],
   },
   {

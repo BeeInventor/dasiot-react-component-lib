@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import localZhTw from 'date-fns/locale/zh-TW';
+import { zhTW as localZhTw } from 'date-fns/locale/zh-TW';
 import { Meta, StoryObj } from '@storybook/react';
 import { Dialog, DialogContent, styled } from '@mui/material';
 
