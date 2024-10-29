@@ -1,5 +1,6 @@
 import React from 'react';
 import MUIButton from '@mui/material/Button';
+import { ButtonProps as MuiButtonProps } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import { styled } from '@mui/material/styles';
@@ -7,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import { Mode } from 'components/main.types';
 import { DialogButtonProps } from './DialogButton.types';
 
-interface ButtonProps {
+interface ButtonProps extends MuiButtonProps {
   mode?: Mode;
 }
 

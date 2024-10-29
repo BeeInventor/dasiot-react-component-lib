@@ -5,7 +5,6 @@ import { styled } from '@mui/material';
 import Button from '.';
 import { ButtonProps } from './Button';
 
-// eslint-disable-next-line storybook/story-exports
 const Title = styled('h2')`
   color: white;
   text-shadow: 0 0 2px black;
@@ -35,7 +34,6 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const renderFn = (args: ButtonProps) => {
   return (
     <>

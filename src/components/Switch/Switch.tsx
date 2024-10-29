@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Switch as MuiSwitch,
-  SwitchProps as MuiSwitchProps,
   styled,
 } from '@mui/material';
 
@@ -35,8 +34,4 @@ const SwitchComponent = styled(MuiSwitch)`
   }
 `;
 
-const Switch: React.FC<MuiSwitchProps> = (props) => {
-  return <SwitchComponent {...props} />;
-};
-
-export default Switch;
+export default SwitchComponent;

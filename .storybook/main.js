@@ -4,7 +4,11 @@ const { mergeConfig } = require('vite');
 
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@chromatic-com/storybook'
+  ],
   core: {
     builder: '@storybook/builder-vite',
   },
@@ -19,17 +23,10 @@ module.exports = {
     },
   },
   viteFinal: async (config) => {
-    return mergeConfig(config, {
-      optimizeDeps: {
-        include: ['storybook-dark-mode'],
-      },
-    });
+    return mergeConfig(config);
   },
   framework: {
     name: '@storybook/react-webpack5',
     options: {},
-  },
-  docs: {
-    autodocs: true,
   },
 };
