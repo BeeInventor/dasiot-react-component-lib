@@ -5,21 +5,7 @@ on:
     types: [created]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - run: pnpm i
-      - run: pnpm build
-
   publish-gpr:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -31,6 +17,11 @@ jobs:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
           scope: '@beeinventor'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm i
+      - run: pnpm build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
