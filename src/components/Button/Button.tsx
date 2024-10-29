@@ -4,11 +4,12 @@ import { styled } from '@mui/material/styles';
 
 import { Mode } from '../main.types';
 
-interface StyledButtonProps {
+
+export interface ButtonProps extends MuiButtonProps {
   mode?: Mode;
 }
 
-const StyledButton = styled(MuiButton)<StyledButtonProps>(({ theme }) => ({
+const StyledButton = styled(MuiButton)<ButtonProps>(({ theme }) => ({
   ...theme.typography.h3,
   padding: '4px 32px',
   borderRadius: 90000,
@@ -140,12 +141,4 @@ const StyledButton = styled(MuiButton)<StyledButtonProps>(({ theme }) => ({
   },
 }));
 
-export interface ButtonProps extends MuiButtonProps {
-  mode?: Mode;
-}
-
-const Button: React.FC<ButtonProps> = ({ mode = 'dark', ...props }) => {
-  return <StyledButton mode={mode} {...props} />;
-};
-
-export default Button;
+export default StyledButton;

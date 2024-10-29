@@ -1,7 +1,7 @@
 import { ButtonProps } from '@mui/material';
 
-export interface DialogButtonProps extends ButtonProps {
+export type DialogButtonProps = ButtonProps & {
   mode?: 'dark' | 'light';
   previousIcon?: boolean;
   nextIcon?: boolean;
-}
+};

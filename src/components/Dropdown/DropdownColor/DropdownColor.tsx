@@ -205,7 +205,7 @@ const DropdownColor: React.FC<DropDownColorProps> = (props) => {
             {selectedItem?.name ?? placeholder}
           </ContainerLabel>
         ) : (
-          selectedItem?.name ?? placeholder
+          (selectedItem?.name ?? placeholder)
         )}
         <Icon className="Dropdown-icon">
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}

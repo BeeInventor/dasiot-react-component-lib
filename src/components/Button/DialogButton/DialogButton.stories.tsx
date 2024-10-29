@@ -54,7 +54,6 @@ export default meta;
 
 type Story = StoryObj<typeof DialogButton>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const renderFn = (args: DialogButtonProps) => {
   return (
     <>

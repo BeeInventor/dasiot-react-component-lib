@@ -13,7 +13,6 @@ export const decorators = [
 ];
 
 export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       date: /Date$/,
@@ -37,3 +36,4 @@ export const parameters = {
     ],
   },
 };
+export const tags = ['autodocs'];

@@ -8,4 +8,5 @@ export interface StepItem {
 export interface StepProps extends BoxProps {
   current: number;
   list: Array<StepItem>;
+  className?: string;
 }
