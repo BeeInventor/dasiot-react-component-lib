@@ -1,0 +1,1 @@
+import{r as n}from"./index-CTjT7uj6.js";const r=typeof window<"u"?n.useLayoutEffect:n.useEffect;function o(e,t){typeof e=="function"?e(t):e&&(e.current=t)}function s(...e){return n.useMemo(()=>e.every(t=>t==null)?null:t=>{e.forEach(u=>{o(u,t)})},e)}export{s as a,o as s,r as u};
