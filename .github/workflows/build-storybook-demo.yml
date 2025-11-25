@@ -24,6 +24,9 @@ jobs:
           version: latest
           run_install: false
 
+      - name: Activate pnpm
+        run: corepack prepare pnpm@latest --activate
+
       - name: Install and Build Storybook
         run: |
           pnpm install --frozen-lockfile
