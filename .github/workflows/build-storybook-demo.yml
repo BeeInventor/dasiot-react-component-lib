@@ -18,13 +18,11 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
-      # FIX for Node 24
-      - name: Disable Corepack
-        run: corepack disable
-
-      # Install pnpm manually (stable)
+      # Install pnpm manually & force-add to PATH
       - name: Install pnpm
-        run: npm install -g pnpm@latest
+        run: |
+          npm install -g pnpm@9
+          echo "$(npm root -g)/pnpm/bin" >> $GITHUB_PATH
 
       - name: Install and Build Storybook
         run: |
