@@ -14,10 +14,6 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-    optionalDependencies:
-      fsevents:
-        specifier: ^2.3.3
-        version: 2.3.3
     devDependencies:
       '@babel/core':
         specifier: ^7.26.0
@@ -166,6 +162,10 @@ importers:
       vite:
         specifier: ^5.4.12
         version: 5.4.12(@types/node@20.17.2)(terser@5.36.0)
+    optionalDependencies:
+      fsevents:
+        specifier: ^2.3.3
+        version: 2.3.3
 
 packages:
 
