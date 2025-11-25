@@ -18,17 +18,13 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
+      # FIX for Node 24
       - name: Disable Corepack
         run: corepack disable
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-          run_install: false
-
-      - name: Activate pnpm
-        run: corepack prepare pnpm@latest --activate
+      # Install pnpm manually (stable)
+      - name: Install pnpm
+        run: npm install -g pnpm@latest
 
       - name: Install and Build Storybook
         run: |
