@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{H as t,K as n,U as r,X as i,Y as a,_ as o,l as s,nt as c,rt as l,w as u}from"./iframe-BtzXbMLI.js";var d=e((()=>{a()})),f,p=e((()=>{t(),f=r(`MuiBox`,[`root`])})),m,h=e((()=>{u(),d(),s(),l(),p(),m=n({themeId:c,defaultTheme:o(),defaultClassName:f.root,generateClassName:i.generate})})),g=e((()=>{h(),p()}));export{m as n,g as t};

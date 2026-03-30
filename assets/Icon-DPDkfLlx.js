@@ -1,1 +1,0 @@
-import{s as t}from"./styled-DwlEKdN-.js";import{B as e}from"./Box-YbqQT3oO.js";const n=t(e,{label:"Icon"})(({})=>({display:"flex",justifyContent:"center",alignItems:"center",width:40,height:40}));export{n as I};

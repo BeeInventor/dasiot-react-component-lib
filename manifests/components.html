@@ -1,0 +1,4364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Components Manifest</title>
+  <style>
+      :root {
+          --bg: #0b0c10;
+          --panel: #121318;
+          --muted: #9aa0a6;
+          --fg: #e8eaed;
+          --ok: #22c55e;
+          --info: #1e88e5;
+          --err: #c62828;
+          --ok-bg: #0c1a13;
+          --info-bg: #0c1624;
+          --err-bg: #1a0e0e;
+          --chip: #1f2330;
+          --border: #2b2f3a;
+          --link: #8ab4f8;
+          --active-ring: 1px; /* 1px active ring for pills and toggles */
+      }
+
+      * {
+          box-sizing: border-box;
+      }
+
+      html,
+      body {
+          margin: 0;
+          background: var(--bg);
+          color: var(--fg);
+          font: 14px/1.5 system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Ubuntu,
+          Cantarell,
+          'Helvetica Neue',
+          Arial,
+          'Noto Sans';
+      }
+
+      .wrap {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 16px 20px;
+      }
+
+      header {
+          position: sticky;
+          top: 0;
+          backdrop-filter: blur(6px);
+          background: color-mix(in srgb, var(--bg) 84%, transparent);
+          border-bottom: 1px solid var(--border);
+          z-index: 10;
+      }
+
+      h1 {
+          font-size: 20px;
+          margin: 0 0 6px;
+      }
+
+      .summary {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+      }
+
+      /* Top filter pills */
+      .filter-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: var(--panel);
+          text-decoration: none;
+          cursor: pointer;
+          user-select: none;
+          color: var(--fg);
+      }
+
+      .filter-pill.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: color-mix(in srgb, var(--ok) 18%, #000);
+      }
+
+      .filter-pill.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+      }
+
+      .filter-pill.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+      }
+
+      .filter-pill.all {
+          color: #d7dbe0;
+          border-color: var(--border);
+          background: var(--panel);
+      }
+
+      .filter-pill[aria-disabled='true'] {
+          cursor: default;
+          text-decoration: none;
+      }
+
+      .filter-pill:focus,
+      .filter-pill:active {
+          outline: none;
+          box-shadow: none;
+      }
+
+      /* Selected top pill ring via :target */
+      #filter-all:target ~ header .filter-pill[data-k='all'],
+      #filter-errors:target ~ header .filter-pill[data-k='errors'],
+      #filter-infos:target ~ header .filter-pill[data-k='infos'],
+      #filter-story-errors:target ~ header .filter-pill[data-k='story-errors'],
+      #filter-doc-errors:target ~ header .filter-pill[data-k='docs'],
+      #filter-docs:target ~ header .filter-pill[data-k='docs'] {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Hidden targets for filtering */
+      #filter-all,
+      #filter-errors,
+      #filter-infos,
+      #filter-story-errors,
+      #filter-doc-errors,
+      #filter-docs {
+          display: none;
+      }
+
+      main {
+          padding: 36px 0 40px;
+      }
+
+      .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 18px;
+      }
+
+      /* one card per row */
+
+      .card {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          padding: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+
+      .head {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+      }
+
+      .title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+      }
+
+      .title h2 {
+          font-size: 16px;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .meta {
+          font-size: 12px;
+          color: var(--muted);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .kv {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+      }
+
+      .chip {
+          font-size: 12px;
+          padding: 4px 8px;
+          border-radius: 999px;
+          background: var(--chip);
+          border: 1px solid var(--border);
+      }
+
+      .hint {
+          color: var(--muted);
+          font-size: 12px;
+      }
+
+      .badges {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      /* Per-card badges: labels become toggles when clickable */
+      .badge {
+          font-size: 12px;
+          padding: 3px 8px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--chip);
+          color: #d7dbe0;
+      }
+
+      .badge.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+      }
+
+      .badge.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+      }
+
+      .badge.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .as-toggle {
+          cursor: pointer;
+      }
+
+      /* 1px ring on active toggle */
+      .tg-err:checked + label.as-toggle,
+      .tg-info:checked + label.as-toggle,
+      .tg-stories:checked + label.as-toggle,
+      .tg-docs:checked + label.as-toggle,
+      .tg-content:checked + label.as-toggle,
+      .tg-props:checked + label.as-toggle {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Panels: hidden by default, shown when respective toggle checked */
+      .panels {
+          display: grid;
+          gap: 10px;
+      }
+
+      .panel {
+          display: none;
+      }
+
+      .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+
+      .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-props:checked ~ .panels .panel-props {
+          display: grid;
+      }
+
+      /* Colored notes for prop type error + info */
+      .note {
+          padding: 12px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+      }
+
+      .note.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+          color: #ffd1d4;
+      }
+
+      .note.info {
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+          color: #d6e8ff;
+      }
+
+      .note.ok {
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: var(--ok-bg);
+          color: var(--fg);
+      }
+
+      .note-title {
+          font-weight: 600;
+          margin-bottom: 6px;
+      }
+
+      .note-body {
+          white-space: normal;
+      }
+
+      /* Story error cards */
+      .ex {
+          padding: 10px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: #0f131b;
+      }
+
+      .ex.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          display: inline-block;
+      }
+
+      .dot-ok {
+          background: var(--ok);
+      }
+
+      .dot-err {
+          background: var(--err);
+      }
+
+      .ex-name {
+          font-weight: 600;
+      }
+
+      /* Error groups (visible in errors filter) */
+      .error-groups {
+          display: none;
+          margin-bottom: 16px;
+      }
+
+      .group {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          overflow: hidden;
+      }
+
+      .group + .group {
+          margin-top: 12px;
+      }
+
+      .group-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 14px;
+          cursor: pointer;
+          border-bottom: 1px solid var(--border);
+      }
+
+      .group-header:hover {
+          background: #141722;
+      }
+
+      .group-title {
+          font-weight: 600;
+          flex: 1;
+      }
+
+      .group-count {
+          font-size: 12px;
+          color: var(--muted);
+      }
+
+      .group-cards {
+          display: none;
+          padding: 12px;
+      }
+
+      .group .card {
+          margin: 12px 0;
+      }
+
+      .group .card:first-child {
+          margin-top: 0;
+      }
+
+      .group .card:last-child {
+          margin-bottom: 0;
+      }
+
+      /* caret rotation */
+      .group-tg:checked + label .caret {
+          transform: rotate(90deg);
+      }
+
+      .caret {
+          transition: transform 0.15s ease;
+      }
+
+      /* toggle body */
+      .group-tg:checked ~ .group-cards {
+          display: block;
+      }
+
+      /* CSS-only filtering of cards via top pills */
+      #filter-errors:target ~ main .card:not(.has-error):not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-infos:target ~ main .card:not(.has-info) {
+          display: none;
+      }
+
+      #filter-story-errors:target ~ main .card:not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-doc-errors:target ~ main .card:not(.has-doc-error) {
+          display: none;
+      }
+
+      #filter-docs:target ~ main .card:has(> .tg-docs),
+      #filter-docs:target ~ main .card.is-doc {
+          display: block;
+      }
+
+      #filter-docs:target ~ main .card:not(:has(> .tg-docs)):not(.is-doc) {
+          display: none;
+      }
+
+      #filter-all:target ~ main .card {
+          display: block;
+      }
+
+      /* In errors view, hide standalone component-error cards in the regular grid (they will appear in groups) */
+      #filter-errors:target ~ main .grid .card.has-error {
+          display: none;
+      }
+
+      /* Show grouped section only in errors view */
+      #filter-errors:target ~ main .error-groups {
+          display: block;
+      }
+
+      /* Section titles */
+      .section-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--muted);
+          margin: 24px 0 12px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border);
+      }
+      .section-title:first-child {
+          margin-top: 0;
+      }
+
+      /* When a toggle is checked, show the corresponding panel */
+      .card > .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+      
+      .card > .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+      }
+      
+      .card > .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+      }
+
+      .card > .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+      }
+
+      .card > .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+      }
+
+      /* Add vertical spacing around panels only when any panel is visible */
+      .card > .tg-err:checked ~ .panels,
+      .card > .tg-info:checked ~ .panels,
+      .card > .tg-stories:checked ~ .panels,
+      .card > .tg-docs:checked ~ .panels,
+      .card > .tg-content:checked ~ .panels,
+      .card > .tg-props:checked ~ .panels {
+          margin: 10px 0;
+      }
+
+      /* Optional: a subtle 1px ring on the active badge, using :has() if available */
+      @supports selector(.card:has(.tg-err:checked)) {
+          .card:has(.tg-err:checked) label[for$='-err'],
+          .card:has(.tg-info:checked) label[for$='-info'],
+          .card:has(.tg-stories:checked) label[for$='-stories'],
+          .card:has(.tg-docs:checked) label[for$='-docs'],
+          .card:has(.tg-content:checked) label[for$='-content'],
+          .card:has(.tg-props:checked) label[for$='-props'] {
+              box-shadow: 0 0 0 1px currentColor;
+              border-color: currentColor;
+          }
+      }
+
+      /* Wrap long lines in code blocks at ~120 characters */
+      pre, code {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      pre {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow-x: auto; /* fallback for extremely long tokens */
+          margin: 8px 0 0;
+      }
+      pre > code {
+          display: block;
+          white-space: inherit;
+          overflow-wrap: inherit;
+          word-break: inherit;
+          inline-size: min(100%, 120ch);
+      }
+
+      /* MDX content container for docs */
+      .mdx-content {
+          background: #0f131b;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 12px;
+          max-height: 400px;
+          overflow-y: auto;
+          margin-top: 8px;
+      }
+  </style>
+</head>
+<body>
+<!-- Hidden targets for the top-level filters -->
+<span id="filter-all"></span>
+<span id="filter-errors"></span>
+<span id="filter-infos"></span>
+<span id="filter-story-errors"></span>
+<span id="filter-doc-errors"></span>
+<span id="filter-docs"></span>
+<header>
+  <div class="wrap">
+    <h1>Manifest Debugger</h1>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">2/16 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">16/16 infos</a><span class="filter-pill ok" aria-disabled="true">50 stories ok</span></div>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="note ok" style="margin-bottom: 16px;">
+              Using <code>react-docgen-typescript</code>. Generation took <strong>1.4s</strong>.
+            </div>
+    <h2 class="section-title">Components</h2>
+    <div class="grid" role="list">
+      
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Button">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> Button</h2>
+      <div class="badges">
+        <label for="c-0-components-button-button-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-0-components-button-button-info" class="badge info as-toggle">1 info</label>
+        <label for="c-0-components-button-button-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Button/Button.stories.tsx">components-button-button · ./src/components/Button/Button.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-0-components-button-button-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-0-components-button-button-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-0-components-button-button-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;Button&quot; component.
+  18 | `;
+  19 |
+&gt; 20 | const meta: Meta&lt;typeof Button&gt; = {
+     | ^
+  21 |   title: &#39;Components/Button/Button&#39;,
+  22 |   component: Button,
+  23 |   argTypes: {
+
+./src/components/Button/Button.stories.tsx:
+import React from &#39;react&#39;;
+import { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
+import { styled } from &#39;@mui/material&#39;;
+
+import Button from &#39;.&#39;;
+import { ButtonProps } from &#39;./Button&#39;;
+
+const Title = styled(&#39;h2&#39;)`
+  color: white;
+  text-shadow: 0 0 2px black;
+`;
+
+const Block = styled(&#39;div&#39;)`
+  margin-bottom: 8px;
+  &amp; &gt; button {
+    margin: 0 8px;
+  }
+`;
+
+const meta: Meta&lt;typeof Button&gt; = {
+  title: &#39;Components/Button/Button&#39;,
+  component: Button,
+  argTypes: {
+    fullWidth: {
+      control: { type: &#39;boolean&#39; },
+    },
+    disabled: {
+      control: { type: &#39;boolean&#39; },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj&lt;typeof Button&gt;;
+
+const renderFn = (args: ButtonProps) =&gt; {
+  return (
+    &lt;&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+    &lt;/&gt;
+  );
+};
+
+export const Default: Story = {
+  args: {
+    fullWidth: false,
+    disabled: false,
+  },
+  render: renderFn,
+};
+
+export const Light: Story = {
+  parameters: {
+    backgrounds: {
+      default: &#39;light&#39;,
+    },
+  },
+  args: {
+    fullWidth: false,
+    disabled: false,
+    mode: &#39;light&#39;,
+  },
+  render: renderFn,
+};
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    return &lt;&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Light</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Light = () =&gt; {
+    return &lt;&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="CheckboxLight">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> CheckboxLight</h2>
+      <div class="badges">
+        <label for="c-1-components-checkbox-checkboxlight-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-1-components-checkbox-checkboxlight-info" class="badge info as-toggle">1 info</label>
+        <label for="c-1-components-checkbox-checkboxlight-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Checkbox/CheckboxLight/CheckboxLight.stories.tsx">components-checkbox-checkboxlight · ./src/components/Checkbox/CheckboxLight/CheckboxLight.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-1-components-checkbox-checkboxlight-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-1-components-checkbox-checkboxlight-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-1-components-checkbox-checkboxlight-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">6 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Checkbox/CheckboxLight/CheckboxLight.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>checked?: boolean = false
+
+disabled?: boolean = false
+
+label?: string
+
+name?: string
+
+onChange?: ((checked: boolean) =&gt; void)
+
+selectType?: &quot;none&quot; | &quot;one&quot; | &quot;partial&quot; | &quot;all&quot; = none</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { CheckboxLight } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    const [checked1, setChecked1] = useState(false);
+    const [checked, setChecked] = useState(false);
+
+    return (
+        &lt;div&gt;
+            &lt;div&gt;
+                &lt;CheckboxLight disabled={false} checked={checked1} onChange={(c) =&gt; setChecked1(c)} /&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;CheckboxLight
+                    disabled={false}
+                    checked={checked}
+                    label=&quot;This is checkbox light&quot;
+                    onChange={(c) =&gt; setChecked(c)} /&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;CheckboxLight label=&quot;This is checkbox light with checked&quot; checked /&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;CheckboxLight label=&quot;This is disabled checkbox light&quot; disabled /&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DatePicker">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DatePicker</h2>
+      <div class="badges">
+        <label for="c-2-components-datepicker-props" class="badge ok as-toggle">13 prop types</label>
+        <label for="c-2-components-datepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-2-components-datepicker-stories" class="badge ok as-toggle">9 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/DatePicker/DatePicker.stories.tsx">components-datepicker · ./src/components/DatePicker/DatePicker.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-2-components-datepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-2-components-datepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-2-components-datepicker-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">13 prop types</span>
+            </div>
+            <pre><code>Component: src/components/DatePicker/DatePicker.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>className?: string
+
+dateFormat?: string
+
+disabled?: boolean
+
+endDate?: Date
+
+limitFrom?: Date
+
+limitTo?: Date
+
+locale?: Locale
+
+mode?: &quot;dark&quot; | &quot;light&quot;
+
+onSelect: (value: Date | [Date | undefined, Date | undefined] | undefined) =&gt; void
+
+placeholder?: string
+
+/**
+ * Custom popper props
+ */
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;
+
+startDate?: Date
+
+type?: &quot;date&quot; | &quot;range&quot;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, DatePicker } from "@beeinventor/dasiot-react-component-lib";
+import { Dialog, DialogContent } from "@mui/material";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    return &lt;DatePicker placeholder=&quot;Time&quot; disabled={false} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default Dark</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DefaultDark = () =&gt; {
+    return &lt;DatePicker placeholder=&quot;Time&quot; mode=&quot;dark&quot; disabled={false} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Zh TW</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ZhTW = () =&gt; {
+    return &lt;DatePicker placeholder=&quot;Time&quot; mode=&quot;dark&quot; disabled={false} locale={localZhTw} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Range Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RangeDefault = () =&gt; {
+    return &lt;DatePicker type=&quot;range&quot; placeholder=&quot;Time&quot; /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Range</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Range = () =&gt; {
+    return (
+        &lt;DatePicker
+            type=&quot;range&quot;
+            placeholder=&quot;Time&quot;
+            startDate={new Date(&#39;2021-09-15T00:00:00+08:00&#39;)}
+            endDate={new Date(&#39;2021-10-10T23:59:59+08:00&#39;)} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Range With Limit</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RangeWithLimit = () =&gt; {
+    return (
+        &lt;DatePicker
+            type=&quot;range&quot;
+            placeholder=&quot;Time&quot;
+            startDate={new Date(&#39;2021-09-15T00:00:00+08:00&#39;)}
+            endDate={new Date(&#39;2021-10-10T23:59:59+08:00&#39;)} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Dialog</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithDialog = () =&gt; {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        &lt;div&gt;
+            &lt;Button variant=&quot;contained&quot; onClick={() =&gt; setIsOpen(true)}&gt;Open Dialog
+                        &lt;/Button&gt;
+            &lt;Dialog
+                open={isOpen}
+                onClose={() =&gt; setIsOpen(false)}
+                sx={{
+                  &#39;&amp; .MuiPaper-root&#39;: {
+                    backgroundColor: &#39;#eee&#39;,
+                  },
+                }}&gt;
+                &lt;DialogContent
+                    sx={{
+                      minWidth: 400,
+                      minHeight: 300,
+                    }}&gt;
+                    &lt;DatePicker
+                        type=&quot;range&quot;
+                        placeholder=&quot;Time&quot;
+                        startDate={new Date(&#39;2021-09-15T00:00:00+08:00&#39;)}
+                        endDate={new Date(&#39;2021-10-10T23:59:59+08:00&#39;)}
+                        popperProps={{
+                          disablePortal: true,
+                        }} /&gt;
+                &lt;/DialogContent&gt;
+            &lt;/Dialog&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">External Reset</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ExternalReset = () =&gt; {
+    const [date, setDate] = useState&lt;Date&gt;();
+
+    return (
+        &lt;div&gt;
+            &lt;DatePicker
+                type=&quot;range&quot;
+                placeholder=&quot;Time&quot;
+                endDate={new Date(&#39;2021-10-10T23:59:59+08:00&#39;)}
+                popperProps={{
+                  disablePortal: true,
+                }}
+                startDate={date}
+                onSelect={(date) =&gt; {
+                  setDate(date as Date);
+                }} /&gt;
+            &lt;Button variant=&quot;contained&quot; sx={{ ml: &#39;8px&#39; }} onClick={() =&gt; setDate(undefined)}&gt;Reset
+                        &lt;/Button&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Full Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const FullWidth = () =&gt; {
+    return (
+        &lt;StyledDatePicker
+            type=&quot;range&quot;
+            placeholder=&quot;Time&quot;
+            startDate={new Date(&#39;2021-09-15T00:00:00+08:00&#39;)}
+            endDate={new Date(&#39;2021-10-10T23:59:59+08:00&#39;)}
+            popperProps={{
+              disablePortal: true,
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DialogButton">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DialogButton</h2>
+      <div class="badges">
+        
+        <label for="c-3-components-button-dialogbutton-info" class="badge info as-toggle">1 info</label>
+        <label for="c-3-components-button-dialogbutton-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Button/DialogButton/DialogButton.stories.tsx">components-button-dialogbutton · ./src/components/Button/DialogButton/DialogButton.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-3-components-button-dialogbutton-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-3-components-button-dialogbutton-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DialogButton } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    return &lt;&gt;
+        &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;text&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;dark&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default Light</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DefaultLight = () =&gt; {
+    return &lt;&gt;
+        &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon={false}
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithIcon = () =&gt; {
+    return &lt;&gt;
+        &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;text&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;contained&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+        &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+        &lt;Block&gt;
+            &lt;DialogButton
+                color=&quot;primary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Primary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;secondary&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Secondary
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;success&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Success
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;warning&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Warning
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;info&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;info
+                        &lt;/DialogButton&gt;
+            &lt;DialogButton
+                color=&quot;error&quot;
+                variant=&quot;outlined&quot;
+                mode=&quot;light&quot;
+                fullWidth={false}
+                disabled={false}
+                previousIcon
+                nextIcon={false}&gt;Error
+                        &lt;/DialogButton&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Dropdown">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Dropdown</h2>
+      <div class="badges">
+        <label for="c-4-components-dropdown-dropdown-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-4-components-dropdown-dropdown-info" class="badge info as-toggle">1 info</label>
+        <label for="c-4-components-dropdown-dropdown-stories" class="badge ok as-toggle">9 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Dropdown/Dropdown.stories.tsx">components-dropdown-dropdown · ./src/components/Dropdown/Dropdown.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-4-components-dropdown-dropdown-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-4-components-dropdown-dropdown-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-4-components-dropdown-dropdown-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">10 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Dropdown/Dropdown.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Disable dropdown
+ */
+disabled?: boolean
+
+/**
+ * Contain Exceptance
+ */
+isExceptance?: boolean
+
+/**
+ * For adjustment item styles
+ */
+itemProps?: any
+
+/**
+ * Item list
+ */
+list: DropDownItem[]
+
+mode?: &quot;dark&quot; | &quot;light&quot;
+
+/**
+ * Trigger when select a item
+ */
+onSelect: (value: string | number, item: DropDownItem) =&gt; void
+
+/**
+ * Placeholder
+ */
+placeholder?: string
+
+/**
+ * Custom popper props
+ */
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;
+
+/**
+ * Specify item
+ */
+selectedId?: string
+
+/**
+ * filter the list out of this id
+ */
+selectionIds?: string[]</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Dropdown, DropdownV2 } from "@beeinventor/dasiot-react-component-lib";
+import { Dialog, DialogContent } from "@mui/material";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Dropdown list={list} onSelect={() =&gt; {}} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Fix Item Too Long</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const FixItemTooLong = () =&gt; (
+  &lt;Dropdown
+    list={list}
+    onSelect={() =&gt; {}}
+    popperProps={{
+      sx: {
+        &#39;&amp; .Dropdown-icon&#39;: {
+          flexShrink: 0,
+        },
+        &#39;&amp; .Dropdown-item&#39;: {
+          &#39;&gt; span&#39;: {
+            minWidth: 0,
+            textOverflow: &#39;ellipsis&#39;,
+            overflow: &#39;hidden&#39;,
+            whiteSpace: &#39;nowrap&#39;,
+          },
+        },
+      },
+    }}
+  /&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Exceptance</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Exceptance = () =&gt; (
+  &lt;Dropdown
+    placeholder=&quot;Select&quot;
+    list={list}
+    isExceptance
+    onSelect={() =&gt; {}}
+  /&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Selected</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Selected = () =&gt; (
+  &lt;Dropdown
+    placeholder=&quot;Select&quot;
+    list={list}
+    selectedId=&quot;A004&quot;
+    onSelect={() =&gt; {}}
+  /&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Selection</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Selection = () =&gt; {
+  const [selectionIds, setSelectionIds] = useState&lt;string[]&gt;([]);
+  const [selectedId, setSelectedId] = useState&lt;string&gt;();
+
+  const onChange = (value: string | number) =&gt; {
+    const updateValue = [...selectionIds];
+    if (selectionIds.includes(value as string)) {
+      updateValue.splice(updateValue.indexOf(value as string), 1);
+    } else {
+      updateValue.push(value as string);
+    }
+    setSelectionIds(updateValue);
+    setSelectedId(value as string);
+  };
+
+  return (
+    &lt;Dropdown
+      placeholder=&quot;Select&quot;
+      selectedId={selectedId}
+      list={list}
+      selectionIds={selectionIds}
+      onSelect={onChange}
+    /&gt;
+  );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Dialog</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithDialog = () =&gt; {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        &lt;div&gt;
+            &lt;Button variant=&quot;contained&quot; onClick={() =&gt; setIsOpen(true)}&gt;Open Dialog
+                        &lt;/Button&gt;
+            &lt;Dialog open={isOpen} onClose={() =&gt; setIsOpen(false)}&gt;
+                &lt;DialogContent sx={{ height: 300, backgroundColor: &#39;#eee&#39; }}&gt;
+                    &lt;Dropdown
+                        list={list}
+                        popperProps={{
+                          disablePortal: true,
+                        }} /&gt;
+                &lt;/DialogContent&gt;
+            &lt;/Dialog&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Reset</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Reset = () =&gt; {
+    const [selectedId, setSelectedId] = useState&lt;string | undefined&gt;();
+    const handleUnselect = () =&gt; {
+      setSelectedId(undefined);
+    };
+
+    return (
+        &lt;div&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                onClick={handleUnselect}
+                sx={{ marginBottom: &#39;10px&#39; }}&gt;Reset All
+                        &lt;/Button&gt;
+            &lt;Dropdown
+                mode=&quot;dark&quot;
+                list={list}
+                placeholder=&quot;Please Select Item&quot;
+                selectedId={selectedId}
+                onSelect={(value) =&gt; setSelectedId(value as string)} /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Dark Mode</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DarkMode = () =&gt; &lt;Dropdown mode=&quot;dark&quot; list={list} selectedId=&quot;A001&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Version 2</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Version2 = () =&gt; {
+    const [selectedId, setSelectedId] = useState&lt;string | undefined&gt;();
+
+    return (
+        &lt;div&gt;
+            &lt;DropdownV2
+                mode=&quot;dark&quot;
+                list={list}
+                placeholder=&quot;Please Select Item&quot;
+                selectedId={selectedId}
+                onSelect={(value) =&gt; setSelectedId(value as string)} /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DropdownCheckbox">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DropdownCheckbox</h2>
+      <div class="badges">
+        <label for="c-5-components-dropdown-dropdowncheckbox-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-5-components-dropdown-dropdowncheckbox-info" class="badge info as-toggle">1 info</label>
+        <label for="c-5-components-dropdown-dropdowncheckbox-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Dropdown/DropdownCheckbox/DropdownCheckbox.stories.tsx">components-dropdown-dropdowncheckbox · ./src/components/Dropdown/DropdownCheckbox/DropdownCheckbox.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-5-components-dropdown-dropdowncheckbox-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-5-components-dropdown-dropdowncheckbox-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-5-components-dropdown-dropdowncheckbox-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">9 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Dropdown/DropdownCheckbox/DropdownCheckbox.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Disable dropdown
+ */
+disabled?: boolean
+
+/**
+ * For adjustment item styles
+ */
+itemProps?: any
+
+/**
+ * Item list
+ */
+list: DropdownCheckboxItem[]
+
+mode?: &quot;dark&quot; | &quot;light&quot;
+
+/**
+ * Trigger when select a item
+ */
+onSelect: (values: any[]) =&gt; void
+
+/**
+ * Placeholder
+ */
+placeholder?: string
+
+/**
+ * Custom popper props
+ */
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;
+
+/**
+ * Specify item
+ */
+selectedIds?: string[]
+
+/**
+ * filter the list out of this id
+ */
+selectionId?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DropdownCheckbox } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    const [selectedIds, setSelectedIds] = useState&lt;string[]&gt;(
+      list.map((d) =&gt; d.value as string),
+    );
+
+    return (
+        &lt;div&gt;
+            &lt;DropdownCheckbox
+                mode=&quot;dark&quot;
+                list={list}
+                placeholder=&quot;Please Select Item&quot;
+                selectedIds={selectedIds}
+                onSelect={(values) =&gt; setSelectedIds(values as string[])} /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DropdownColor">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DropdownColor</h2>
+      <div class="badges">
+        <label for="c-6-components-dropdown-dropdowncolor-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-6-components-dropdown-dropdowncolor-info" class="badge info as-toggle">1 info</label>
+        <label for="c-6-components-dropdown-dropdowncolor-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Dropdown/DropdownColor/DropdownColor.stories.tsx">components-dropdown-dropdowncolor · ./src/components/Dropdown/DropdownColor/DropdownColor.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-6-components-dropdown-dropdowncolor-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-6-components-dropdown-dropdowncolor-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-6-components-dropdown-dropdowncolor-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">10 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Dropdown/DropdownColor/DropdownColor.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Disable dropdown
+ */
+disabled?: boolean
+
+/**
+ * For adjustment item styles
+ */
+itemProps?: any
+
+/**
+ * Item list
+ */
+list: DropDownColorItem[]
+
+mode?: &quot;dark&quot; | &quot;light&quot;
+
+/**
+ * Trigger when select a item
+ */
+onSelect: (value: string | number, item: DropDownColorItem) =&gt; void
+
+/**
+ * Placeholder
+ */
+placeholder?: string
+
+/**
+ * Custom popper props
+ */
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;
+
+/**
+ * Specify item
+ */
+selectedId?: string
+
+/**
+ * filter the list out of this id
+ */
+selectionId?: string
+
+type?: &quot;path&quot; | &quot;org&quot;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DropdownColor } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Dropdown Color Path</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DropdownColorPath = () =&gt; {
+    const [selectedId, setSelectedId] = useState&lt;string | undefined&gt;(&#39;path-a&#39;);
+
+    return (
+        &lt;div&gt;
+            &lt;DropdownColor
+                mode=&quot;dark&quot;
+                list={list}
+                placeholder=&quot;Please Select Item&quot;
+                selectedId={selectedId}
+                onSelect={(value) =&gt; setSelectedId(value as string)}
+                type=&quot;path&quot; /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Dropdown Color Org</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DropdownColorOrg = () =&gt; {
+    const [selectedId, setSelectedId] = useState&lt;string | undefined&gt;(&#39;path-a&#39;);
+
+    return (
+        &lt;div&gt;
+            &lt;DropdownColor
+                mode=&quot;dark&quot;
+                list={listOrg}
+                placeholder=&quot;Please Select Item&quot;
+                selectedId={selectedId}
+                onSelect={(value) =&gt; setSelectedId(value as string)}
+                type=&quot;org&quot; /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="LanguageButton">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> LanguageButton</h2>
+      <div class="badges">
+        <label for="c-7-components-button-languagebutton-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-7-components-button-languagebutton-info" class="badge info as-toggle">1 info</label>
+        <label for="c-7-components-button-languagebutton-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Button/LanguageButton/LanguageButton.stories.tsx">components-button-languagebutton · ./src/components/Button/LanguageButton/LanguageButton.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-7-components-button-languagebutton-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-7-components-button-languagebutton-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-7-components-button-languagebutton-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">6 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Button/LanguageButton/LanguageButton.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Custom item props
+ */
+itemProps?: any
+
+language?: LanguageData
+
+list: LanguageData[]
+
+/**
+ * Custom menu props
+ */
+menuProps?: any
+
+onSelect: (lang: LanguageData) =&gt; void
+
+/**
+ * Custom popper props
+ */
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { LanguageButton } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;LanguageButton
+    list={[
+      {
+        code: &#39;zh-TW&#39;,
+        name: &#39;繁中&#39;,
+        fullName: &#39;繁體中文&#39;,
+      },
+      {
+        code: &#39;en-US&#39;,
+        name: &#39;English&#39;,
+        fullName: &#39;English(US)&#39;,
+      },
+    ]} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Initial English</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InitialEnglish = () =&gt; &lt;LanguageButton
+    list={[
+      {
+        code: &#39;zh-TW&#39;,
+        name: &#39;繁中&#39;,
+        fullName: &#39;繁體中文&#39;,
+      },
+      {
+        code: &#39;en-US&#39;,
+        name: &#39;English&#39;,
+        fullName: &#39;English(US)&#39;,
+      },
+    ]}
+    language={{
+      code: &#39;en-US&#39;,
+      name: &#39;English&#39;,
+      fullName: &#39;English(US)&#39;,
+    }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Styles</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomStyles = () =&gt; &lt;LanguageButton
+    sx={{
+      color: &#39;white&#39;,
+      backgroundColor: colors.blue[&#39;500&#39;],
+    }}
+    menuProps={{
+      sx: {
+        backgroundColor: colors.blue[&#39;500&#39;],
+      },
+    }}
+    itemProps={{
+      sx: {
+        color: &#39;white&#39;,
+      },
+    }}
+    list={[
+      {
+        code: &#39;zh-TW&#39;,
+        name: &#39;繁中&#39;,
+        fullName: &#39;繁體中文&#39;,
+      },
+      {
+        code: &#39;en-US&#39;,
+        name: &#39;English&#39;,
+        fullName: &#39;English(US)&#39;,
+      },
+    ]} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="OrgText">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> OrgText</h2>
+      <div class="badges">
+        <label for="c-8-components-orgtext-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-8-components-orgtext-info" class="badge info as-toggle">1 info</label>
+        <label for="c-8-components-orgtext-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/OrgText/OrgText.stories.tsx">components-orgtext · ./src/components/OrgText/OrgText.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-8-components-orgtext-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-8-components-orgtext-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-8-components-orgtext-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">2 prop types</span>
+            </div>
+            <pre><code>Component: src/components/OrgText/OrgText.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>orgColor: string | undefined
+
+orgName: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { OrgText } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;OrgText orgName=&quot;BeeInventor&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Specific Color</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const SpecificColor = () =&gt; &lt;OrgText orgName=&quot;BeeInventor&quot; orgColor=&quot;#58B99E&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="PasswordTextField">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> PasswordTextField</h2>
+      <div class="badges">
+        <label for="c-9-components-textfield-passwordtextfield-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-9-components-textfield-passwordtextfield-info" class="badge info as-toggle">1 info</label>
+        <label for="c-9-components-textfield-passwordtextfield-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/TextField/PasswordTextField/PasswordTextField.stories.tsx">components-textfield-passwordtextfield · ./src/components/TextField/PasswordTextField/PasswordTextField.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-9-components-textfield-passwordtextfield-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-9-components-textfield-passwordtextfield-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-9-components-textfield-passwordtextfield-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">8 prop types</span>
+            </div>
+            <pre><code>Component: src/components/TextField/PasswordTextField/index.ts::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>className?: string
+
+error?: boolean
+
+errorMessage?: string
+
+errorProps?: any
+
+inputProps?: InputBaseProps
+
+onChange: (password: string) =&gt; void
+
+placeholder?: string
+
+rootProps?: any</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { PasswordTextField } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;PasswordTextField placeholder=&quot;Password&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Error</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Error = () =&gt; &lt;PasswordTextField
+    placeholder=&quot;Password&quot;
+    error
+    errorMessage=&quot;Password length at least 8 characters&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Style</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomStyle = () =&gt; &lt;PasswordTextField
+    placeholder=&quot;Password&quot;
+    error
+    errorMessage=&quot;Password length at least 8 characters&quot;
+    sx={{
+      backgroundColor: &#39;black&#39;,
+    }}
+    rootProps={{
+      sx: {
+        border: `1px solid ${colors.blue[&#39;300&#39;]}`,
+      },
+    }}
+    inputProps={{
+      sx: {
+        color: &#39;pink&#39;,
+        &#39;&amp;::placeholder&#39;: {
+          color: &#39;pink&#39;,
+        },
+      },
+    }} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="PhoneTextField">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> PhoneTextField</h2>
+      <div class="badges">
+        <label for="c-10-components-textfield-phonetextfield-props" class="badge ok as-toggle">13 prop types</label>
+        <label for="c-10-components-textfield-phonetextfield-info" class="badge info as-toggle">1 info</label>
+        <label for="c-10-components-textfield-phonetextfield-stories" class="badge ok as-toggle">6 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/TextField/PhoneTextField/PhoneTextField.stories.tsx">components-textfield-phonetextfield · ./src/components/TextField/PhoneTextField/PhoneTextField.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-10-components-textfield-phonetextfield-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-10-components-textfield-phonetextfield-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-10-components-textfield-phonetextfield-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">13 prop types</span>
+            </div>
+            <pre><code>Component: src/components/TextField/PhoneTextField/index.ts::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>countryCode?: string
+
+countryCodeList: CountryCodeData[]
+
+error?: boolean
+
+errorMessage?: string
+
+errorProps?: any
+
+inputProps?: InputBaseProps
+
+menuProps?: any
+
+mode?: Mode
+
+onChange: (data: phoneData) =&gt; void
+
+placeholder?: string
+
+popperProps?: Omit&lt;PopperProps, &quot;open&quot; | &quot;anchorEl&quot;&gt;
+
+rootProps?: any
+
+value?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, PhoneTextField } from "@beeinventor/dasiot-react-component-lib";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;PhoneTextField value=&quot;&quot; placeholder=&quot;Phone Number&quot; countryCodeList={countryCodeList} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Mode Light</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ModeLight = () =&gt; &lt;PhoneTextField
+    value=&quot;&quot;
+    placeholder=&quot;Phone Number&quot;
+    countryCodeList={countryCodeList}
+    mode=&quot;light&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Error</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Error = () =&gt; &lt;PhoneTextField
+    value=&quot;&quot;
+    placeholder=&quot;Phone Number&quot;
+    countryCodeList={countryCodeList}
+    error
+    errorMessage=&quot;Invalid Phone&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Has Value</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const HasValue = () =&gt; &lt;PhoneTextField
+    value=&quot;0990000001&quot;
+    placeholder=&quot;Phone Number&quot;
+    countryCodeList={countryCodeList}
+    countryCode=&quot;1&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Dialog</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithDialog = () =&gt; {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        &lt;div&gt;
+            &lt;Button variant=&quot;contained&quot; onClick={() =&gt; setIsOpen(true)}&gt;Open Dialog
+                        &lt;/Button&gt;
+            &lt;Dialog open={isOpen} onClose={() =&gt; setIsOpen(false)}&gt;
+                &lt;DialogContent sx={{ height: 300 }}&gt;
+                    &lt;PhoneTextField
+                        value=&quot;&quot;
+                        placeholder=&quot;Phone Number&quot;
+                        countryCodeList={countryCodeList}
+                        popperProps={{
+                          disablePortal: true,
+                        }} /&gt;
+                &lt;/DialogContent&gt;
+            &lt;/Dialog&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Style</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomStyle = () =&gt; &lt;PhoneTextField
+    value=&quot;0990000001&quot;
+    sx={{
+      backgroundColor: &#39;black&#39;,
+    }}
+    rootProps={{
+      sx: {
+        border: `1px solid ${colors.blue[&#39;300&#39;]}`,
+      },
+    }}
+    inputProps={{
+      sx: {
+        color: &#39;pink&#39;,
+        &#39;&amp;::placeholder&#39;: {
+          color: &#39;pink&#39;,
+        },
+      },
+    }} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Searchbar">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Searchbar</h2>
+      <div class="badges">
+        <label for="c-11-components-searchbar-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-11-components-searchbar-info" class="badge info as-toggle">1 info</label>
+        <label for="c-11-components-searchbar-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Searchbar/Searchbar.stories.tsx">components-searchbar · ./src/components/Searchbar/Searchbar.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-11-components-searchbar-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-11-components-searchbar-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-11-components-searchbar-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">6 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Searchbar/Searchbar.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>inputContainerProps?: any
+
+LanguageButtonProps: Omit&lt;LanguageButtonProps, &quot;onSelect&quot;&gt;
+
+onChange?: ((e: ChangeEvent&lt;HTMLInputElement | HTMLTextAreaElement, Element&gt;) =&gt; void)
+
+onSelect?: ((lang: LanguageData) =&gt; void)
+
+operationNode?: ReactNode
+
+value?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Box } from "@mui/material";
+import { Searchbar } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Searchbar
+    LanguageButtonProps={{
+      list: [
+        {
+          code: &#39;zh-TW&#39;,
+          name: &#39;繁中&#39;,
+          fullName: &#39;繁體中文&#39;,
+        },
+        {
+          code: &#39;en-US&#39;,
+          name: &#39;English&#39;,
+          fullName: &#39;English(US)&#39;,
+        },
+      ],
+    }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Add Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AddIcon = () =&gt; &lt;Searchbar
+    LanguageButtonProps={{
+      list: [
+        {
+          code: &#39;zh-TW&#39;,
+          name: &#39;繁中&#39;,
+          fullName: &#39;繁體中文&#39;,
+        },
+        {
+          code: &#39;en-US&#39;,
+          name: &#39;English&#39;,
+          fullName: &#39;English(US)&#39;,
+        },
+      ],
+    }}
+    operationNode={(&lt;&gt;
+      &lt;Box
+        sx={{
+          display: &#39;flex&#39;,
+          width: 74,
+          height: 74,
+          justifyContent: &#39;center&#39;,
+          alignItems: &#39;center&#39;,
+          &#39;&amp;:hover&#39;: {
+            backgroundColor: &#39;rgba(0,0,0, .08)&#39;,
+          },
+        }}
+      &gt;
+        &lt;img src={historySVG} /&gt;
+      &lt;/Box&gt;
+      &lt;Box
+        sx={{
+          display: &#39;flex&#39;,
+          width: 74,
+          height: 74,
+          justifyContent: &#39;center&#39;,
+          alignItems: &#39;center&#39;,
+          &#39;&amp;:hover&#39;: {
+            backgroundColor: &#39;rgba(0,0,0, .08)&#39;,
+          },
+        }}
+      &gt;
+        &lt;img src={avatarSVG} /&gt;
+      &lt;/Box&gt;
+    &lt;/&gt;)} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Style</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomStyle = () =&gt; &lt;Searchbar
+    LanguageButtonProps={{
+      list: [
+        {
+          code: &#39;zh-TW&#39;,
+          name: &#39;繁中&#39;,
+          fullName: &#39;繁體中文&#39;,
+        },
+        {
+          code: &#39;en-US&#39;,
+          name: &#39;English&#39;,
+          fullName: &#39;English(US)&#39;,
+        },
+      ],
+    }}
+    operationNode={(&lt;&gt;
+      &lt;Box
+        sx={{
+          display: &#39;flex&#39;,
+          width: 74,
+          height: 74,
+          justifyContent: &#39;center&#39;,
+          alignItems: &#39;center&#39;,
+          &#39;&amp;:hover&#39;: {
+            backgroundColor: &#39;rgba(0,0,0, .08)&#39;,
+          },
+        }}
+      &gt;
+        &lt;img src={historySVG} /&gt;
+      &lt;/Box&gt;
+      &lt;Box
+        sx={{
+          display: &#39;flex&#39;,
+          width: 74,
+          height: 74,
+          justifyContent: &#39;center&#39;,
+          alignItems: &#39;center&#39;,
+          &#39;&amp;:hover&#39;: {
+            backgroundColor: &#39;rgba(0,0,0, .08)&#39;,
+          },
+        }}
+      &gt;
+        &lt;img src={avatarSVG} /&gt;
+      &lt;/Box&gt;
+    &lt;/&gt;)}
+    sx={{
+      border: `1px solid ${colors.blue[&#39;300&#39;]}`,
+    }}
+    inputContainerProps={{
+      sx: {
+        backgroundColor: colors.red[&#39;100&#39;],
+      },
+    }} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="SearchTextField">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> SearchTextField</h2>
+      <div class="badges">
+        <label for="c-12-components-textfield-searchtextfield-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-12-components-textfield-searchtextfield-info" class="badge info as-toggle">1 info</label>
+        <label for="c-12-components-textfield-searchtextfield-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/TextField/SearchTextField/SearchTextField.stories.tsx">components-textfield-searchtextfield · ./src/components/TextField/SearchTextField/SearchTextField.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-12-components-textfield-searchtextfield-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-12-components-textfield-searchtextfield-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-12-components-textfield-searchtextfield-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">2 prop types</span>
+            </div>
+            <pre><code>Component: src/components/TextField/SearchTextField/SearchTextField.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>inputProps?: Omit&lt;InputHTMLAttributes&lt;HTMLInputElement&gt;, &quot;onChange&quot;&gt;
+
+onChange?: ((e: ChangeEvent&lt;HTMLInputElement, Element&gt;) =&gt; void)</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { SearchTextField } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;SearchTextField
+    inputProps={{
+      placeholder: &#39;Distributor&#39;,
+    }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Full Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const FullWidth = () =&gt; &lt;SearchTextField
+    inputProps={{
+      placeholder: &#39;Distributor&#39;,
+      width: &#39;100%&#39;,
+    }} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="StatusDropdown">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> StatusDropdown</h2>
+      <div class="badges">
+        <label for="c-13-components-dropdown-statusdropdown-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-13-components-dropdown-statusdropdown-info" class="badge info as-toggle">1 info</label>
+        <label for="c-13-components-dropdown-statusdropdown-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Dropdown/StatusDropdown/StatusDropdown.stories.tsx">components-dropdown-statusdropdown · ./src/components/Dropdown/StatusDropdown/StatusDropdown.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-13-components-dropdown-statusdropdown-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-13-components-dropdown-statusdropdown-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-13-components-dropdown-statusdropdown-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Dropdown/StatusDropdown/StatusDropdown.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>defaultStatus?: string
+
+disabled?: boolean
+
+onSelect?: ((status: string) =&gt; void)
+
+popperProps?: PopperProps
+
+statusMap: { [status: string]: { color?: string | undefined; bgColor?: string | undefined; displayName: string; }; }</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { StatusDropdown } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Block&gt;
+    &lt;div&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;open&quot; /&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;open&quot; disabled /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;inProgress&quot; /&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;inProgress&quot; disabled /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;completed&quot; /&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;completed&quot; disabled /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;suspend&quot; /&gt;
+        &lt;StatusDropdown statusMap={statusMap} defaultStatus=&quot;suspend&quot; disabled /&gt;
+    &lt;/div&gt;
+&lt;/Block&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Step">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Step</h2>
+      <div class="badges">
+        <label for="c-14-components-step-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-14-components-step-info" class="badge info as-toggle">1 info</label>
+        <label for="c-14-components-step-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Step/Step.stories.tsx">components-step · ./src/components/Step/Step.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-14-components-step-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-14-components-step-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-14-components-step-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">3 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Step/index.ts::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>className?: string
+
+current: number
+
+list: StepItem[]</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Step } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Step
+    list={[
+      {
+        id: &#39;project&#39;,
+        src: projectSvg,
+      },
+      {
+        id: &#39;admin&#39;,
+        src: adminSvg,
+      },
+      {
+        id: &#39;finished&#39;,
+        src: finishedSvg,
+      },
+    ]}
+    current={0} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Style</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomStyle = () =&gt; &lt;Step
+    list={[
+      {
+        id: &#39;project&#39;,
+        src: projectSvg,
+      },
+      {
+        id: &#39;admin&#39;,
+        src: adminSvg,
+      },
+      {
+        id: &#39;finished&#39;,
+        src: finishedSvg,
+      },
+    ]}
+    current={0}
+    sx={{
+      &#39;&amp; .Step-box&#39;: {
+        width: 50,
+        height: 50,
+        &#39;&amp; img&#39;: {
+          width: 50,
+          height: 50,
+        },
+      },
+      &#39;&amp; .Step-bar&#39;: {
+        width: 50,
+        height: 5,
+      },
+    }} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Switch">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> Switch</h2>
+      <div class="badges">
+        <label for="c-15-components-switch-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-15-components-switch-info" class="badge info as-toggle">1 info</label>
+        <label for="c-15-components-switch-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Switch/Switch.stories.tsx">components-switch · ./src/components/Switch/Switch.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-15-components-switch-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-15-components-switch-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-15-components-switch-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;Switch&quot; component.
+  4 | import Switch from &#39;./Switch&#39;;
+  5 |
+&gt; 6 | const meta: Meta&lt;typeof Switch&gt; = {
+    | ^
+  7 |   component: Switch,
+  8 | };
+  9 |
+
+./src/components/Switch/Switch.stories.tsx:
+import React from &#39;react&#39;;
+import { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
+
+import Switch from &#39;./Switch&#39;;
+
+const meta: Meta&lt;typeof Switch&gt; = {
+  component: Switch,
+};
+
+export default meta;
+
+type Story = StoryObj&lt;typeof Switch&gt;;
+
+export const Primary: Story = {
+  args: {
+    checked: false,
+  },
+  render: (args) =&gt; &lt;Switch checked={args.checked} /&gt;,
+};
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Switch } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Primary</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Primary = () =&gt; &lt;Switch checked={false} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+    </div>
+    <div class="error-groups" role="region" aria-label="Prop type error groups">
+        <section class="group">
+          <input id="no-component-import-found-toggle" class="group-tg" type="checkbox" hidden />
+          <label for="no-component-import-found-toggle" class="group-header">
+            <span class="caret">▸</span>
+            <span class="group-title">No component import found</span>
+            <span class="group-count">2</span>
+          </label>
+          <div class="group-cards">
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Button">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> Button</h2>
+      <div class="badges">
+        <label for="c-error-0-components-button-button-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-error-0-components-button-button-info" class="badge info as-toggle">1 info</label>
+        <label for="c-error-0-components-button-button-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Button/Button.stories.tsx">components-button-button · ./src/components/Button/Button.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-error-0-components-button-button-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-error-0-components-button-button-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-error-0-components-button-button-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;Button&quot; component.
+  18 | `;
+  19 |
+&gt; 20 | const meta: Meta&lt;typeof Button&gt; = {
+     | ^
+  21 |   title: &#39;Components/Button/Button&#39;,
+  22 |   component: Button,
+  23 |   argTypes: {
+
+./src/components/Button/Button.stories.tsx:
+import React from &#39;react&#39;;
+import { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
+import { styled } from &#39;@mui/material&#39;;
+
+import Button from &#39;.&#39;;
+import { ButtonProps } from &#39;./Button&#39;;
+
+const Title = styled(&#39;h2&#39;)`
+  color: white;
+  text-shadow: 0 0 2px black;
+`;
+
+const Block = styled(&#39;div&#39;)`
+  margin-bottom: 8px;
+  &amp; &gt; button {
+    margin: 0 8px;
+  }
+`;
+
+const meta: Meta&lt;typeof Button&gt; = {
+  title: &#39;Components/Button/Button&#39;,
+  component: Button,
+  argTypes: {
+    fullWidth: {
+      control: { type: &#39;boolean&#39; },
+    },
+    disabled: {
+      control: { type: &#39;boolean&#39; },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj&lt;typeof Button&gt;;
+
+const renderFn = (args: ButtonProps) =&gt; {
+  return (
+    &lt;&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;text&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;contained&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+      &lt;Block&gt;
+        &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;primary&quot; {...args}&gt;
+          Primary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;secondary&quot; {...args}&gt;
+          Secondary
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;success&quot; {...args}&gt;
+          Success
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;warning&quot; {...args}&gt;
+          Warning
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;info&quot; {...args}&gt;
+          Info
+        &lt;/Button&gt;
+        &lt;Button variant=&quot;outlined&quot; color=&quot;error&quot; {...args}&gt;
+          Error
+        &lt;/Button&gt;
+      &lt;/Block&gt;
+    &lt;/&gt;
+  );
+};
+
+export const Default: Story = {
+  args: {
+    fullWidth: false,
+    disabled: false,
+  },
+  render: renderFn,
+};
+
+export const Light: Story = {
+  parameters: {
+    backgrounds: {
+      default: &#39;light&#39;,
+    },
+  },
+  args: {
+    fullWidth: false,
+    disabled: false,
+    mode: &#39;light&#39;,
+  },
+  render: renderFn,
+};
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    return &lt;&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;text&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;contained&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;primary&quot; fullWidth={false} disabled={false}&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;secondary&quot; fullWidth={false} disabled={false}&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;success&quot; fullWidth={false} disabled={false}&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;warning&quot; fullWidth={false} disabled={false}&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;info&quot; fullWidth={false} disabled={false}&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button variant=&quot;outlined&quot; color=&quot;error&quot; fullWidth={false} disabled={false}&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Light</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Light = () =&gt; {
+    return &lt;&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;text&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;text&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;contained&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;contained&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+        &lt;Block&gt;
+            &lt;Title&gt;variant=&quot;outlined&quot;&lt;/Title&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;primary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Primary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;secondary&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Secondary
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;success&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Success
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;warning&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Warning
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;info&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Info
+                        &lt;/Button&gt;
+            &lt;Button
+                variant=&quot;outlined&quot;
+                color=&quot;error&quot;
+                fullWidth={false}
+                disabled={false}
+                mode=&quot;light&quot;&gt;Error
+                        &lt;/Button&gt;
+        &lt;/Block&gt;
+    &lt;/&gt;;
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Switch">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> Switch</h2>
+      <div class="badges">
+        <label for="c-error-1-components-switch-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-error-1-components-switch-info" class="badge info as-toggle">1 info</label>
+        <label for="c-error-1-components-switch-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Switch/Switch.stories.tsx">components-switch · ./src/components/Switch/Switch.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-error-1-components-switch-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-error-1-components-switch-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-error-1-components-switch-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;Switch&quot; component.
+  4 | import Switch from &#39;./Switch&#39;;
+  5 |
+&gt; 6 | const meta: Meta&lt;typeof Switch&gt; = {
+    | ^
+  7 |   component: Switch,
+  8 | };
+  9 |
+
+./src/components/Switch/Switch.stories.tsx:
+import React from &#39;react&#39;;
+import { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
+
+import Switch from &#39;./Switch&#39;;
+
+const meta: Meta&lt;typeof Switch&gt; = {
+  component: Switch,
+};
+
+export default meta;
+
+type Story = StoryObj&lt;typeof Switch&gt;;
+
+export const Primary: Story = {
+  args: {
+    checked: false,
+  },
+  render: (args) =&gt; &lt;Switch checked={args.checked} /&gt;,
+};
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Switch } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Primary</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Primary = () =&gt; &lt;Switch checked={false} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article></div>
+        </section>
+      </div>
+    
+    
+  </div>
+</main>
+</body>
+</html>  
