@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { zhTW as localZhTw } from 'date-fns/locale/zh-TW';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Dialog, DialogContent, styled } from '@mui/material';
 
 import DatePicker from './DatePicker';

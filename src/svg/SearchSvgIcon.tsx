@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SVGProps } from 'react';
+import { SVGProps, type JSX } from 'react';
 const SearchSvgIcon = (props: SVGProps<SVGSVGElement>): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

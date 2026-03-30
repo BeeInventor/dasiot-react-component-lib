@@ -1,4 +1,4 @@
-import React, { VFC, ChangeEvent, useState } from 'react';
+import React, { FC, ChangeEvent, useState } from 'react';
 import classnames from 'classnames';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -51,7 +51,7 @@ const ErrorMessage = styled(Box)(({ theme }) => ({
   color: theme.color.highlight,
 }));
 
-const PasswordTextField: VFC<PasswordTextFieldProps> = (props) => {
+const PasswordTextField: FC<PasswordTextFieldProps> = (props) => {
   const {
     rootProps,
     inputProps,

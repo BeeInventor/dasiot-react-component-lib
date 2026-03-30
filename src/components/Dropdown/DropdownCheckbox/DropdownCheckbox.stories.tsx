@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useState } from 'react';
 import DropdownCheckbox from './DropdownCheckbox';
 import { DropdownCheckboxItem } from './DropdownColor.type';
@@ -82,7 +82,6 @@ export const Default: Story = {
     const [selectedIds, setSelectedIds] = useState<string[]>(
       list.map((d) => d.value as string),
     );
-  
 
     return (
       <div>

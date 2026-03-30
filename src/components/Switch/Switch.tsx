@@ -1,8 +1,4 @@
-import React from 'react';
-import {
-  Switch as MuiSwitch,
-  styled,
-} from '@mui/material';
+import { Switch as MuiSwitch, styled } from '@mui/material';
 
 const SwitchComponent = styled(MuiSwitch)`
   &.MuiSwitch-root {

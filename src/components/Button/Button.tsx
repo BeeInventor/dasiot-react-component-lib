@@ -1,9 +1,7 @@
-import React from 'react';
 import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
 import { Mode } from '../main.types';
-
 
 export interface ButtonProps extends MuiButtonProps {
   mode?: Mode;

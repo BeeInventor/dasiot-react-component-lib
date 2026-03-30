@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import Step from '.';
 import adminSvg from '../../assets/image/svg/btn_ic_admin.svg';
 import finishedSvg from '../../assets/image/svg/btn_ic_finished.svg';

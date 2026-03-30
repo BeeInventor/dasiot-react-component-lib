@@ -1,4 +1,4 @@
-import React, { VFC, useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Popper } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -46,7 +46,7 @@ const Item = styled(Box)(({ theme }) => ({
   },
 }));
 
-const LanguageButton: VFC<LanguageButtonProps> = (props) => {
+const LanguageButton: FC<LanguageButtonProps> = (props) => {
   const {
     list,
     onSelect,

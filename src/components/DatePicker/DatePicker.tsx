@@ -16,7 +16,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
-import React, { useEffect, useMemo, useRef, useState, VFC } from 'react';
+import React, { useEffect, useMemo, useRef, useState, FC } from 'react';
 import arrowLeftSVG from '../../assets/image/svg/arrow-left.svg';
 import arrowRightSVG from '../../assets/image/svg/arrow-right.svg';
 import cancelCircleSVG from '../../assets/image/svg/cancel-circle.svg';
@@ -142,7 +142,7 @@ const Item = styled(Box)<StyledMode>(({ mode, theme }) => ({
   },
 }));
 
-const DatePicker: VFC<DatePickerProps> = (props) => {
+const DatePicker: FC<DatePickerProps> = (props) => {
   const {
     className,
     type = 'date',
@@ -423,10 +423,6 @@ const DatePicker: VFC<DatePickerProps> = (props) => {
       </Popper>
     </>
   );
-};
-
-DatePicker.defaultProps = {
-  type: 'date',
 };
 
 export default DatePicker;

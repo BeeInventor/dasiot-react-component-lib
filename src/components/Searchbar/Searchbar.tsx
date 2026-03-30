@@ -40,9 +40,9 @@ const Operation = styled(Box)(({}) => ({
 
 const Searchbar: React.FC<SearchbarProps> = (props) => {
   const {
-    operationNode,
+    operationNode = undefined,
     LanguageButtonProps,
-    value,
+    value = '',
     onChange,
     onSelect,
     inputContainerProps,
@@ -87,11 +87,6 @@ const Searchbar: React.FC<SearchbarProps> = (props) => {
       </Operation>
     </Root>
   );
-};
-
-Searchbar.defaultProps = {
-  operationNode: undefined,
-  value: '',
 };
 
 export default Searchbar;

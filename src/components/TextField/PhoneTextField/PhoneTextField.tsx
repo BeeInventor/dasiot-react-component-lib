@@ -1,4 +1,4 @@
-import React, { VFC, useState, useEffect, ChangeEvent, useRef } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent, useRef } from 'react';
 import Popper from '@mui/material/Popper';
 import classnames from 'classnames';
 import { PhoneTextFieldProps } from './PhoneTextField.types';
@@ -114,7 +114,7 @@ const ErrorMessage = styled(Box)(({ theme }) => ({
   color: theme.color.highlight,
 }));
 
-const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
+const PhoneTextField: FC<PhoneTextFieldProps> = (props) => {
   const {
     rootProps,
     menuProps,
@@ -125,7 +125,7 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
     countryCode,
     onChange,
     errorProps,
-    error,
+    error = false,
     errorMessage,
     popperProps,
     mode,
@@ -243,10 +243,6 @@ const PhoneTextField: VFC<PhoneTextFieldProps> = (props) => {
       )}
     </Root>
   );
-};
-
-PhoneTextField.defaultProps = {
-  error: false,
 };
 
 export default PhoneTextField;

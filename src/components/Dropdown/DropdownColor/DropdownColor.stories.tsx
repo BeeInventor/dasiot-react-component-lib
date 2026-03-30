@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useState } from 'react';
 import DropdownColor from './DropdownColor';
 import { DropDownColorItem } from './DropdownColor.type';

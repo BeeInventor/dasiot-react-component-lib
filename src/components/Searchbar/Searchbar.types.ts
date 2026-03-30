@@ -5,8 +5,10 @@ import {
 import { ChangeEvent, ReactNode } from 'react';
 import { BoxProps } from '@mui/material';
 
-export interface SearchbarProps
-  extends Omit<BoxProps, 'onChange' | 'onSelect'> {
+export interface SearchbarProps extends Omit<
+  BoxProps,
+  'onChange' | 'onSelect'
+> {
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSelect?: (lang: LanguageData) => void;

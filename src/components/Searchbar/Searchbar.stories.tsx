@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, colors } from '@mui/material';
 import Searchbar from './Searchbar';
 import historySVG from '../../assets/image/svg/btn_ic_history.svg';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { colors } from '@mui/material';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import PhoneTextField from '.';

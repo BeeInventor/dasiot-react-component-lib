@@ -1,17 +1,11 @@
-const path = require('path');
-const toPath = (filePath) => path.join(process.cwd(), filePath);
-const { mergeConfig } = require('vite');
+import { mergeConfig } from 'vite';
 
-module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+export default {
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@chromatic-com/storybook'
+    '@chromatic-com/storybook',
   ],
-  core: {
-    builder: '@storybook/builder-vite',
-  },
   typescript: {
     check: false,
     checkOptions: {},
@@ -23,10 +17,10 @@ module.exports = {
     },
   },
   viteFinal: async (config) => {
-    return mergeConfig(config);
+    return mergeConfig(config, {});
   },
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/react-vite',
     options: {},
   },
 };
