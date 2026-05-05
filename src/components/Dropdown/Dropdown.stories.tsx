@@ -5,32 +5,32 @@ import Button from '../Button';
 import Dropdown from './Dropdown';
 import { DropDownItem } from './Dropdown.type';
 import DropdownV2 from './DropdownV2';
+import DropdownV3 from './DropdownV3';
 
 const list: DropDownItem[] = [
+  { id: 'A001', value: 'A001', name: 'Distributor 1' },
+  { id: 'A002', value: 'A002', name: 'Distributor 2' },
+  { id: 'A003', value: 'A003', name: 'Distributor 3' },
+  { id: 'A004', value: 'A004', name: 'Distributor 4' },
+  { id: 'A005', value: 'A005', name: 'Distributor 5' },
+  { id: 'A006', value: 'A006', name: 'Distributor 6' },
+  { id: 'A007', value: 'A007', name: 'Distributor 7' },
+  { id: 'A008', value: 'A008', name: 'Distributor 8' },
+  { id: 'A009', value: 'A009', name: 'Distributor 9' },
+  { id: 'A010', value: 'A010', name: 'Distributor 10' },
+  { id: 'A011', value: 'A011', name: 'Distributor 11' },
+  { id: 'A012', value: 'A012', name: 'Distributor 12' },
+  { id: 'A013', value: 'A013', name: 'Distributor 13' },
+  { id: 'A014', value: 'A014', name: 'Distributor 14' },
+  { id: 'A015', value: 'A015', name: 'Distributor 15' },
+  { id: 'A016', value: 'A016', name: 'Distributor 16' },
+  { id: 'A017', value: 'A017', name: 'Distributor 17' },
+  { id: 'A018', value: 'A018', name: 'Distributor 18' },
+  { id: 'A019', value: 'A019', name: 'Distributor 19' },
   {
-    id: 'A001',
-    value: 'A001',
-    name: 'Distributor',
-  },
-  {
-    id: 'A002',
-    value: 'A002',
-    name: 'Distributor A',
-  },
-  {
-    id: 'A003',
-    value: 'A003',
-    name: 'Distributor B',
-  },
-  {
-    id: 'A004',
-    value: 'A004',
-    name: 'Distributor C',
-  },
-  {
-    id: 'A004',
-    value: 'A004',
-    name: 'Very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long',
+    id: 'A020',
+    value: 'A020',
+    name: 'Very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long',
   },
 ];
 
@@ -223,6 +223,27 @@ export const Version2: Story = {
     return (
       <div>
         <DropdownV2
+          {...args}
+          selectedId={selectedId}
+          onSelect={(value) => setSelectedId(value as string)}
+        />
+      </div>
+    );
+  },
+};
+
+export const Version3: Story = {
+  args: {
+    mode: 'dark',
+    list,
+    placeholder: 'Please Select Item',
+  },
+  render: (args) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>();
+
+    return (
+      <div>
+        <DropdownV3
           {...args}
           selectedId={selectedId}
           onSelect={(value) => setSelectedId(value as string)}
