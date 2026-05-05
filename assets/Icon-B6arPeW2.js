@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{l as t,u as n}from"./iframe-BtzXbMLI.js";import{n as r,t as i}from"./Box-BzlrkFAu.js";var a,o=e((()=>{t(),i(),a=n(r,{label:`Icon`})(({})=>({display:`flex`,justifyContent:`center`,alignItems:`center`,width:40,height:40}))}));export{o as n,a as t};

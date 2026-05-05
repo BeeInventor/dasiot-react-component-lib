@@ -1,4 +1,4 @@
-import{a as e,n as t}from"./chunk-BneVvdWh.js";import{ot as n,u as r}from"./iframe-BtzXbMLI.js";import{t as i}from"./esm-l6D_WZNr.js";import{n as a,t as o}from"./Button-BgcDEQ2j.js";var s,c,l,u,d,f,p,m;t((()=>{s=e(n(),1),i(),o(),c=r(`h2`)`
+import{a as e,n as t}from"./chunk-BneVvdWh.js";import{ot as n,u as r}from"./iframe-BNyQjFrG.js";import{t as i}from"./esm-CkCGCXl-.js";import{n as a,t as o}from"./Button-D25F8Vfa.js";var s,c,l,u,d,f,p,m;t((()=>{s=e(n(),1),i(),o(),c=r(`h2`)`
   color: white;
   text-shadow: 0 0 2px black;
 `,l=r(`div`)`

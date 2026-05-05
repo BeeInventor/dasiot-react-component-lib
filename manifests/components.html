@@ -576,13 +576,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">2/16 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">16/16 infos</a><span class="filter-pill ok" aria-disabled="true">50 stories ok</span></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">2/17 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">17/17 infos</a><span class="filter-pill ok" aria-disabled="true">52 stories ok</span></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note ok" style="margin-bottom: 16px;">
-              Using <code>react-docgen-typescript</code>. Generation took <strong>1.3s</strong>.
+              Using <code>react-docgen-typescript</code>. Generation took <strong>1.4s</strong>.
             </div>
     <h2 class="section-title">Components</h2>
     <div class="grid" role="list">
@@ -1995,7 +1995,7 @@ import { Dialog, DialogContent } from "@mui/material";</code></pre>
       <div class="badges">
         <label for="c-4-components-dropdown-dropdown-props" class="badge ok as-toggle">10 prop types</label>
         <label for="c-4-components-dropdown-dropdown-info" class="badge info as-toggle">1 info</label>
-        <label for="c-4-components-dropdown-dropdown-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-4-components-dropdown-dropdown-stories" class="badge ok as-toggle">10 stories</label>
         
       </div>
     </div>
@@ -2088,7 +2088,7 @@ selectionIds?: string[]</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { Button, Dropdown, DropdownV2 } from "@beeinventor/dasiot-react-component-lib";
+                <pre><code>import { Button, Dropdown, DropdownV2, DropdownV3 } from "@beeinventor/dasiot-react-component-lib";
 import { Dialog, DialogContent } from "@mui/material";</code></pre>
               </div>
           
@@ -2275,6 +2275,28 @@ import { Dialog, DialogContent } from "@mui/material";</code></pre>
     return (
         &lt;div&gt;
             &lt;DropdownV2
+                mode=&quot;dark&quot;
+                list={list}
+                placeholder=&quot;Please Select Item&quot;
+                selectedId={selectedId}
+                onSelect={(value) =&gt; setSelectedId(value as string)} /&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Version 3</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Version3 = () =&gt; {
+    const [selectedId, setSelectedId] = useState&lt;string | undefined&gt;();
+
+    return (
+        &lt;div&gt;
+            &lt;DropdownV3
                 mode=&quot;dark&quot;
                 list={list}
                 placeholder=&quot;Please Select Item&quot;
@@ -3828,6 +3850,92 @@ export const Primary: Story = {
               
               
               <pre><code>const Primary = () =&gt; &lt;Switch checked={false} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="TooltipIcon">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> TooltipIcon</h2>
+      <div class="badges">
+        <label for="c-16-components-tooltipicon-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-16-components-tooltipicon-info" class="badge info as-toggle">1 info</label>
+        <label for="c-16-components-tooltipicon-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/Tooltip/Tooltip.stories.tsx">components-tooltipicon · ./src/components/Tooltip/Tooltip.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-16-components-tooltipicon-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-16-components-tooltipicon-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-16-components-tooltipicon-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">2 prop types</span>
+            </div>
+            <pre><code>Component: src/components/Tooltip/TooltipIcon.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>text: string
+
+title: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { TooltipIcon } from "@beeinventor/dasiot-react-component-lib";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; (
+  &lt;TooltipIcon
+    title=&quot;TLorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur quia ipsam nobis modi nihil iusto ea nam voluptates error velit aliquid ex dolorum rerum reiciendis quaerat omnis, sint doloribus. Illo.&quot;
+    text=&quot;Tooltip text&quot;
+  /&gt;
+);</code></pre>
             </div>
         </div>
     
